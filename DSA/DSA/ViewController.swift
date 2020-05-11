@@ -12,10 +12,14 @@ class ViewController: UIViewController {
 
 //    var imageView : UIImageView!
 //    var observer : NSKeyValueObservation!
+//    weak var x : ImageRef?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+//        let x = "Nishit"
+//        let index = x.endIndex
+//        let val = x[x.endIndex]
+//        AnyObject
 //        observer = imageView.observe(\.image, changeHandler: { (observed, change) in
 //
 //        })
@@ -54,4 +58,22 @@ extension Notification.Name {
 
 class ImageRef {
     
+    init(val : BuildStatus?) {
+
+        switch val {
+        case .inProgress:
+            print("Build is starting…")
+        case .complete:
+            print("Build is complete!")
+        default:
+            print("Some other build status")
+        }
+    }
 }
+
+enum BuildStatus {
+    case starting
+    case inProgress
+    case complete
+}
+

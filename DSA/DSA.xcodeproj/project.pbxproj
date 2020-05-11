@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		181D1C4E2448DD01004E0E08 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181D1C4D2448DD01004E0E08 /* ArrayExtension.swift */; };
+		1835A5BF246737EF00B2B0AF /* Algorithms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1835A5BE246737EF00B2B0AF /* Algorithms.swift */; };
+		1835A5C12467418E00B2B0AF /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1835A5C02467418E00B2B0AF /* Graph.swift */; };
+		1835A5C32467558B00B2B0AF /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1835A5C22467558B00B2B0AF /* Queue.swift */; };
+		1835A5C52467559700B2B0AF /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1835A5C42467559700B2B0AF /* Stack.swift */; };
+		1835A5C72469C2C300B2B0AF /* BST.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1835A5C62469C2C300B2B0AF /* BST.swift */; };
 		1897D1BB243CEE9D00B23934 /* StringDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1897D1BA243CEE9D00B23934 /* StringDS.swift */; };
 		1897D1BD2440FAA100B23934 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1897D1BC2440FAA100B23934 /* StringExtension.swift */; };
 		18CC5949243A6A8000185D52 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CC5948243A6A8000185D52 /* AppDelegate.swift */; };
@@ -41,6 +46,11 @@
 
 /* Begin PBXFileReference section */
 		181D1C4D2448DD01004E0E08 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
+		1835A5BE246737EF00B2B0AF /* Algorithms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Algorithms.swift; sourceTree = "<group>"; };
+		1835A5C02467418E00B2B0AF /* Graph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
+		1835A5C22467558B00B2B0AF /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
+		1835A5C42467559700B2B0AF /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
+		1835A5C62469C2C300B2B0AF /* BST.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BST.swift; sourceTree = "<group>"; };
 		1897D1BA243CEE9D00B23934 /* StringDS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringDS.swift; sourceTree = "<group>"; };
 		1897D1BC2440FAA100B23934 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		18CC5945243A6A7F00185D52 /* DSA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DSA.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,6 +131,11 @@
 				1897D1BA243CEE9D00B23934 /* StringDS.swift */,
 				1897D1BC2440FAA100B23934 /* StringExtension.swift */,
 				181D1C4D2448DD01004E0E08 /* ArrayExtension.swift */,
+				1835A5BE246737EF00B2B0AF /* Algorithms.swift */,
+				1835A5C02467418E00B2B0AF /* Graph.swift */,
+				1835A5C22467558B00B2B0AF /* Queue.swift */,
+				1835A5C42467559700B2B0AF /* Stack.swift */,
+				1835A5C62469C2C300B2B0AF /* BST.swift */,
 			);
 			path = DSA;
 			sourceTree = "<group>";
@@ -277,8 +292,13 @@
 				18CC594D243A6A8000185D52 /* ViewController.swift in Sources */,
 				1897D1BD2440FAA100B23934 /* StringExtension.swift in Sources */,
 				1897D1BB243CEE9D00B23934 /* StringDS.swift in Sources */,
+				1835A5C32467558B00B2B0AF /* Queue.swift in Sources */,
+				1835A5C52467559700B2B0AF /* Stack.swift in Sources */,
+				1835A5C72469C2C300B2B0AF /* BST.swift in Sources */,
 				181D1C4E2448DD01004E0E08 /* ArrayExtension.swift in Sources */,
+				1835A5C12467418E00B2B0AF /* Graph.swift in Sources */,
 				18CC5949243A6A8000185D52 /* AppDelegate.swift in Sources */,
+				1835A5BF246737EF00B2B0AF /* Algorithms.swift in Sources */,
 				18CC597B243BB22E00185D52 /* PriorityQueue.swift in Sources */,
 				18CC594B243A6A8000185D52 /* SceneDelegate.swift in Sources */,
 				18CC5979243A6AA600185D52 /* Heap.swift in Sources */,
