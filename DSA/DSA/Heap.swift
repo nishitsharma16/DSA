@@ -21,6 +21,12 @@ class Heap<Element : Comparable> {
     let heapType : HeapType
     
     
+    init(type : HeapType, list : [Element]) {
+        heapType = type
+        self.list = list
+        buildheap()
+    }
+    
     init(type : HeapType) {
         heapType = type
     }
@@ -89,6 +95,14 @@ class Heap<Element : Comparable> {
     func convertToHeap() {
         if !list.isEmpty {
             heapify(index: 0)
+        }
+    }
+    
+    func buildheap() {
+        var count = list.count/2 - 1
+        while count >= 0 {
+            heapify(index: count)
+            count -= 1
         }
     }
     

@@ -150,6 +150,27 @@ extension String {
         return sum
     }
     
+    func caseInSensitiveWordsFromSentence() -> [String] {
+        
+        let list = self.map { String($0) }
+        let charList = [" ", ". ", "\n"]
+        var finalList = [String]()
+        
+        for val in list {
+            var str = ""
+            if charList.contains(val) {
+                if !str.isEmpty {
+                    finalList.append(str.lowercased())
+                    str = ""
+                }
+            }
+            else {
+                str += val
+            }
+        }
+        return finalList
+    }
+    
     func wordsFromSentence() -> [String] {
         
         let list = self.map { String($0) }
@@ -516,6 +537,16 @@ extension String {
         }
         
         return result
+    }
+}
+
+extension WordItem : Comparable {
+    static func < (lhs: WordItem<Item>, rhs: WordItem<Item>) -> Bool {
+        lhs.frequency < rhs.frequency
+    }
+    
+    static func == (lhs: WordItem<Item>, rhs: WordItem<Item>) -> Bool {
+        return lhs.frequency == rhs.frequency
     }
 }
 

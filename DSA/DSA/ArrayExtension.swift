@@ -739,4 +739,55 @@ extension Array where Element == Int {
         }
         return result
     }
+    
+    func sumOfFourElementsEqualToGivenVal(list : [Int], target : Int) {
+        
+        var sumList = [SumItem]()
+        
+        for i in 0..<list.count - 1 {
+            let val = list[i]
+            for j in i + 1..<list.count {
+                let item = SumItem()
+                item.sum = val + list[j]
+                item.first = i
+                item.second = j
+                sumList.append(item)
+            }
+        }
+        
+        sumList.sort()
+        
+        var left = 0
+        var right = sumList.count - 1
+        
+        while left < right {
+            if sumList[left].sum + sumList[right].sum == target {
+                print("Elements Found")
+            }
+            else if sumList[left].sum + sumList[right].sum < target {
+                left += 1
+            }
+            else {
+                right += 1
+            }
+        }
+    }
+}
+
+class SumItem {
+    
+    var sum = 0
+    var first = -1
+    var second = -1
+}
+
+extension SumItem : Comparable {
+    
+    static func < (lhs: SumItem, rhs: SumItem) -> Bool {
+        return lhs.sum < rhs.sum
+    }
+    
+    static func == (lhs: SumItem, rhs: SumItem) -> Bool {
+        return lhs.sum == rhs.sum
+    }
 }

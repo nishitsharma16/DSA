@@ -10,7 +10,7 @@ import Foundation
 
 class Queue<Item> {
     
-    var list = [Item]()
+    private var list = [Item]()
     
     func enqueue(val : Item) {
         list.append(val)
@@ -22,5 +22,9 @@ class Queue<Item> {
     
     var isEmpty : Bool {
         return list.isEmpty
+    }
+    
+    var size : Int {
+        return list.count
     }
 }

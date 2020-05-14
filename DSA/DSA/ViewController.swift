@@ -28,6 +28,34 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         
 //        NotificationCenter.default.addObserver(self, selector: #selector(downloadImage()), name: .BLDownloadImage, object: nil)
+        
+        findPathToTreasureIland()
+    }
+    
+    func findMinTowers() {
+        var list = [[1,0,1],[1,0,1],[1,0,1]]
+        var result = 0
+        Algorithms.findMinimumTowers(mat: &list, result: &result)
+    }
+    
+    func findMinHoursToConvertToZombie() {
+        var list = [[0, 1, 1, 0, 1],
+        [0, 1, 0, 1, 0],
+        [0, 0, 0, 0, 1],
+        [0, 1, 0, 0, 0]]
+        var result = 0
+        Algorithms.minHoursToConvertIntoZombies(mat: &list, result: &result)
+        print(result)
+    }
+    
+    func findPathToTreasureIland() {
+        let list = [["O", "O", "O", "O"],
+        ["D", "O", "D", "O"],
+        ["O", "O", "O", "O"],
+        ["X", "D", "D", "O"]]
+        let result = Algorithms.shortestPathToFindTreasureIsland(mat:list)
+        print(result)
+
     }
     
     func doThis(imageRef : ImageRef) {

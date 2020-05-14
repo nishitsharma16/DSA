@@ -11,7 +11,7 @@ import Foundation
 class BSTNode<Item> {
     var left : BSTNode<Item>?
     var right : BSTNode<Item>?
-    let value : Item
+    var value : Item
     init(val : Item) {
         value = val
     }
@@ -42,11 +42,27 @@ class BST<ItemType> {
             print("Val : \(rootVal.value)")
         }
     }
+}
+
+extension BST where ItemType == Int {
     
-    func createMaxSumTree(root : BSTNode<ItemType>?) {
+    func createMaxSumTreeSet1(root : BSTNode<ItemType>?, sum : inout Int) {
         if let rootVal = root {
-            createMaxSumTree(root: rootVal.right)
-            
+            createMaxSumTreeSet1(root: rootVal.right, sum: &sum)
+            sum = sum + rootVal.value
+            rootVal.value = sum - rootVal.value
+            createMaxSumTreeSet1(root: rootVal.left, sum: &sum)
         }
     }
+    
+//    func createMaxSumTreeSet2(root : BSTNode<ItemType>?) -> BSTNode<ItemType>? {
+//        
+//        if root == nil {
+//            return nil
+//        }
+//        else {
+//            var x = createMaxSumTreeSet2(root: root?.right)
+//            x?.value = 
+//        }
+//    }
 }
