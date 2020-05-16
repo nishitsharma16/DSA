@@ -107,7 +107,6 @@ class Heap<Element : Comparable> {
     }
     
     func insert(element : Element) {
-        
         list.append(element)
         convertToHeap()
     }

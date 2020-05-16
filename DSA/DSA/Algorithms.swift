@@ -269,6 +269,19 @@ class Algorithms {
         }
         return result
     }
+    
+    static func traverseMatrixInSpiralWay(mat : [[Int]], row : Int, col : Int, visited : inout [[Bool]]) {
+        print(mat[row][col])
+        
+    }
+    
+    static func printMatrixInSpiralWay(mat : [[Int]]) {
+        let innerList = mat[0]
+        let m = mat.count
+        let n = innerList.count
+        var visited = Array(repeating: Array(repeating: false, count: n), count: m)
+        traverseMatrixInSpiralWay(mat: mat, row: 0, col: 0, visited: &visited)
+    }
 }
 
 class WordItem<Item> {

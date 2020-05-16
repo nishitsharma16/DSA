@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		181D1C4E2448DD01004E0E08 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181D1C4D2448DD01004E0E08 /* ArrayExtension.swift */; };
+		183179F8246DBF1E00C38603 /* BinaryTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183179F7246DBF1D00C38603 /* BinaryTree.swift */; };
 		1835A5BF246737EF00B2B0AF /* Algorithms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1835A5BE246737EF00B2B0AF /* Algorithms.swift */; };
 		1835A5C12467418E00B2B0AF /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1835A5C02467418E00B2B0AF /* Graph.swift */; };
 		1835A5C32467558B00B2B0AF /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1835A5C22467558B00B2B0AF /* Queue.swift */; };
@@ -46,6 +47,7 @@
 
 /* Begin PBXFileReference section */
 		181D1C4D2448DD01004E0E08 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
+		183179F7246DBF1D00C38603 /* BinaryTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryTree.swift; sourceTree = "<group>"; };
 		1835A5BE246737EF00B2B0AF /* Algorithms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Algorithms.swift; sourceTree = "<group>"; };
 		1835A5C02467418E00B2B0AF /* Graph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
 		1835A5C22467558B00B2B0AF /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				1835A5C22467558B00B2B0AF /* Queue.swift */,
 				1835A5C42467559700B2B0AF /* Stack.swift */,
 				1835A5C62469C2C300B2B0AF /* BST.swift */,
+				183179F7246DBF1D00C38603 /* BinaryTree.swift */,
 			);
 			path = DSA;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 				1835A5C72469C2C300B2B0AF /* BST.swift in Sources */,
 				181D1C4E2448DD01004E0E08 /* ArrayExtension.swift in Sources */,
 				1835A5C12467418E00B2B0AF /* Graph.swift in Sources */,
+				183179F8246DBF1E00C38603 /* BinaryTree.swift in Sources */,
 				18CC5949243A6A8000185D52 /* AppDelegate.swift in Sources */,
 				1835A5BF246737EF00B2B0AF /* Algorithms.swift in Sources */,
 				18CC597B243BB22E00185D52 /* PriorityQueue.swift in Sources */,

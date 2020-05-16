@@ -55,14 +55,71 @@ extension BST where ItemType == Int {
         }
     }
     
-//    func createMaxSumTreeSet2(root : BSTNode<ItemType>?) -> BSTNode<ItemType>? {
-//        
-//        if root == nil {
-//            return nil
-//        }
-//        else {
-//            var x = createMaxSumTreeSet2(root: root?.right)
-//            x?.value = 
-//        }
-//    }
+    func createBSTFromPreorder(preOrder : [Int]) -> BSTNode<ItemType>? {
+        if preOrder.isEmpty {
+            return nil
+        }
+        
+        let root = BSTNode<Int>(val: preOrder[0])
+        let stack = Stack<BSTNode<Int>>()
+        stack.push(val: root)
+        
+        var temp : BSTNode<Int>?
+        
+        for index in 1..<preOrder.count {
+            
+            let currentNode = BSTNode<Int>(val : preOrder[index])
+            
+            if let topVal = stack.top() {
+                while !stack.isEmpty && topVal.value < currentNode.value {
+                    temp = stack.pop()
+                }
+                
+                if let tempVal = temp {
+                    tempVal.right = currentNode
+                }
+                else {
+                    if let topVal = stack.top() {
+                        if topVal.value > currentNode.value {
+                            topVal.left = currentNode
+                        }
+                        else {
+                            topVal.right = currentNode
+                        }
+                    }
+                }
+                stack.push(val: currentNode)
+            }
+        }
+        
+        return root
+    }
+    
+    func storeInorder(root : inout BSTNode<ItemType>?, output : inout [Int]) {
+        if let rootVal = root {
+            storeInorder(root: &rootVal.left, output: &output)
+            output.append(rootVal.value)
+            storeInorder(root: &rootVal.right, output: &output)
+        }
+    }
+    
+    func putInOrderValues(root : inout BSTNode<ItemType>?, output : inout [Int], index : inout Int) {
+        if let rootVal = root {
+            putInOrderValues(root: &rootVal.left, output: &output, index: &index)
+            rootVal.value = output[index]
+            index += 1
+            putInOrderValues(root: &rootVal.right, output: &output, index: &index)
+        }
+    }
+    
+    func convertBinaryTreeToBST(root : inout BSTNode<ItemType>?) {
+        
+        var inorderValList = [Int]()
+        storeInorder(root: &root, output: &inorderValList)
+        
+        inorderValList = inorderValList.sorted()
+        
+        var index = 0
+        putInOrderValues(root: &root, output: &inorderValList, index: &index)
+    }
 }

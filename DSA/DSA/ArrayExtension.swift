@@ -772,6 +772,116 @@ extension Array where Element == Int {
             }
         }
     }
+    
+    // Max Sum of i.a[i] with all rotaions from 0 to n-1 in clockwise
+    func maxSum(list : [Int]) -> Int {
+        var maxSum = Int(INT16_MIN)
+        
+        if list.isEmpty {
+            return maxSum
+        }
+        
+        var sum = 0
+        var curr = 0
+        
+        for index in 0..<list.count {
+            let val = list[index]
+            sum += val
+            curr += index*val
+        }
+        
+        for index in 1..<list.count {
+            curr = curr - sum + (list.count - index)
+            if maxSum < curr {
+                maxSum = curr
+            }
+        }
+
+        return maxSum
+    }
+    
+    func findMaxInWindow(list : [Int], kVal : Int) -> [Int] {
+        var result = [Int]()
+        
+        if list.isEmpty {
+            return result
+        }
+        
+        var max = Int(INT16_MIN)
+        
+        var index = 0
+        
+        while index < kVal {
+            if max < list[index] {
+                max = list[index]
+                result.append(max)
+            }
+            index += 1
+        }
+                
+        for index in kVal..<list.count {
+            if max < list[index] {
+                max = list[index]
+            }
+            result.append(max)
+        }
+        
+        return result
+    }
+    
+    func kmallestElementsInRowAndColWiseSortedMat(mat : [[Int]], kVal : Int) -> [Int] {
+        var result = [Int]()
+        
+        if mat.isEmpty {
+            return result
+        }
+        
+        let innerList = mat[0]
+        let m = mat.count
+        let n = innerList.count
+        
+        var temp = [HeapItem]()
+        
+        for index in 0..<n {
+            temp.append(HeapItem(val: mat[0][index], x: 0, y: index))
+        }
+        
+        let heap = Heap<HeapItem>(type: .minHeap, list: temp)
+        
+        for _ in 0..<kVal {
+            if let min = heap.getRoot() {
+                result.append(min.val)
+                
+                if min.row + 1 < m && min.col < n {
+                    let nextItem = HeapItem(val: mat[min.row + 1][min.col], x: min.row + 1, y: min.col)
+                    heap.decreaseKey(index: 0, newValue: nextItem)
+                    heap.heapify(index: 0)
+                }
+            }
+        }
+        return result
+    }
+}
+
+class HeapItem {
+    let val : Int
+    let row : Int
+    let col : Int
+    init(val : Int, x : Int, y : Int) {
+        self.val = val
+        row = x
+        col = y
+    }
+}
+
+extension HeapItem : Comparable {
+    static func < (lhs: HeapItem, rhs: HeapItem) -> Bool {
+        return lhs.val < rhs.val
+    }
+    
+    static func == (lhs: HeapItem, rhs: HeapItem) -> Bool {
+        return lhs.val == rhs.val
+    }
 }
 
 class SumItem {

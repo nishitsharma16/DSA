@@ -10,7 +10,7 @@ import Foundation
 
 class Stack<Item> {
     
-    var list = [Item]()
+    private var list = [Item]()
     
     func push(val : Item) {
         list.append(val)
@@ -22,5 +22,9 @@ class Stack<Item> {
     
     func top() -> Item? {
        return list.last
+    }
+    
+    var isEmpty : Bool {
+       return list.isEmpty
     }
 }
