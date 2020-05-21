@@ -108,7 +108,7 @@ class Heap<Element : Comparable> {
     
     func insert(element : Element) {
         list.append(element)
-        convertToHeap()
+        buildheap()
     }
     
     func getRoot() -> Element? {
@@ -150,4 +150,9 @@ class Heap<Element : Comparable> {
         }
         return false
     }
+    
+    var isEmpty : Bool {
+        return list.isEmpty
+    }
+    
 }

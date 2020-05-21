@@ -156,9 +156,17 @@ extension String {
         let charList = [" ", ". ", "\n"]
         var finalList = [String]()
         
-        for val in list {
-            var str = ""
+        var str = ""
+        for index in 0..<list.count {
+            let val = list[index]
             if charList.contains(val) {
+                if !str.isEmpty {
+                    finalList.append(str.lowercased())
+                    str = ""
+                }
+            }
+            else if index == list.count - 1 {
+                str += val
                 if !str.isEmpty {
                     finalList.append(str.lowercased())
                     str = ""
@@ -177,9 +185,17 @@ extension String {
         let charList = [" ", ". ", "\n"]
         var finalList = [String]()
         
-        for val in list {
-            var str = ""
+        var str = ""
+        for index in 0..<list.count {
+            let val = list[index]
             if charList.contains(val) {
+                if !str.isEmpty {
+                    finalList.append(str)
+                    str = ""
+                }
+            }
+            else if index == list.count - 1 {
+                str += val
                 if !str.isEmpty {
                     finalList.append(str)
                     str = ""
@@ -538,6 +554,107 @@ extension String {
         
         return result
     }
+    
+    //Naive method
+    func searchStringPatterInGivenString(str : String, pat : String) -> Bool {
+        if str.isEmpty || pat.isEmpty {
+            return false
+        }
+        
+        let strLength = str.count
+        let patLength = pat.count
+        
+        if patLength > strLength {
+            return false
+        }
+        
+        for i in 0...(strLength - patLength) {
+            var j = 0
+            while j < patLength {
+                if str[i + j] != pat[j] {
+                    break
+                }
+                j += 1
+            }
+            if j == patLength {
+                return true
+            }
+        }
+        
+        return false
+    }
+    
+    // LPS: Longest proper prefix which is suffix as well of any patter pat[0..i] then lps[i] = max lenghth of porper perfix which is suffix as well i.e. for "AAA" prefixes are "", "A", "AA" but not includes pattern pat[0..i] itself. And suffies are "", "A", "AA", "AAA"
+    func lps(pat : String) -> [Int] {
+        var lps = [Int]()
+        if pat.isEmpty {
+            return lps
+        }
+        var length = 0
+        lps[0] = 0
+        var index = 1
+        while index < pat.count {
+            if pat[index] == pat[length] {
+                length += 1
+                lps[index] = length
+                index += 1
+            }
+            else {
+                if length != 0 {
+                    length = lps[length - 1]
+                }
+                else {
+                    if length == 0 {
+                        lps[index] = 0
+                        index += 1
+                    }
+                }
+            }
+        }
+        return lps
+    }
+    
+    func kmpAlgorithm(str : String, pat : String) -> Bool {
+        if str.isEmpty || pat.isEmpty {
+            return false
+        }
+        
+        let strLength = str.count
+        let patLength = pat.count
+        
+        if patLength > strLength {
+            return false
+        }
+        
+        let lpsVal = lps(pat: pat)
+        
+        var i = 0
+        var j = 0
+        
+        while i < strLength {
+            if str[i] == pat[j] {
+                i += 1
+                j += 1
+            }
+            
+            if j == patLength {
+                print("Match found")
+                j = lpsVal[j - 1]
+            }
+            else if i < strLength && pat[j] != str[i] {
+                if j > 0 {
+                    j = lpsVal[j - 1]
+                }
+                else {
+                    i += 1
+                }
+            }
+            
+        }
+        
+        
+        return false
+    }
 }
 
 extension WordItem : Comparable {
@@ -553,4 +670,10 @@ extension WordItem : Comparable {
 struct Constant {
     static let smallA2Z = "abcdefghijklmnopqrstuvwxyz"
     static let digits = "0123456789"
+}
+
+extension String {
+    subscript(offset : Int) -> Character {
+        return self[index(self.startIndex, offsetBy: offset)]
+    }
 }

@@ -282,6 +282,71 @@ class Algorithms {
         var visited = Array(repeating: Array(repeating: false, count: n), count: m)
         traverseMatrixInSpiralWay(mat: mat, row: 0, col: 0, visited: &visited)
     }
+    
+    // With Dikstra Algo without all directions
+    static func minCostPath(mat : [[Int]], result : inout Int) {
+        if !mat.isEmpty {
+            
+            let innerList = mat[0]
+            let m = mat.count
+            let n = innerList.count
+            var visited = Array(repeating: Array(repeating: false, count: n), count: m)
+            var dpMat = Array(repeating: Array(repeating: Int(INT_MAX), count: n), count: m)
+
+            var x = 0
+            var y = 0
+            
+            visited[x][y] = true
+            dpMat[x][y] = mat[x][y]
+            let heap = Heap<HeapItem>(type: .minHeap)
+            heap.insert(element: HeapItem(val: dpMat[x][y], x: x, y: y))
+            let dir = [(0, 1), (1, 0), (1, 1)]
+            while !heap.isEmpty {
+                if let val = heap.getRoot() {
+                    for item in dir {
+                        x = val.row + item.0
+                        y = val.col + item.1
+                        if x >= 0 && y >= 0 && x < m && y < n && !visited[x][y] {
+                            visited[x][y] = true
+                            dpMat[x][y] = min(dpMat[x][y], dpMat[val.row][val.col] + mat[x][y])
+                            heap.insert(element: HeapItem(val: dpMat[x][y], x: x, y: y))
+                        }
+                    }
+                }
+            }
+            result = dpMat[m][n]
+        }
+    }
+    
+    static func findNumberOfIslands(mat : inout [[Int]], result : inout Int) {
+        let innerList = mat[0]
+        let m = mat.count
+        let n = innerList.count
+
+        var visited = Array(repeating: Array(repeating: false, count: n), count: m)
+        
+        for i in 0..<m {
+            for j in 0..<n {
+                if mat[i][j] == 1 {
+                    result += 1
+                    markNeighboursNodeVisited(mat: &mat, visited: &visited, x: i, y: j, m: m, n: n)
+                }
+            }
+        }
+    }
+    
+    static func rotate(mat : inout [[Int]], visited : inout [[Bool]], clockWise : Bool, x : Int, y : Int, m : Int, n : Int) {
+        
+    }
+    
+    static func rotateMatrices(mat : inout [[Int]], clockWise : Bool) {
+        
+        let innerList = mat[0]
+        let m = mat.count
+        let n = innerList.count
+        var visited = Array(repeating: Array(repeating: false, count: n), count: m)
+        rotate(mat: &mat, visited: &visited, clockWise: clockWise, x: 0, y: 0, m: m, n: n)
+    }
 }
 
 class WordItem<Item> {

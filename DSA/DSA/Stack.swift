@@ -16,6 +16,7 @@ class Stack<Item> {
         list.append(val)
     }
     
+    @discardableResult
     func pop() -> Item {
        return list.removeLast()
     }
