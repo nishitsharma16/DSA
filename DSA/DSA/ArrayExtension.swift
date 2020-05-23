@@ -861,6 +861,23 @@ extension Array where Element == Int {
         }
         return result
     }
+    
+    func findTriplateWithGivenSum(list : [Int], sum : Int) -> Bool {
+        if list.isEmpty {
+            return false
+        }
+        var set = Set<Int>()
+        for i in 0..<list.count - 2 {
+            let currSum = sum - list[i]
+            for j in i+1..<list.count {
+                if set.contains(currSum - list[j]) {
+                    return true
+                }
+                set.insert(list[j])
+            }
+        }
+        return false
+    }
 }
 
 class HeapItem {

@@ -38,7 +38,7 @@ class Graph<ElementType : Hashable> {
         
         var map : [Node<ElementType> : Bool] = [:]
         
-        var queue = Queue<Node<ElementType>>()
+        let queue = Queue<Node<ElementType>>()
         
         map[node] = true
         
@@ -46,8 +46,9 @@ class Graph<ElementType : Hashable> {
         
         while !queue.isEmpty {
             
-            let top = queue.dQueue()
-            print("Value : \(top.value)")
+            let front = queue.dQueue()
+            print("Value : \(front.value)")
+            
             
             
         }
@@ -58,6 +59,8 @@ class Graph<ElementType : Hashable> {
     func dfs() {
         
     }
+    
+    
 }
 
 class GraphBuilder {

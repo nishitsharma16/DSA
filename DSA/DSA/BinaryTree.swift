@@ -17,6 +17,17 @@ class BTNode<Item> {
     }
 }
 
+class BTLevelNode<Item> {
+    var left : BTLevelNode<Item>?
+    var right : BTLevelNode<Item>?
+    var value : Item
+    var level = 0
+    init(val : Item) {
+        value = val
+    }
+}
+
+
 class BinaryTree {
     
     func minMaxHorizontalDistance(root : BTNode<Item<Int>>?, min : inout Int, max : inout Int, hd : inout Int) {
@@ -192,4 +203,35 @@ class BinaryTree {
             curr = top.right
         }
     }
+    
+    func numberOfNodesAtGivenLevel(root : BTLevelNode<Int>?, level : Int) -> [BTLevelNode<Int>]? {
+        if let rootVal = root {
+            var levelNodeList = [BTLevelNode<Int>]()
+            let queue = Queue<BTLevelNode<Int>>()
+            queue.enqueue(val: rootVal)
+            let l = 1
+            rootVal.level = l
+            while !queue.isEmpty {
+                
+                let val = queue.dQueue()
+                if val.level == level {
+                    levelNodeList.append(val)
+                }
+                
+                if let left = val.left {
+                    left.level = val.level + 1
+                    queue.enqueue(val: left)
+                }
+                
+                if let right = val.right {
+                    right.level = val.level + 1
+                    queue.enqueue(val: right)
+                }
+            }
+            return levelNodeList
+        }
+        return nil
+    }
+    
+    
 }

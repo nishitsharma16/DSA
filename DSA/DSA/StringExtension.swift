@@ -649,11 +649,14 @@ extension String {
                     i += 1
                 }
             }
-            
         }
-        
-        
         return false
+    }
+    
+    // Minimum operations to convert one string from another operations(insert, replace and remove)
+    func editDistanceToConvertOneStringToAnother(str : String, target : String) -> Int {
+        
+        return 0
     }
 }
 
