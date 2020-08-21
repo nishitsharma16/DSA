@@ -426,8 +426,8 @@ extension String {
         for length in 1...self.count {
             // Loop for substrings
             var start = self.startIndex
-            for index in 0...(self.count-length) {
-                let indexVal = self.index(start, offsetBy: index + length - 1)
+            for _ in 0...(self.count-length) {
+                let indexVal = self.index(start, offsetBy: length - 1)
                 let val = String(self[start...indexVal])
                 result.append(val)
                 start = self.index(after: start)
@@ -658,6 +658,34 @@ extension String {
         
         return 0
     }
+    
+    func checkStringIsPalindrome() -> Bool {
+        if self.isEmpty {
+            return false
+        }
+        
+        var leftIndex = self.startIndex
+        var rightIndex = self.index(before: self.endIndex) 
+        
+        while leftIndex < rightIndex {
+            let x = self[leftIndex]
+            let y = self[rightIndex]
+            
+            if x != y {
+                return false
+            }
+            
+            leftIndex = self.index(after: leftIndex)
+            rightIndex = self.index(before: rightIndex)
+        }
+        
+        return true
+    }
+    
+//    subscript(_ index : Int) -> Character {
+//        return self[self.index(self.startIndex, offsetBy: index)]
+//    }
+//
 }
 
 extension WordItem : Comparable {
@@ -676,7 +704,86 @@ struct Constant {
 }
 
 extension String {
-    subscript(offset : Int) -> Character {
+    subscript(_ offset : Int) -> Character {
         return self[index(self.startIndex, offsetBy: offset)]
     }
+    
+    subscript(_ startIndex : Int, _ endIndex : Int) -> String {
+        let startIndex = self.index(self.startIndex, offsetBy: startIndex)
+        let endIndex = self.index(self.startIndex, offsetBy: endIndex)
+        return String(self[startIndex...endIndex])
+    }
+    
+    func removeWhiteSpaceCharFromStartAndEnd() -> String {
+        if self.isEmpty {
+            return .empty
+        }
+        
+        let length = self.count
+        var firstNonSpaceIndex = 0
+        var lastNonSpaceIndex = 0
+
+        for index in 0..<length {
+            let val = String(self[index])
+            if val != .space {
+                firstNonSpaceIndex = index
+                break
+            }
+        }
+        
+        var counter = length - 1
+        while counter >= 0 {
+            let val = String(self[counter])
+            if val != .space {
+                lastNonSpaceIndex = counter
+                break
+            }
+            counter -= 1
+        }
+        
+        let start = self.startIndex
+        let firstIndex = self.index(start, offsetBy: firstNonSpaceIndex)
+        let lastIndex = self.index(start, offsetBy: lastNonSpaceIndex)
+        let finalVal = self[firstIndex...lastIndex]
+        return String(finalVal)
+    }
+    
+    func isNegative() -> Bool? {
+        if self.isEmpty {
+            return .none
+        }
+        if let val = self.first {
+            let x = String(val)
+            if x == "-" {
+                return true
+            }
+        }
+        return false
+    }
+}
+
+extension String {
+    static var empty: String {
+        ""
+    }
+    
+    static var space: String {
+        " "
+    }
+}
+
+extension Character {
+    var isDigit: Bool {
+        let val = String(self)
+        if let _ = Int(val) {
+            return true
+        }
+        return false
+    }
+    
+    var intVal: Int? {
+        let val = String(self)
+        return Int(val)
+    }
+    
 }
