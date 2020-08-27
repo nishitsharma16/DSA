@@ -760,6 +760,15 @@ extension String {
         }
         return false
     }
+    
+    func sort() -> String {
+        let charList: [Character] = self.sorted()
+        var val = ""
+        for char in charList {
+            val += String(char)
+        }
+        return val
+    }
 }
 
 extension String {
