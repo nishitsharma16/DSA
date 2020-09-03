@@ -15,6 +15,7 @@ func swapValues<T>(_ a: inout T, _ b: inout T) {
 }
 
 
+// Medium
 class Problems {
     
     static func addTwoNumbers(list1 : ListNode<Int>?, list2 : ListNode<Int>?) -> ListNode<Int>? {
@@ -1149,6 +1150,428 @@ class Problems {
             return result
         }
     }
+    
+    // Pending
+    static func getSpiralMatrix(mat: [[Int]]) -> [Int] {
+        if mat.isEmpty {
+            return []
+        }
+        
+        let length = mat.count
+        var visited = Array(repeating: Array(repeating: false, count: mat[0].count), count: length)
+        var result = [Int]()
+        let start = 0
+        let end = length - 1
+        var x = start
+        var y = start
+        while true {
+            
+            if (x >= 0 && y >= 0) && (y + 1 <= end && x < end && visited[x][y + 1]) && (y < end && x + 1 <= end && visited[x + 1][y]) {
+                break
+            }
+            
+            if !visited[x][y] {
+                visited[x][y] = true
+                result.append(mat[x][y])
+            }
+            
+            if x >= 0 && y >= 0 {
+                if x == start && y < end {
+                    if !visited[x][y + 1] {
+                        y += 1
+                    }
+                    else if !visited[x + 1][y] {
+                        x += 1
+                    }
+                }
+                else if y == end && x < end {
+                    if !visited[x + 1][y] {
+                        x += 1
+                    }
+                    else if !visited[x][y - 1] {
+                        y -= 1
+                    }
+                }
+                else if x == end && y > start  {
+                    if !visited[x][y - 1] {
+                        y -= 1
+                    }
+                    else if !visited[x - 1][y] {
+                        x -= 1
+                    }
+                }
+                else if y == start && x > start {
+                    if !visited[x - 1][y] {
+                        x -= 1
+                    }
+                    else if !visited[x][y + 1] {
+                        y += 1
+                    }
+                }
+                else {
+                    
+                }
+            }
+        }
+        
+        return result
+    }
+    
+    static func jumpGame(steps: [Int]) -> Bool {
+        if steps.isEmpty {
+            return false
+        }
+        
+        let length = steps.count
+        if length == 1 {
+            return !(steps[0] > 0)
+        }
+        
+        var visited = Array<Bool>(repeating: false, count: length)
+        let queue = Queue<Int>()
+        queue.enqueue(val: 0)
+        visited[0] = true
+        
+        while !queue.isEmpty {
+            let front = queue.dQueue()
+            let val = steps[front]
+            if val > 0 {
+                let start = front + 1
+                let end = front + val
+                for index in start...end {
+                    if index == length - 1 {
+                        return true
+                    }
+                    else {
+                        if steps[index] == 0 {
+                            return false
+                        }
+                        else {
+                            if !visited[index] {
+                                visited[index] = true
+                                queue.enqueue(val: index)
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                return false
+            }
+        }
+        return false
+    }
+}
+
+// Easy
+extension Problems {
+    
+    static func longestCommonPrefixHelper(small: String, str: String) -> String {
+        var result = ""
+        for index in 0..<small.count {
+            if small[index] != str[index] {
+                break
+            }
+            else {
+                result += String(small[index])
+            }
+        }
+        return result
+    }
+    
+    static func longestCommonPrefix(list: [String]) -> String {
+        if list.isEmpty {
+            return ""
+        }
+        
+        if list.count == 1 {
+            return list[0]
+        }
+        
+        var result = ""
+        let sortedList = list.sorted { (x, y) -> Bool in
+            x.count < y.count
+        }
+        
+        result = sortedList[0]
+        for index in 1..<sortedList.count {
+            result = longestCommonPrefixHelper(small: result , str: sortedList[index])
+        }
+        return result
+    }
+    
+    static func validateParantheses(str: String) -> Bool {
+        if str.isEmpty {
+            return false
+        }
+        
+        let length = str.count
+        if length == 1 {
+            return false
+        }
+        
+        let stack = Stack<Character>()
+        let openingBraces = ["(", "{", "["]
+        let closingBraces = [")", "}", "]"]
+
+        for index in 0..<length {
+            let item = str[index]
+            let itemStr = String(item)
+            if openingBraces.contains(itemStr) {
+                stack.push(val: item)
+            }
+            else if closingBraces.contains(itemStr) {
+                if !stack.isEmpty {
+                    if let top = stack.top() {
+                        switch top {
+                        case "[":
+                            if !(itemStr == "]") {
+                                return false
+                            }
+                            else {
+                                stack.pop()
+                            }
+                        case "(":
+                            if !(itemStr == ")") {
+                                return false
+                            }
+                            else {
+                                stack.pop()
+                            }
+                        case "{":
+                            if !(itemStr == "}") {
+                                return false
+                            }
+                            else {
+                                stack.pop()
+                            }
+                        default:
+                            return false
+                        }
+                    }
+                }
+                else {
+                    stack.push(val: item)
+                }
+            }
+        }
+        return stack.isEmpty
+    }
+    
+    static func removeElement(list: inout [Int], val: Int) -> Int {
+        if list.isEmpty {
+            return 0
+        }
+        
+        var index = 0
+        while index < list.count {
+            if list[index] == val {
+                list.remove(at: index)
+            }
+            else {
+                index += 1
+            }
+        }
+        return list.count
+    }
+    
+    // This fails for AAAAAAAAAAB, AAAAB so use KMP to achieve in O(n)
+    static func strOfStr(str: String, niddle: String) -> Int {
+        if str.isEmpty && niddle.isEmpty {
+            return 0
+        }
+        
+        let strLength = str.count
+        let niddleLength = niddle.count
+        
+        if niddleLength > strLength {
+            return -1
+        }
+        
+        var index = -1
+
+        for i in 0...(strLength - niddleLength) {
+            var j = 0
+            while j < niddleLength {
+                if str[i + j] != niddle[j] {
+                    break
+                }
+                j += 1
+            }
+            if j == niddleLength {
+                index = i
+            }
+        }
+        return index
+    }
+    
+    static func calculateLSP(str: String) -> [Int] {
+        if str.isEmpty {
+            return []
+        }
+        
+        let length = str.count
+        var result = [Int](repeating: 0, count: length)
+        var i = 1
+        var l = 0
+        result[0] = 0
+        
+        while i < length {
+            if str[i] == str[l] {
+                l += 1
+                result[i] = l
+                i += 1
+            }
+            else {
+                if l > 0 {
+                    l = result[l - 1]
+                }
+                else {
+                    result[i] = 0
+                    i += 1
+                }
+            }
+        }
+        return result
+    }
+    
+    static func strOfStrV2(str: String, niddle: String) -> [Int] {
+        if str.isEmpty && niddle.isEmpty {
+            return []
+        }
+        
+        let strLength = str.count
+        let niddleLength = niddle.count
+        
+        if niddleLength > strLength {
+            return []
+        }
+        
+        var positions = [Int]()
+        let lps = calculateLSP(str: niddle)
+        
+        var i = 0
+        var j = 0
+        while i < strLength {
+            if j < niddleLength {
+                if str[i] == niddle[j] {
+                    j += 1
+                    i += 1
+                }
+                if j == niddleLength {
+                    positions.append(i - j)
+                    j = lps[j - 1]
+                }
+                else {
+                    if str[i] != niddle[j] {
+                        if j != 0 {
+                            j = lps[j - 1]
+                        }
+                        else {
+                            i += 1
+                        }
+                    }
+                }
+            }
+        }
+        
+        return positions
+    }
+    
+    static func strOfStrV3(str: String, niddle: String) -> Int {
+        if str.isEmpty && niddle.isEmpty {
+            return 0
+        }
+        else if niddle.isEmpty {
+            return 0
+        }
+        
+        let strLength = str.count
+        let niddleLength = niddle.count
+        
+        if niddleLength > strLength {
+            return -1
+        }
+        
+        let lps = calculateLSP(str: niddle)
+        
+        var i = 0
+        var j = 0
+        while i < strLength {
+            if j < niddleLength {
+                if str[i] == niddle[j] {
+                    j += 1
+                    i += 1
+                }
+                if j == niddleLength {
+                    return (i - j)
+                    // As we need to find the first position itself so commenting this
+//                    j = lps[j - 1]
+                }
+                else {
+                    if i >= 0  && j >= 0 && i < strLength && j < niddleLength && str[i] != niddle[j] {
+                        if j != 0 {
+                            j = lps[j - 1]
+                        }
+                        else {
+                            i += 1
+                        }
+                    }
+                }
+            }
+        }
+        return -1
+    }
+    
+    static func searchInsert(list: [Int], val: Int) -> Int {
+        if list.isEmpty {
+            return -1
+        }
+        
+        let length = list.count
+        let position = binarySearchGivePosition(list: list, start: 0, end: length - 1, element: val)
+        if position == -1 {
+            if let last = list.last, last < val {
+                return length
+            }
+            else if list[0] > val {
+                return 0
+            }
+            else {
+                for index in 0..<length {
+                    if list[index] > val {
+                        return index
+                    }
+                }
+            }
+        }
+        return position
+    }
+    
+    static func maxSumSubArray(list: [Int]) -> Int {
+        if list.isEmpty {
+            return 0
+        }
+        
+        var currSum = 0
+        var maxSum = Int.min
+        
+        for item in list {
+            currSum += item
+            
+            if maxSum < currSum {
+                maxSum = currSum
+            }
+            
+            if currSum < 0 {
+                currSum = 0
+            }
+        }
+        
+        return maxSum
+    }
+    
+    
 }
 
 

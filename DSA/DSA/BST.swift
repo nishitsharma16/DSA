@@ -122,4 +122,55 @@ extension BST where ItemType == Int {
         var index = 0
         putInOrderValues(root: &root, output: &inorderValList, index: &index)
     }
+    
+    func delete(root: BSTNode<ItemType>?, key: Int) -> BSTNode<ItemType>? {
+        if root == nil {
+            return root
+        }
+        
+        // Go let or right to search
+        if let x = root?.value, x < key {
+            root?.left = delete(root: root?.left, key: key)
+        }
+        else if let x = root?.value, x > key {
+            root?.right = delete(root: root?.right, key: key)
+        }
+        else {
+            // Root Found
+            var temp: BSTNode<ItemType>?
+            if root?.left == nil {
+                temp = root?.right
+                root?.value = temp?.value ?? 0
+                temp = nil
+            }
+            else if root?.right == nil {
+                temp = root?.left
+                root?.value = temp?.value ?? 0
+                temp = nil
+            }
+            
+            let succParent: BSTNode<ItemType>? = root
+            var succ: BSTNode<ItemType>? = root?.right
+            
+            while succ?.left != nil {
+                succ = succ?.left
+            }
+            
+            if succParent === root {
+                succParent?.right = succ?.right
+            }
+            else {
+                succParent?.left = succ?.right
+            }
+            
+            succ = nil
+        }
+        return root
+    }
+}
+
+extension BSTNode: Equatable where Item : Equatable {
+    static func == (lhs: BSTNode<Item>, rhs: BSTNode<Item>) -> Bool {
+        return lhs.value == rhs.value
+    }
 }
