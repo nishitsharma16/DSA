@@ -17,9 +17,9 @@ class BSTNode<Item> {
     }
 }
 
-class BST<ItemType> {
+class BST {
     
-    func inOrder(root : BSTNode<ItemType>?) {
+    func inOrder(root : BSTNode<Int>?) {
         if let rootVal = root {
             inOrder(root: rootVal.left)
             print("Val : \(rootVal.value)")
@@ -27,7 +27,7 @@ class BST<ItemType> {
         }
     }
     
-    func preOrder(root : BSTNode<ItemType>?) {
+    func preOrder(root : BSTNode<Int>?) {
         if let rootVal = root {
             print("Val : \(rootVal.value)")
             inOrder(root: rootVal.left)
@@ -35,7 +35,7 @@ class BST<ItemType> {
         }
     }
     
-    func postOrder(root : BSTNode<ItemType>?) {
+    func postOrder(root : BSTNode<Int>?) {
         if let rootVal = root {
             inOrder(root: rootVal.left)
             inOrder(root: rootVal.right)
@@ -44,9 +44,9 @@ class BST<ItemType> {
     }
 }
 
-extension BST where ItemType == Int {
+extension BST {
     
-    func createMaxSumTreeSet1(root : BSTNode<ItemType>?, sum : inout Int) {
+    func createMaxSumTreeSet1(root : BSTNode<Int>?, sum : inout Int) {
         if let rootVal = root {
             createMaxSumTreeSet1(root: rootVal.right, sum: &sum)
             sum = sum + rootVal.value
@@ -55,7 +55,7 @@ extension BST where ItemType == Int {
         }
     }
     
-    func createBSTFromPreorder(preOrder : [Int]) -> BSTNode<ItemType>? {
+    func createBSTFromPreorder(preOrder : [Int]) -> BSTNode<Int>? {
         if preOrder.isEmpty {
             return nil
         }
@@ -95,7 +95,7 @@ extension BST where ItemType == Int {
         return root
     }
     
-    func storeInorder(root : inout BSTNode<ItemType>?, output : inout [Int]) {
+    func storeInorder(root : inout BSTNode<Int>?, output : inout [Int]) {
         if let rootVal = root {
             storeInorder(root: &rootVal.left, output: &output)
             output.append(rootVal.value)
@@ -103,7 +103,7 @@ extension BST where ItemType == Int {
         }
     }
     
-    func putInOrderValues(root : inout BSTNode<ItemType>?, output : inout [Int], index : inout Int) {
+    func putInOrderValues(root : inout BSTNode<Int>?, output : inout [Int], index : inout Int) {
         if let rootVal = root {
             putInOrderValues(root: &rootVal.left, output: &output, index: &index)
             rootVal.value = output[index]
@@ -112,7 +112,7 @@ extension BST where ItemType == Int {
         }
     }
     
-    func convertBinaryTreeToBST(root : inout BSTNode<ItemType>?) {
+    func convertBinaryTreeToBST(root : inout BSTNode<Int>?) {
         
         var inorderValList = [Int]()
         storeInorder(root: &root, output: &inorderValList)
@@ -123,7 +123,7 @@ extension BST where ItemType == Int {
         putInOrderValues(root: &root, output: &inorderValList, index: &index)
     }
     
-    func delete(root: BSTNode<ItemType>?, key: Int) -> BSTNode<ItemType>? {
+    func delete(root: BSTNode<Int>?, key: Int) -> BSTNode<Int>? {
         if root == nil {
             return root
         }
@@ -137,7 +137,7 @@ extension BST where ItemType == Int {
         }
         else {
             // Root Found
-            var temp: BSTNode<ItemType>?
+            var temp: BSTNode<Int>?
             if root?.left == nil {
                 temp = root?.right
                 root?.value = temp?.value ?? 0
@@ -149,8 +149,8 @@ extension BST where ItemType == Int {
                 temp = nil
             }
             
-            let succParent: BSTNode<ItemType>? = root
-            var succ: BSTNode<ItemType>? = root?.right
+            let succParent: BSTNode<Int>? = root
+            var succ: BSTNode<Int>? = root?.right
             
             while succ?.left != nil {
                 succ = succ?.left
@@ -167,6 +167,144 @@ extension BST where ItemType == Int {
         }
         return root
     }
+    
+    func levelOrderOfTree(root: BSTNode<Int>?) -> [Int] {
+        if let rootVal = root {
+            var result = [Int]()
+            let queue = Queue<BSTNode<Int>>()
+            queue.enqueue(val: rootVal)
+            result.append(rootVal.value)
+            
+            while !queue.isEmpty {
+                let front = queue.dQueue()
+                if let left = front.left {
+                    queue.enqueue(val: left)
+                    result.append(left.value)
+                }
+                if let right = front.right {
+                    queue.enqueue(val: right)
+                    result.append(right.value)
+                }
+            }
+            
+            return result
+        }
+        return []
+    }
+    
+    func heightOfBinayTree(_ root: BSTNode<Int>?) -> Int {
+        if let rootVal = root {
+            let leftHeight = heightOfBinayTree(rootVal.left)
+            let rightheight = heightOfBinayTree(rootVal.right)
+            return 1 + max(leftHeight, rightheight)
+        }
+        return 0
+    }
+    
+    func getNodeValuesLevelWise(_ root: BSTNode<Int>?, level: Int, result: inout [[Int]]) {
+        if let rootVal = root {
+            var list = result[level]
+            list.append(rootVal.value)
+            result[level] = list
+            getNodeValuesLevelWise(rootVal.left, level: level + 1, result: &result)
+            getNodeValuesLevelWise(rootVal.right, level: level + 1, result: &result)
+        }
+    }
+    
+    func levelOrder(_ root: BSTNode<Int>?) -> [[Int]] {
+        let height = heightOfBinayTree(root)
+        var result = Array(repeating: Array<Int>(), count: height)
+        getNodeValuesLevelWise(root, level: 0, result: &result)
+        return result
+    }
+    
+    func constructBSTFromLevelOrderHelper(root: inout BSTNode<Int>?, data: Int) -> BSTNode<Int>? {
+        if root == nil {
+            root = BSTNode<Int>(val: data)
+            return root
+        }
+        
+        if let x = root?.value, data < x {
+            var left = root?.left
+            root?.left = constructBSTFromLevelOrderHelper(root: &left, data: data)
+        }
+        else {
+            var right = root?.right
+            root?.right = constructBSTFromLevelOrderHelper(root: &right, data: data)
+        }
+        
+        return root
+    }
+    
+    func constructBSTFromLevelOrder(levelOrder: [Int]) -> BSTNode<Int>? {
+        if levelOrder.isEmpty {
+            return nil
+        }
+        
+        var root: BSTNode<Int>?
+        for item in levelOrder {
+            root = constructBSTFromLevelOrderHelper(root: &root, data: item)
+        }
+        
+        return root
+    }
+    
+    //Pending
+    func reverseThePathInBSTHelper(root: BSTNode<Int>?, key: Int, map: inout [Int: Int], level: Int, index: inout Int) -> BSTNode<Int>? {
+        if root != nil {
+            if let val = root?.value {
+                map[level] = val
+                if val == key {
+                    if let savedVal = map[index] {
+                        root?.value = savedVal
+                    }
+                    index += 1
+                    return root
+                }
+                else if key < val {
+                    root?.left = reverseThePathInBSTHelper(root: root?.left, key: key, map: &map, level: level + 1, index: &index)
+                }
+                else {
+                    root?.right = reverseThePathInBSTHelper(root: root?.right, key: key, map: &map, level: level + 1, index: &index)
+                }
+            }
+            if root?.left != nil || root?.right != nil {
+                if let savedVal = map[index] {
+                    root?.value = savedVal
+                }
+                index += 1
+                return root?.left != nil ? root?.left : root?.right
+            }
+        }
+        return nil
+    }
+    
+    func reverseThePathInBST(root: BSTNode<Int>?, key: Int) -> BSTNode<Int>? {
+        var map = [Int: Int]()
+        var index = 0
+        let result = reverseThePathInBSTHelper(root: root, key: key, map: &map, level: 0, index: &index)
+        return result
+    }
+    
+    func createBalancedBSTFromSortedArrayHelper(list: [Int], start: Int, end: Int) -> BSTNode<Int>? {
+        if start > end {
+            return nil
+        }
+        
+        let mid = (start + end)/2
+        let root = BSTNode<Int>(val: list[mid])
+        
+        root.left = createBalancedBSTFromSortedArrayHelper(list: list, start: start, end: mid - 1)
+        root.right = createBalancedBSTFromSortedArrayHelper(list: list, start: mid + 1, end: end)
+        
+        return root
+    }
+    
+    func createBalancedBSTFromSortedArray(list: [Int]) -> BSTNode<Int>? {
+        let result = createBalancedBSTFromSortedArrayHelper(list: list, start: 0, end: list.count - 1)
+        return result
+    }
+    
 }
 
 extension BSTNode: Equatable where Item : Equatable {

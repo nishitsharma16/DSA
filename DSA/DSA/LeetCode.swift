@@ -724,7 +724,10 @@ class Problems {
             return -1
         }
         let mid = (start + end)/2
-        if list[mid] == item && list[mid - 1] < list[mid] {
+        if list[mid] == item && mid == 0 {
+            return mid
+        }
+        else if list[mid] == item && list[mid - 1] < list[mid] {
             return mid
         }
         else if item > list[mid] {
@@ -740,14 +743,17 @@ class Problems {
             return -1
         }
         let mid = (start + end)/2
-        if list[mid] == item && list[mid] < list[mid + 1] {
+        if list[mid] == item && mid == list.count - 1 {
+            return mid
+        }
+        else if list[mid] == item && list[mid] < list[mid + 1] {
             return mid
         }
         else if item > list[mid] {
-            return findFirstPosition(list: list, item: item, start: mid + 1, end: end)
+            return findLastPosition(list: list, item: item, start: mid + 1, end: end)
         }
         else {
-            return findFirstPosition(list: list, item: item, start: start, end: mid - 1)
+            return findLastPosition(list: list, item: item, start: start, end: mid - 1)
         }
     }
     
@@ -759,9 +765,18 @@ class Problems {
         let length = list.count
         let start = 0
         let end = length - 1
+        if length == 1 {
+            if list[0] != item {
+                return (-1, -1)
+            }
+            return (0, 0)
+        }
         
         let firstPosition = findFirstPosition(list: list, item: item, start: start, end: end)
-        let lastPosition = findLastPosition(list: list, item: item, start: start, end: end)
+        if list[end] == item {
+            return (firstPosition, end)
+        }
+        let lastPosition = findLastPosition(list: list, item: item, start: firstPosition, end: end)
         
         return (firstPosition, lastPosition)
     }
@@ -825,6 +840,27 @@ class Problems {
         }
         
         return result
+    }
+    
+    static func getDuplicateCount(list: inout [Int]) -> Int {
+        if list.isEmpty {
+            return 0
+        }
+        
+        var counter = 0
+        list.sort()
+        var index = 0
+        while index < list.count - 1 {
+            if list[index] == list[index + 1] {
+                list.remove(at: index)
+                counter += 1
+            }
+            else {
+                index += 1
+            }
+        }
+        
+        return counter
     }
     
     static func removeDuplicates(list: inout [Int]) {
@@ -1570,10 +1606,446 @@ extension Problems {
         
         return maxSum
     }
-    
-    
 }
 
+struct ItemValue {
+    let val: Int
+    let depth: Int
+}
+
+
+// This is the interface that allows for creating nested lists.
+// You should not implement it, or speculate about its implementation
+class NestedInteger {
+// Return true if this NestedInteger holds a single integer, rather than a nested list.
+    public func isInteger() -> Bool {
+        return false
+    }
+// Return the single integer that this NestedInteger holds, if it holds a single integer
+// The result is undefined if this NestedInteger holds a nested list
+    public func getInteger() -> Int {
+        return 0
+    }
+// Set this NestedInteger to hold a single integer.
+    public func setInteger(value: Int) {
+        
+    }
+// Set this NestedInteger to hold a nested list and adds a nested integer to it.
+    public func add(elem: NestedInteger) {
+        
+    }
+// Return the nested list that this NestedInteger holds, if it holds a nested list
+// The result is undefined if this NestedInteger holds a single integer
+    public func getList() -> [NestedInteger] {
+        return []
+    }
+}
+
+// LinkedIn
+extension Problems {
+    
+    static func hasOneLetterDifference(source: String, dest: String) -> Bool {
+        if source.isEmpty || dest.isEmpty {
+            return false
+        }
+        else if source.count != dest.count {
+            return false
+        }
+        
+        var counter = 0
+        for i in 0..<source.count {
+            let x = source[i]
+            let y = dest[i]
+            if x != y {
+                counter += 1
+            }
+        }
+        return counter == 1
+    }
+    
+    static func wordLadder(list: [String], source: String, dest: String) -> Int {
+        if list.isEmpty {
+            return 0
+        }
+        
+        if !list.contains(dest) {
+            return 0
+        }
+        
+        var items = list
+        items.insert(source, at: 0)
+        let length = items.count
+        var sourceVal = source
+        var visited = Array(repeating: false, count: length)
+        let queue = Queue<String>()
+        var map = [String: [String]]()
+        for i in 1..<length {
+            let item = items[i]
+            var x = ""
+            if hasOneLetterDifference(source: sourceVal, dest: dest) {
+                x = dest
+            }
+            else if hasOneLetterDifference(source: sourceVal, dest: item) {
+                x = item
+            }
+            
+            if !x.isEmpty {
+                if var listVal = map[sourceVal] {
+                    listVal.append(x)
+                    map[sourceVal] = listVal
+                }
+                else {
+                    map[sourceVal] = [x]
+                }
+                sourceVal = x
+                if x == dest {
+                    break
+                }
+            }
+        }
+        
+        queue.enqueue(val: items[0])
+        visited[0] = true
+        var counter = 1
+        while !queue.isEmpty {
+            let front = queue.dQueue()
+            if let listVal = map[front] {
+                for i in 0..<listVal.count {
+                    let val = listVal[i]
+                    if val == dest {
+                        counter += 1
+                        return counter
+                    }
+                    if let index = items.firstIndex(of: val), !visited[index] {
+                        visited[index] = true
+                        queue.enqueue(val: val)
+                        counter += 1
+                    }
+                }
+            }
+        }
+        
+        return counter
+    }
+    
+    static func canPlaceFlowers(list: [Int], n: Int) -> Bool {
+        if list.isEmpty {
+            return false
+        }
+        
+        var listVal = list
+        let length = listVal.count
+        if length < n {
+            return false
+        }
+    
+        if length == 1 {
+            if listVal[0] == 1 && n == 0 {
+                return false
+            }
+            return listVal[0] == 1 ? false : true
+        }
+        
+        var counter = 0
+        for index in 0..<length {
+            if index == 0 && listVal[index] == 0 && listVal[index + 1] == 0 {
+                counter += 1
+                listVal[index] = 1
+            }
+            else if index == length - 1 && listVal[index] == 0 && listVal[index - 1] == 0 {
+                counter += 1
+                listVal[index] = 1
+            }
+            else {
+                if (index - 1 >= 0 && index + 1 < length) && (listVal[index] == 0 && listVal[index - 1] == 0 && listVal[index + 1] == 0) {
+                    counter += 1
+                    listVal[index] = 1
+                }
+            }
+        }
+        return counter >= n
+    }
+    
+    static func depthSumInverse(_ nestedList: [NestedInteger]) -> Int {
+        let maxDepth = findMaxDepth(nestedList)
+        let weightedSum = getWeightedSum(nestedList, maxDepth)
+        return weightedSum
+    }
+    
+    private static func findMaxDepth(_ nestedList: [NestedInteger]) -> Int {
+        var currentMaxDepth = 0
+        for nestedInt in nestedList {
+            if nestedInt.isInteger() {
+                currentMaxDepth = max(currentMaxDepth, 1)
+            } else {
+                let currentDepth = findMaxDepth(nestedInt.getList())
+                currentMaxDepth = max(currentMaxDepth, currentDepth + 1)
+            }
+        }
+        return currentMaxDepth
+    }
+    
+    private static func getWeightedSum(_ nestedList: [NestedInteger], _ depth: Int) -> Int {
+        var currentSum = 0
+        for nestedInt in nestedList {
+            if nestedInt.isInteger() {
+                currentSum += nestedInt.getInteger() * depth
+            } else {
+                currentSum += getWeightedSum(nestedInt.getList(), depth - 1)
+            }
+        }
+        return currentSum
+    }
+    
+    static func depthSum(list: [Any]) -> Int {
+        return nestedListWeight(list: list, depth: 1)
+    }
+    
+    static func nestedListWeight(list: [Any], depth: Int) -> Int {
+        if list.isEmpty {
+            return 0
+        }
+        
+        var result = 0
+        for item in list {
+            if let val = item as? Int {
+                result += val*depth
+            }
+            else if let val = item as? [Any] {
+                result += nestedListWeight(list: val, depth: depth + 1)
+            }
+        }
+        return result
+    }
+    
+    static func evaluateReversePolish(list: [String]) -> Int {
+        if list.isEmpty {
+            return 0
+        }
+        
+        let operators = ["+", "-", "*", "/"]
+        
+        let stack = Stack<Int>()
+        for item in list {
+            if let x = Int(item) {
+                stack.push(val: x)
+            }
+            else {
+                if operators.contains(item) {
+                    let first = stack.pop()
+                    let second = stack.pop()
+                    switch item {
+                    case "+":
+                        stack.push(val: first + second)
+                    case "-":
+                        stack.push(val: second - first)
+                    case "*":
+                        stack.push(val: first * second)
+                    case "/":
+                        stack.push(val: second / first)
+                    default:
+                        print("None")
+                    }
+                }
+            }
+        }
+        return !stack.isEmpty ? stack.pop() : -1
+    }
+    
+    // Nice: DP
+    static func maxProductSubArray(list: [Int]) -> Int {
+        if list.isEmpty {
+            return 0
+        }
+        
+        let length = list.count
+        var maxSoFar = list[0]
+        var minSoFar = list[0]
+        var maxProd = maxSoFar
+
+        for i in 1..<length {
+            let curr = list[i]
+            let temp = max(curr, max(maxSoFar * curr, minSoFar * curr))
+            minSoFar = min(curr, min(maxSoFar * curr, minSoFar * curr))
+            maxSoFar = temp
+            maxProd = max(maxSoFar, maxProd)
+        }
+        
+        return maxProd
+    }
+    
+    static func shortestWordDistance(list: [String], source: String, dest: String) -> Int {
+        if list.isEmpty {
+            return 0
+        }
+        
+        let length = list.count
+        if length == 1 {
+            return 0
+        }
+        
+        if length == 2 && list.contains(source) && list.contains(dest) {
+            return 1
+        }
+        
+        var start = -1
+        var end = -1
+        var dist = 0
+        var ans = Int.max
+        
+        if list.contains(source) {
+            for i in 0..<length {
+                let val = list[i]
+                if val == source {
+                    if end != -1 {
+                        dist = abs(i - end)
+                        ans = min(dist, ans)
+                    }
+                    start = i
+                }
+                if val == dest {
+                    if start != -1 {
+                        dist = abs(i - start)
+                        ans = min(dist, ans)
+                    }
+                    end = i
+                }
+            }
+        }
+        return ans
+    }
+    
+    static func findSubSets(list: [Int], subset: inout Set<Int>, index: Int, result: inout Set<Set<Int>>) {
+        result.insert(subset)
+        for i in index..<list.count {
+            subset.insert(list[i])
+            findSubSets(list: list, subset: &subset, index: index + 1, result: &result)
+            subset.remove(list[i])
+        }
+    }
+    
+    static func findAllSubSets(list: [Int], numbreOfSets: Int) -> (Set<Set<Int>>, hasSetsOfEqualSum: Bool)? {
+        if list.isEmpty {
+            return nil
+        }
+        
+        var subset = Set<Int>()
+        var result = Set<Set<Int>>()
+        
+        findSubSets(list: list, subset: &subset, index: 0, result: &result)
+        
+        var temp = [Int]()
+        for item in result {
+            var sum = 0
+            for val in item {
+                sum += val
+            }
+            temp.append(sum)
+        }
+        
+        let count = getDuplicateCount(list: &temp)
+        
+        return (result, numbreOfSets == count)
+    }
+    
+    static func detectCycleInUndirectedGraph(currentNode: Int, adjencyList: [Int: [Int]], visited: inout [Bool], parent: Int) -> Bool {
+        visited[currentNode] = true
+        
+        if let list = adjencyList[currentNode] {
+            for item in list {
+                if !visited[item] {
+                    if detectCycleInUndirectedGraph(currentNode: item, adjencyList: adjencyList, visited: &visited, parent: currentNode) {
+                        return true
+                    }
+                }
+                else if item != parent {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    
+    static func validGraphTree(edges: [[Int]], n: Int) -> Bool {
+        
+        var adjencyMat = [Int: [Int]]()
+        for item in edges {
+            if var list = adjencyMat[item[0]] {
+                list.append(item[1])
+                adjencyMat[item[0]] = list
+            }
+            else {
+                adjencyMat[item[0]] = [item[1]]
+            }
+        }
+        
+        var visited = Array<Bool>(repeating: false, count: n)
+        
+        if detectCycleInUndirectedGraph(currentNode: 0, adjencyList: adjencyMat, visited: &visited, parent: -1) {
+            return false
+        }
+        
+        for item in visited {
+            if !item {
+                return false
+            }
+        }
+        
+        return true
+    }
+    
+    static func accountMerge(accounts: [[String]]) -> [[String]] {
+        if accounts.isEmpty {
+            return []
+        }
+        
+        var emailSet = Set<String>()
+        let accList = accounts.map { Account(list: $0) }
+        let length = accounts.count
+        var result = [[String]]()
+        
+        for i in 0..<length - 1 {
+            let x = accList[i]
+            for j in i + 1..<length {
+                let y = accList[j]
+                var vals = [String]()
+                var emails = [String]()
+                let common = x.emails.intersection(y.emails)
+                if !common.isEmpty && common.count == 1 {
+                    vals.append(x.name)
+                    let union = x.emails.union(y.emails)
+                    vals.append(contentsOf: union)
+                    emails.append(contentsOf: union)
+                }
+                else {
+                    vals.append(y.name)
+                    vals.append(contentsOf: y.emails)
+                    emails.append(contentsOf: y.emails)
+                }
+                if !vals.isEmpty && emailSet.intersection(vals).isEmpty {
+                    result.append(vals)
+                    emails.forEach{ emailSet.insert($0) }
+                }
+            }
+        }
+        
+        return result
+    }
+}
+
+struct Account {
+    let name: String
+    let emails: Set<String>
+    init(list: [String]) {
+        var set = Set<String>()
+        name = list[0]
+        for i in 1..<list.count {
+            let item = list[i]
+            set.insert(item)
+        }
+        emails = set
+    }
+}
 
 extension Array where Element == Int {
     var stringVal: String {
