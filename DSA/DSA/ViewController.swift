@@ -81,7 +81,7 @@ class ViewController: UIViewController {
         
         //[0,0,0,0,1]
         //2
-        let x = Problems.accountMerge(accounts: [["John", "johnsmith@mail.com", "john00@mail.com"], ["John", "johnnybravo@mail.com"], ["John", "johnsmith@mail.com", "john_newyork@mail.com"], ["Mary", "mary@mail.com"]])
+        let x = Problems.isIsomorphic("paper", "title")
     }
     
     func test2(_ logLines : [String]) -> [String] {

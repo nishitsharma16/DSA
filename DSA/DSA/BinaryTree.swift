@@ -27,6 +27,15 @@ class BTLevelNode<Item> {
     }
 }
 
+class TreeNode {
+    var left : TreeNode?
+    var right : TreeNode?
+    var value : Int
+    init(val : Int) {
+        value = val
+    }
+}
+
 
 class BinaryTree {
     
@@ -233,5 +242,24 @@ class BinaryTree {
         return nil
     }
     
+    private static func createBinaryTreeHelper(root: TreeNode?, value: Int) -> TreeNode? {
+        if root == nil {
+            return TreeNode(val: value)
+        }
+        
+        root?.left = createBinaryTreeHelper(root: root?.left, value: value)
+        root?.right = createBinaryTreeHelper(root: root?.right, value: value)
+        return root
+    }
     
+    static func createBinaryTree(nodes: [Int]) -> TreeNode? {
+        if nodes.isEmpty {
+            return nil
+        }
+        var root: TreeNode?
+        for item in nodes {
+            root = createBinaryTreeHelper(root: root, value: item)
+        }
+        return root
+    }
 }

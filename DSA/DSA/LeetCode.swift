@@ -2031,6 +2031,75 @@ extension Problems {
         
         return result
     }
+    
+    private static func getLeavesOfBinaryTreeHelper(root: inout TreeNode?) -> [Int] {
+        var set = [Int]()
+        if root?.left == nil && root?.right == nil {
+            if let val = root?.value {
+                set.append(val)
+            }
+            root = nil
+            return set
+        }
+        var left = root?.left
+        let leftSet = getLeavesOfBinaryTreeHelper(root: &left)
+        var right = root?.right
+        let rightSet = getLeavesOfBinaryTreeHelper(root: &right)
+        return leftSet + rightSet
+    }
+    
+    static func getLeavesOfBinaryTree(nodes: [Int]) -> [[Int]] {
+        if nodes.isEmpty {
+            return []
+        }
+        
+        var result = [[Int]]()
+        var treeRoot: TreeNode? = BinaryTree.createBinaryTree(nodes: nodes)
+        while treeRoot != nil {
+            let x = getLeavesOfBinaryTreeHelper(root: &treeRoot)
+            result.append(x)
+        }
+        return result
+    }
+    
+    static func isIsomorphic(_ s: String, _ t: String) -> Bool {
+        if s.isEmpty || t.isEmpty {
+            return false
+        }
+        
+        let sLen = s.count
+        let tLen = t.count
+
+        if sLen != tLen {
+            return false
+        }
+        
+        var map = [Character: Character]()
+        var set = Set<Character>()
+        
+        var j = 0
+        var i = 0
+        while i < sLen {
+            if let val = map[s[i]] {
+                if val != t[j] {
+                    return false
+                }
+            }
+            else {
+                if !set.contains(t[j]) {
+                    map[s[i]] = t[j]
+                    set.insert(t[j])
+                }
+                else {
+                    return false
+                }
+            }
+            i += 1
+            j += 1
+        }
+        
+        return true
+    }
 }
 
 struct Account {
