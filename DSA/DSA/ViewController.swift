@@ -81,7 +81,17 @@ class ViewController: UIViewController {
         
         //[0,0,0,0,1]
         //2
-        let x = Problems.isIsomorphic("paper", "title")
+//        let x = Problems.matrixMultiplication(mat1: [
+//          [ 1, 0, 0],
+//          [-1, 0, 3]
+//        ], mat2: [
+//          [ 7, 0, 0 ],
+//          [ 0, 0, 0 ],
+//          [ 0, 0, 1 ]
+//        ])
+        
+        let x = Problems.findAllSubSetsSet2(list: [4,3,2,3,5,2,1], numbreOfSets: 4)
+        
     }
     
     func test2(_ logLines : [String]) -> [String] {

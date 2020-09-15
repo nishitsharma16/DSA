@@ -374,43 +374,18 @@ class Problems {
     
     static func intToRoman(value: Int) -> String {
         var result = ""
-
-        if value == 0 {
-            return result
-        }
-        
-        let y = value % 10
-        let x = value / 10
-        for _ in 0..<x {
-            result += "X"
-        }
-        
-        if y >= 1 && y <= 3 {
-            for _ in 0..<y {
-                result += "I"
+        var target = value
+        let values = [10, 9, 5, 4, 1]
+        let symbols = ["X", "IX", "V", "IV", "I"]
+        for i in 0..<values.count {
+            while values[i] <= target {
+                target -= values[i]
+                result += symbols[i]
+            }
+            if target == 0 {
+                break
             }
         }
-        
-        switch y {
-            case 4:
-                result += "IV"
-            case 5:
-                result += "V"
-            default:
-                result += ""
-        }
-        
-        if y > 5 && y < 9 {
-            result += "V"
-            for _ in 0..<y {
-                result += "I"
-            }
-        }
-        
-        if y == 9 {
-            result += "IX"
-        }
-        
         return result
     }
     
@@ -840,6 +815,28 @@ class Problems {
         }
         
         return result
+    }
+    
+    
+    static func getDuplicateCountSet2(list: inout [Int]) -> Int {
+        if list.isEmpty {
+            return 0
+        }
+        
+        var counter = 0
+        list.sort()
+        var index = 0
+        while index < list.count - 1 {
+            if list[index] == list[index + 1] {
+                list.remove(at: index)
+                counter += 1
+            }
+            else {
+                index += 1
+            }
+        }
+        
+        return counter
     }
     
     static func getDuplicateCount(list: inout [Int]) -> Int {
@@ -1915,6 +1912,40 @@ extension Problems {
         return ans
     }
     
+    
+    static func findSubSetsSet2(list: [Int], subset: inout [Int], index: Int, result: inout [[Int]]) {
+        result.append(subset)
+        for i in index..<list.count {
+            subset.append(list[i])
+            findSubSetsSet2(list: list, subset: &subset, index: index + 1, result: &result)
+            subset.removeLast()
+        }
+    }
+    
+    static func findAllSubSetsSet2(list: [Int], numbreOfSets: Int) -> Bool {
+        if list.isEmpty {
+            return false
+        }
+        
+        var subset = [Int]()
+        var result = [[Int]]()
+        
+        findSubSetsSet2(list: list, subset: &subset, index: 0, result: &result)
+        
+        var temp = [Int]()
+        for item in result {
+            var sum = 0
+            for val in item {
+                sum += val
+            }
+            temp.append(sum)
+        }
+        
+        let count = getDuplicateCount(list: &temp)
+        
+        return numbreOfSets == count
+    }
+    
     static func findSubSets(list: [Int], subset: inout Set<Int>, index: Int, result: inout Set<Set<Int>>) {
         result.insert(subset)
         for i in index..<list.count {
@@ -1945,7 +1976,7 @@ extension Problems {
         
         let count = getDuplicateCount(list: &temp)
         
-        return (result, numbreOfSets == count)
+        return (result, numbreOfSets >= count)
     }
     
     static func detectCycleInUndirectedGraph(currentNode: Int, adjencyList: [Int: [Int]], visited: inout [Bool], parent: Int) -> Bool {
@@ -2100,6 +2131,364 @@ extension Problems {
         
         return true
     }
+    
+    static private func markNeighboursNodeVisited(mat : inout [[Int]], visited : inout [[Bool]], x : Int, y : Int, m : Int, n : Int) {
+        
+        visited[x][y] = true
+        
+        var row = x - 1
+        while row <= x + 1 && row < m {
+            var col = y - 1
+            while col <= y + 1 && col < n {
+                if row >= 0 && col >= 0 && !visited[row][col] {
+                    if mat[row][col] == 1 {
+                        markNeighboursNodeVisited(mat: &mat, visited: &visited, x: row, y: col, m: m, n: n)
+                        mat[row][col] = -mat[row][col]
+                    }
+                }
+                col += 1
+            }
+            row += 1
+        }
+    }
+        
+    static func numIslands(_ grid: [[Character]]) -> Int {
+        
+        if grid.isEmpty {
+            return 0
+        }
+        
+        var result = 0
+        let innerList = grid[0]
+        let m = grid.count
+        let n = innerList.count
+        var visited = Array(repeating: Array(repeating: false, count: n), count: m)
+        var matVal = Array(repeating: Array(repeating: 0, count: n), count: m)
+        
+        for i in 0..<m {
+            for j in 0..<n {
+                if let val = Int(String(grid[i][j])), val == 1 {
+                    matVal[i][j] = val
+                }
+            }
+        }
+        
+        for i in 0..<m {
+            for j in 0..<n {
+                if matVal[i][j] == 1 {
+                    result += 1
+                    markNeighboursNodeVisited(mat: &matVal, visited: &visited, x: i, y: j, m: m, n: n)
+                }
+            }
+        }
+        return result
+        
+    }
+    
+    static func kSmallestPairs(_ nums1: [Int], _ nums2: [Int], _ k: Int) -> [[Int]] {
+        if nums1.isEmpty || nums2.isEmpty {
+            return []
+        }
+        
+        let len1 = nums1.count
+        let len2 = nums2.count
+        
+        var result = [[Int]]()
+        var vals = [PairItem]()
+        for i in 0..<len1 {
+            for j in 0..<len2 {
+                vals.append(PairItem([nums1[i], nums2[j]]))
+            }
+        }
+        
+        let heap = Heap<PairItem>(type: .minHeap, list: vals)
+        
+        for _ in 1...k {
+            if let item = heap.extract() {
+                result.append(item.list)
+            }
+        }
+        
+        return result
+    }
+    
+    static func smallestLetterGreaterThanTargetHelper(letters: [Character], target: Character, start: Int, end: Int) -> Int {
+        if start > end {
+            return -1
+        }
+        
+        let mid = (start + end)/2
+        if mid >= 0 && mid + 1 <= end && letters[mid + 1] > target && letters[mid] <= target {
+            return mid + 1
+        }
+        else if mid - 1 >= 0 && mid < end && letters[mid - 1] <= target && letters[mid] > target {
+            return mid
+        }
+        else if mid >= 0 && mid < end && target < letters[mid] {
+            return smallestLetterGreaterThanTargetHelper(letters: letters, target: target, start: start, end: mid - 1)
+        }
+        else {
+            return smallestLetterGreaterThanTargetHelper(letters: letters, target: target, start: mid + 1, end: end)
+        }
+    }
+    
+    static func smallestLetterGreaterThanTarget(letters: [Character], target: Character) -> Character {
+        if letters.isEmpty {
+            return "a"
+        }
+        
+        let start = 0
+        let end = letters.count - 1
+        if target < letters[start] {
+            return letters[start]
+        }
+        let index = smallestLetterGreaterThanTargetHelper(letters: letters, target: target, start: start, end: end)
+        let result = index != -1 ? letters[index] : letters[0]
+        return result
+    }
+    
+    static func isProductLessThan(target: Int, for list: [Int]) -> Bool {
+        if list.isEmpty {
+            return false
+        }
+        let product = list.reduce(1) { (val, curr) -> Int in
+            return val * curr
+        }
+        return product < target
+    }
+    
+    static func isProductEqualTo(target: Int, for list: [Int]) -> Bool {
+        if list.isEmpty {
+            return false
+        }
+        let product = list.reduce(1) { (val, curr) -> Int in
+            return val * curr
+        }
+        return product == target
+    }
+    
+    static func factorCombinationHelper(_ n: Int, _ start: Int, subset: inout Set<Int>, result: inout Set<Set<Int>>) {
+        if start <= 1 {
+            result.insert(subset)
+            return
+        }
+        
+        for i in start...n {
+            if n % i == 0 {
+                subset.insert(i)
+                factorCombinationHelper(n / i, i, subset: &subset, result: &result)
+                subset.remove(i)
+            }
+        }
+    }
+    
+    static func factorCombination(target: Int) {
+        var subset = Set<Int>()
+        var result = Set<Set<Int>>()
+        factorCombinationHelper(target, 2, subset: &subset, result: &result)
+    }
+    
+    static func intToRomanSet2(_ num: Int) -> String {
+        var result = ""
+        if num >= 1 && num <= 3999 {
+            var target = num
+            let values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
+            let symbols = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]
+            for i in 0..<values.count {
+                while values[i] <= target {
+                    target -= values[i]
+                    result += symbols[i]
+                }
+            }
+        }
+        return result
+    }
+    
+    static func matrixMultiplication(mat1: [[Int]], mat2: [[Int]]) -> [[Int]] {
+        if mat1.isEmpty {
+            return mat2
+        }
+        else if mat2.isEmpty {
+            return mat1
+        }
+        
+        let m1 = mat1.count
+        let n1 = mat1[0].count
+        let m2 = mat2.count
+        let n2 = mat2[0].count
+            
+        if n1 == m2 {
+            var result = Array(repeating: Array(repeating: 0, count: n2), count: m1)
+            for i in 0..<m1 {
+                for l in 0..<n2 {
+                    var sum = 0
+                    var j = 0
+                    for m in 0..<m2 {
+                        let y = mat2[m][l]
+                        let x = mat1[i][j]
+                        sum += x*y
+                        j += 1
+                    }
+                    result[i][l] = sum
+                }
+            }
+            return result
+        }
+        
+        return []
+    }
+    
+    static func isPerfectSqaure(_ n: Int) -> Bool {
+        if n < 1 {
+            return false
+        }
+        
+        if n == 1 {
+            return true
+        }
+        
+        var left = 1
+        var right = n
+        
+        while left <= right {
+            
+            let mid = (left + right) / 2
+            
+            if mid * mid == n {
+                return true
+            }
+            else if mid * mid < n {
+                left = mid + 1
+            }
+            else {
+                right = mid - 1
+            }
+        }
+        
+        return false
+    }
+    
+    static func squareRoot(_ n: Int) -> Int {
+        if n < 1 {
+            return 0
+        }
+        
+        if n == 1 {
+            return 1
+        }
+        
+        var left = 1
+        var right = n/2
+        
+        while left <= right {
+            
+            let mid = (left + right) / 2
+            let val = mid * mid
+            if val < n {
+                left = mid + 1
+            }
+            else if val > n {
+                right = mid - 1
+            }
+            else {
+                return mid
+            }
+        }
+        
+        return right
+    }
+    
+    func isSymmetricTree(root: TreeNode?) -> Bool {
+        if root == nil {
+            return true
+        }
+        
+        
+        return false
+    }
+}
+
+class TwoSum {
+
+    /** Initialize your data structure here. */
+    private var list = [Int]()
+    
+    init() {
+        
+    }
+    
+    /** Add the number to an internal data structure.. */
+    func add(_ number: Int) {
+        list.append(number)
+    }
+    
+    /** Find if there exists any pair of numbers which sum is equal to the value. */
+    func find(_ value: Int) -> Bool {
+        if list.isEmpty {
+            return false
+        }
+        
+        let numbers = list.sorted()
+        var start = 0
+        var end = list.count - 1
+        while start < end {
+            if numbers[start] + numbers[end] == value {
+                return true
+            }
+            else if numbers[start] + numbers[end] < value {
+                start += 1
+            }
+            else {
+                end -= 1
+            }
+        }
+        return false
+    }
+}
+
+
+
+struct PairItem: Equatable {
+    let first: Int
+    let second: Int
+    init(_ list: [Int]) {
+        if list.count > 1 {
+            first = list[0]
+            second = list[1]
+        }
+        else {
+            first = -1
+            second = -1
+        }
+    }
+    
+    var list: [Int] {
+        return [first, second]
+    }
+}
+
+extension PairItem: Comparable {
+    static func < (lhs: PairItem, rhs: PairItem) -> Bool {
+        return lhs.first + lhs.second <= rhs.first + rhs.second
+    }
+}
+
+class SolBase {
+    func rand7() -> Int {
+        return Int.random(in: 1...7)
+    }
+}
+
+class Solution : SolBase {
+    func rand10() -> Int {
+        let x = rand7()
+        switch x {
+        case 1, 2, 3:
+            return x + 6
+        default:
+            return rand7()
+        }
+    }
 }
 
 struct Account {
@@ -2124,5 +2513,34 @@ extension Array where Element == Int {
         }
         return val
     }
+}
+
+extension Character {
+    var alphabetAsciiVal: Int {
+        return -1
+    }
+    
+    var isAlphabet: Bool {
+        if let val = self.asciiValue, self.isLetter, val >= 97 && val <= 122 {
+            return true
+        }
+        return false
+    }
+    
+}
+
+extension Int {
+    
+    var isPrimeNumber: Bool {
+        var counter = 2
+        while counter <= self/2 {
+            if self % counter == 0 {
+                return false
+            }
+            counter += 1
+        }
+        return true
+    }
+    
 }
 
