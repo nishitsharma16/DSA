@@ -90,7 +90,8 @@ class ViewController: UIViewController {
 //          [ 0, 0, 1 ]
 //        ])
         
-        let x = Problems.findAllSubSetsSet2(list: [4,3,2,3,5,2,1], numbreOfSets: 4)
+        let x = Problems.countSubarraySum([-19,-82,-70,-46,-29,7,15,-72,-7,100,303], 
+        100)
         
     }
     
