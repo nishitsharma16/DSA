@@ -90,8 +90,7 @@ class ViewController: UIViewController {
 //          [ 0, 0, 1 ]
 //        ])
         
-        let x = Problems.countSubarraySum([-19,-82,-70,-46,-29,7,15,-72,-7,100,303], 
-        100)
+        let x = Problems.kDiffPairs([3,1,4,1,5], 0)
         
     }
     

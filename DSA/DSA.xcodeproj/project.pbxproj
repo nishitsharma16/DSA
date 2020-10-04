@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1810CB52251390BE00BDDA87 /* Intuit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1810CB51251390BE00BDDA87 /* Intuit.swift */; };
 		1816CD882490C8CF00E37BAC /* DP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1816CD872490C8CF00E37BAC /* DP.swift */; };
 		1816CD8A24924F3500E37BAC /* LeetCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1816CD8924924F3400E37BAC /* LeetCode.swift */; };
 		1816CD8C24924FFB00E37BAC /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1816CD8B24924FFB00E37BAC /* LinkedList.swift */; };
@@ -55,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1810CB51251390BE00BDDA87 /* Intuit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Intuit.swift; sourceTree = "<group>"; };
 		1816CD872490C8CF00E37BAC /* DP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DP.swift; sourceTree = "<group>"; };
 		1816CD8924924F3400E37BAC /* LeetCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCode.swift; sourceTree = "<group>"; };
 		1816CD8B24924FFB00E37BAC /* LinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				18A54C2525022CC5004107A5 /* GenericDataStructures.swift */,
 				1895B41C25108F220028F504 /* Facebook.swift */,
 				1895B41E25108F3F0028F504 /* Linkedin.swift */,
+				1810CB51251390BE00BDDA87 /* Intuit.swift */,
 			);
 			path = DSA;
 			sourceTree = "<group>";
@@ -339,6 +342,7 @@
 				18CC5949243A6A8000185D52 /* AppDelegate.swift in Sources */,
 				1835A5BF246737EF00B2B0AF /* Algorithms.swift in Sources */,
 				18BBDC9224977B7A002BE2BC /* CustomTypes.swift in Sources */,
+				1810CB52251390BE00BDDA87 /* Intuit.swift in Sources */,
 				18CC597B243BB22E00185D52 /* PriorityQueue.swift in Sources */,
 				18CC594B243A6A8000185D52 /* SceneDelegate.swift in Sources */,
 				18CC5979243A6AA600185D52 /* Heap.swift in Sources */,

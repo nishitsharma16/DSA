@@ -148,6 +148,185 @@ extension Problems {
         
         return counter
     }
+    
+    static func reverseWords(_ s: String) -> String {
+        if s.isEmpty {
+            return ""
+        }
+        
+        let str = s.trimmingCharacters(in: .whitespacesAndNewlines)
+        var result = ""
+        let words = str.split { $0 == " " }
+        let numberOfSpaes = words.count - 1
+        let last = numberOfSpaes
+        for i in stride(from: last, through: 1, by: -1) {
+            result += words[i]
+            result += " "
+        }
+        result += words[0]
+        return result
+    }
+    
+    static func fractionToDecimal(_ numerator: Int, _ denominator: Int) -> String {
+        if numerator == 0 || denominator == 0 {
+            return "0"
+        }
+        
+        if numerator == 0 || denominator == 0 {
+            return "0"
+        }
+        
+        let isResultNegative = numerator < 0 || denominator < 0
+        let num = abs(numerator)
+        let deno = abs(denominator)
+        var fraction = "\(num / deno)"
+        var remainder = num % deno
+        if remainder == 0 {
+            return fraction
+        }
+        else {
+            var map = [Int: Int]()
+            fraction += "."
+            while remainder != 0 {
+                if let length = map[remainder] {
+                    fraction.insert("(", at: fraction.index(fraction.startIndex, offsetBy: length))
+                    fraction += ")"
+                    break
+                }
+                map[remainder] = fraction.count
+                remainder *= 10
+                fraction += "\(remainder / deno)"
+                remainder = remainder % deno
+            }
+            return isResultNegative ? "-" + fraction : fraction
+        }
+    }
+    
+    static func zeroPosition(_ s: String) -> Int? {
+        for index in 0..<s.count {
+            if s[index] == "0" {
+                return index
+            }
+        }
+        return nil
+    }
+    
+    static func numDecodings(_ s: String) -> Int {
+        if s.isEmpty {
+            return 0
+        }
+        
+        let length = s.count
+        var result = 0
+        let zeroPos = zeroPosition(s)
+        if length == 1 {
+            if let _ = zeroPos {
+                return 0
+            }
+            else {
+                return 1
+            }
+        }
+        else if length == 2 {
+            if let val = zeroPos {
+                if val == 0 {
+                    return 0
+                }
+                else {
+                    if let x = Int(s), x < 26 {
+                        return 1
+                    }
+                }
+            }
+            else {
+                result += 1
+                if let x = Int(s), x <= 26 {
+                    return result + 1
+                }
+                return result
+            }
+        }
+        else {
+            if let val = zeroPos {
+                if val == 0 {
+                    return 0
+                }
+                else {
+                    
+                }
+            }
+        }
+        return result
+    }
+    
+    private static func decodeWaysHelper(_ s: String, _ index: Int, map: inout [Int : Int]) -> Int {
+        
+        if index < s.count && s[index] == "0" {
+            return 0
+        }
+        
+        if index == s.count - 1 {
+            return 1
+        }
+        
+        if index == s.count {
+            return 1
+        }
+        
+        if let x = map[index] {
+            return x
+        }
+        
+        var result = decodeWaysHelper(s, index + 1, map: &map)
+        
+        if let y = Int(String(s[s.index(s.startIndex, offsetBy: index)..<s.index(s.startIndex, offsetBy: index + 2)])), y <= 26 {
+            result += decodeWaysHelper(s, index + 2, map: &map)
+        }
+        
+        map[index] = result
+        
+        return result
+    }
+    
+    static func decodeWays(_ s: String) -> Int {
+        if s.isEmpty {
+            return 0
+        }
+        
+        var map = [Int: Int]()
+        let x = decodeWaysHelper(s, 0, map: &map)
+        return x
+    }
+    
+    static func kDiffPairs(_ nums: [Int], _ k: Int) -> Int {
+        if nums.isEmpty || nums.count == 1 {
+            return 0
+        }
+        
+        var map = [Int: Int]()
+        for item in nums {
+            if let x = map[item] {
+                map[item] = x + 1
+            }
+            else {
+                map[item] = 1
+            }
+        }
+        var counter = 0
+        
+        for item in map.enumerated() {
+            let key = item.element.key
+            let val = item.element.value
+            if k > 0 , let _ = map[key + k] {
+                counter += 1
+            }
+            else if k == 0 && val > 1 {
+                counter += 1
+            }
+        }
+        
+        return counter
+    }
 }
 
 
