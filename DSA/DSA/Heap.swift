@@ -57,7 +57,7 @@ class Heap<Element : Comparable> {
         
         if largest != index {
             swap(first: largest, second: index)
-            heapify(index: largest)
+            maxHeapify(index: largest)
         }
     }
     
@@ -78,7 +78,7 @@ class Heap<Element : Comparable> {
         
         if smallest != index {
             swap(first: smallest, second: index)
-            heapify(index: smallest)
+            minHeapify(index: smallest)
         }
     }
     

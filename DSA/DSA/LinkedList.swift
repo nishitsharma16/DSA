@@ -16,6 +16,14 @@ class ListNode<Value> {
     }
 }
 
+class SortedNode {
+    var val : Int
+    var next : SortedNode?
+    init(_ value : Int) {
+        val = value
+    }
+}
+
 class NodeRandom<Value> {
     var item : Value
     var next : NodeRandom<Value>?

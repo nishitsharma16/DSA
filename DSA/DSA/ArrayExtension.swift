@@ -17,23 +17,18 @@ extension Array where Element == Int {
         second = temp
     }
     
-    func reverseArray(start : Int, end : Int) {
+    mutating func reverseArray(start : Int, end : Int) {
         var startVal = start
         var endVal = end
         
         while startVal < endVal {
-            
-            var val1 = self[startVal]
-            var val2 = self[endVal]
-            
-            swapValues(first: &val1, second: &val2)
-            
+            self.swapAt(startVal, endVal)
             startVal += 1
-            endVal += 1
+            endVal -= 1
         }
     }
     
-    func arrayRotation(distance : Int) {
+    mutating func arrayRotation(distance : Int) {
         
         let start = 0
         let end = self.count - 1
@@ -362,7 +357,7 @@ extension Array where Element == Int {
     //{-2, -3, 4, -1, -2, 1, 5, -3} : Kadne's Algo
     func maxSumSubArray(list : [Int]) -> Int {
         
-        var maxSum = Int(INT16_MIN)
+        var maxSum = Int.min
         var currentSum = 0
         
         for item in list {

@@ -463,31 +463,31 @@ class Problems {
         return result
     }
     
-    static func get4Sum(list: [Int], target: Int) -> [[Int]] {
-        if list.isEmpty {
+    static func get4Sum(nums: [Int], target: Int) -> [[Int]] {
+        if nums.isEmpty {
             return []
         }
         
-        let length = list.count
+        let length = nums.count
         var info = Dictionary<Int, (i: Int, j: Int)>()
         
         for i in 0..<length-1 {
             for j in i+1..<length {
-                info[list[i] + list[j]] = (i, j)
+                info[nums[i] + nums[j]] = (i, j)
             }
         }
         
         var result = [[Int]]()
         var tempInfo = Dictionary<String, [Int]>()
         var tempList = [[Int]]()
-
+        
         for i in 0..<length-1 {
             for j in i+1..<length {
-                let sum = list[i] + list[j]
+                let sum = nums[i] + nums[j]
                 let value = target - sum
                 if let x = info[value] {
                     if x.i != i && x.j != j && x.j != i && x.i != j {
-                        tempList.append([list[x.i], list[x.j], list[i], list[j]])
+                        tempList.append([nums[x.i], nums[x.j], nums[i], nums[j]])
                     }
                 }
             }
@@ -502,6 +502,43 @@ class Problems {
             else {
                 tempInfo[key] = listVal
                 result.append(listVal)
+            }
+        }
+        
+        return result
+    }
+    
+    static func get4SumV2(nums: [Int], target: Int) -> [[Int]] {
+        if nums.isEmpty {
+            return []
+        }
+        
+        let length = nums.count
+        var info = Dictionary<Int, (i: Int, j: Int)>()
+        
+        for i in 0..<length-1 {
+            for j in i+1..<length {
+                info[nums[i] + nums[j]] = (i, j)
+            }
+        }
+        
+        var result = [[Int]]()
+        
+        for i in 0..<length-1 {
+            var tempList = Array(repeating: 0, count: length)
+            for j in i+1..<length {
+                let sum = nums[i] + nums[j]
+                let value = target - sum
+                if let x = info[value] {
+                    if x.i != i && x.j != j && x.j != i && x.i != j && tempList[i] == 0 && tempList[j] == 0 && tempList[x.i] == 0 && tempList[x.j] == 0 {
+                        result.append([nums[x.i], nums[x.j], nums[i], nums[j]])
+                        tempList[i] = 1
+                        tempList[j] = 1
+                        tempList[x.i] = 1
+                        tempList[x.j] = 1
+                        break
+                    }
+                }
             }
         }
         
@@ -1628,6 +1665,43 @@ extension Problems {
         }
         
         return maxSum
+    }
+    
+    static func minFlipsMonoIncr(_ S: String) -> Int {
+        if S.isEmpty {
+            return 0
+        }
+        
+        var start = 0
+        var end = S.count - 1
+        var count = 0
+        while start < end {
+            if S[start] == "0" && S[end] == "1" {
+                start += 1
+                end -= 1
+            }
+            else if S[start] == "1" && S[end] == "0" {
+                start += 1
+                count += 1
+            }
+            else if S[start] == "0" && S[end] == "0" {
+                start += 1
+            }
+            else if start + 1 <= end && S[start] == "1" && S[start + 1] == "0" {
+                count += 1
+                start += 1
+            }
+            else if S[end] == "0" && S[end - 1] == "1" {
+                count += 1
+                end -= 1
+            }
+            else {
+                start += 1
+                end -= 1
+            }
+        }
+        
+        return count
     }
 }
 

@@ -614,6 +614,44 @@ extension String {
         return lps
     }
     
+    func kmpAlgorithmForFirstIndex(str : String, pat : String) -> Int {
+        if str.isEmpty || pat.isEmpty {
+            return -1
+        }
+        
+        let strLength = str.count
+        let patLength = pat.count
+        
+        if patLength > strLength {
+            return -1
+        }
+        
+        let lpsVal = lps(pat: pat)
+        
+        var i = 0
+        var j = 0
+        
+        while i < strLength {
+            if str[i] == pat[j] {
+                i += 1
+                j += 1
+            }
+            
+            if j == patLength {
+                return i - j
+            }
+            else if i < strLength && pat[j] != str[i] {
+                if j > 0 {
+                    j = lpsVal[j - 1]
+                }
+                else {
+                    i += 1
+                }
+            }
+        }
+        return -1
+    }
+    
     func kmpAlgorithm(str : String, pat : String) -> Bool {
         if str.isEmpty || pat.isEmpty {
             return false

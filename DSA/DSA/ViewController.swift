@@ -90,7 +90,9 @@ class ViewController: UIViewController {
 //          [ 0, 0, 1 ]
 //        ])
         
-        let x = Problems.kDiffPairs([3,1,4,1,5], 0)
+//        let x = Problems.findItinerary([["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]])
+        var val = [3,2,1]
+        let x = Problems.search([1,2,1], 2)
         
     }
     
@@ -381,5 +383,17 @@ extension Test2WordItem : Comparable {
         return lhs.value == rhs.value
     }
 }
+
+class MyClass {
+    
+}
+
+//infix operator ====
+//
+//extension MyClass {
+//    static func ==== (left: MyClass) -> MyClass {
+//        
+//    }
+//}
 
 
