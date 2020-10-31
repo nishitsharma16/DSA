@@ -92,8 +92,7 @@ class ViewController: UIViewController {
         
 //        let x = Problems.findItinerary([["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]])
         var val = [3,2,1]
-        let x = Problems.search([1,2,1], 2)
-        
+        let x = Problems.basicCalculater2("3+2*2")
     }
     
     func test2(_ logLines : [String]) -> [String] {

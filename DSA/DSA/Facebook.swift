@@ -929,6 +929,352 @@ extension Problems {
         let length = nums.count
         return searchForIndexHelper(nums, target, 0, length - 1)
     }
+    
+    static func simplifyPath(_ path: String) -> String {
+        if path.isEmpty {
+            return ""
+        }
+        
+        let list = path.split(separator: "/", maxSplits: Int.max, omittingEmptySubsequences: true)
+        let stack = Stack<String>()
+        
+        for item in list {
+            if item == ".." {
+                if !stack.isEmpty {
+                    stack.pop()
+                }
+            }
+            else if item != "." {
+                stack.push(val: String(item))
+            }
+        }
+        
+        var result = ""
+        while !stack.isEmpty {
+            result = "/" + stack.pop() + result
+        }
+        
+        return result.isEmpty ? "/" : result
+    }
+    
+    static func multiplyHelper(_ num1: String, _ num2: String) -> String {
+        guard let x = Int(num2) else { return "" }
+        if x == 0 {
+            return "0"
+        }
+        else if x == 1 {
+            return num1
+        }
+        
+        var result = ""
+        var div = 0
+        for item in num1 {
+            if let y = Int(String(item)) {
+                let m = y * x + div
+                let rem = m % 10
+                div = m / 10
+                result = "\(rem)" + result
+            }
+        }
+        
+        if div != 0 {
+            result = "\(div)" + result
+        }
+        return result
+    }
+    
+    static func multiply(_ num1: String, _ num2: String) -> String {
+        if num1.isEmpty || num2.isEmpty {
+            return ""
+        }
+        
+        var multiplier = 1
+        for item in num2 {
+            
+        }
+        
+        return ""
+    }
+    
+    static func insert(_ intervals: [[Int]], _ newInterval: [Int]) -> [[Int]] {
+        if intervals.isEmpty {
+            return [newInterval]
+        }
+        
+        let length = intervals.count
+        var result = [[Int]]()
+        var index = 0
+        let newIntervalStart = newInterval[0]
+        let newIntervalEnd = newInterval[1]
+        while index < length && newIntervalStart > intervals[index][0] {
+            result.append(intervals[index])
+            index += 1
+        }
+        
+        var interval: [Int]
+        if result.isEmpty {
+            result.append(newInterval)
+        }
+        else if let last = result.last, last[1] < newIntervalStart {
+            result.append(newInterval)
+        }
+        else {
+            interval = result.removeLast()
+            interval[1] = max(newIntervalEnd, interval[1])
+            result.append(interval)
+        }
+        
+        while index < length {
+            interval = intervals[index]
+            let start = interval[0]
+            let end = interval[1]
+            if let last = result.last, last[1] < start {
+                result.append(interval)
+            }
+            else {
+                interval = result.removeLast()
+                interval[1] = max(end, interval[1])
+                result.append(interval)
+            }
+            index += 1
+        }
+        
+        return result
+    }
+    
+    static func spiralOrder(_ matrix: [[Int]]) -> [Int] {
+        if matrix.isEmpty {
+            return []
+        }
+        
+        var result = [Int]()
+        let m = matrix.count
+        let n = matrix[0].count
+        var visited = Array(repeating: Array(repeating: false, count: n), count: m)
+        let dir = [(0,1), (1,0), (0,-1), (-1,0)]
+        var x = 0
+        var y = 0
+        var dirPos = 0
+        var currDir: (Int, Int)
+        for _ in 0..<m*n {
+            result.append(matrix[x][y])
+            currDir = dir[dirPos]
+            visited[x][y] = true
+            let row = x + currDir.0
+            let col = y + currDir.1
+            if row >= 0 && row < m && col >= 0 && col < n && !visited[row][col] {
+                x = row
+                y = col
+            }
+            else {
+                dirPos = (dirPos + 1) % 4
+                currDir = dir[dirPos]
+                x += currDir.0
+                y += currDir.1
+            }
+        }
+        return result
+    }
+    
+    static func uniquePathsWithObstacles(_ obstacleGrid: [[Int]]) -> Int {
+        if obstacleGrid.isEmpty {
+            return 0
+        }
+        
+        if obstacleGrid[0][0] == 1 {
+            return 0
+        }
+        
+        let m = obstacleGrid.count
+        let n = obstacleGrid[0].count
+        
+        var list = obstacleGrid
+        list[0][0] = 1
+        
+        for j in 1..<n {
+            list[0][j] = list[0][j] == 0 && list[0][j - 1] == 1 ? 1 : 0
+        }
+        
+        for i in 1..<m {
+            list[i][0] = list[i][0] == 0 && list[i - 1][0] == 1 ? 1 : 0
+        }
+        
+        for i in 1..<m {
+            for j in 1..<n {
+                if list[i][j] == 0 {
+                    list[i][j] = list[i - 1][j] + list[i][j - 1]
+                }
+                else {
+                    list[i][j] = 0
+                }
+            }
+        }
+        return list[m - 1][n - 1]
+    }
+    
+    func canJump(_ nums: [Int]) -> Bool {
+        if nums.isEmpty {
+            return false
+        }
+        
+        var last = nums.count - 1
+        var counter = last
+        while counter >= 0 {
+            if counter + nums[counter] >= last {
+                last = counter
+            }
+            counter -= 1
+        }
+        return last == 0
+    }
+    
+    static func findItineraryHelperDFS(_ origin: String, _ ticketsMap: inout [String: [String]], _ result: inout [String]) {
+        if var val = ticketsMap[origin] {
+            for _ in val {
+                let dst = val.removeFirst()
+                ticketsMap[origin] = val
+                findItineraryHelperDFS(dst, &ticketsMap, &result)
+            }
+        }
+        if result.isEmpty {
+            result.append(origin)
+        }
+        else {
+            result.insert(origin, at: 0)
+        }
+    }
+    
+    static func findItineraryV2(_ tickets: [[String]]) -> [String] {
+        if tickets.isEmpty {
+            return []
+        }
+        
+        var map = [String: [String]]()
+        for item in tickets {
+            let source = item[0]
+            let dst = item[1]
+            if var val = map[source] {
+                val.append(dst)
+                map[source] = val
+            }
+            else {
+                map[source] = [dst]
+            }
+        }
+        
+        map.forEach { (key, val) in
+            map[key] = val.sorted()
+        }
+        var result = [String]()
+        findItineraryHelperDFS("JFK", &map, &result)
+        return result
+    }
+    
+    static func basicCalculater2(_ s: String) -> Int {
+        if s.isEmpty {
+            return 0
+        }
+        
+        var lastVal = 0
+        var currVal = 0
+        var result = 0
+        var operatorVal = "+"
+        let length = s.count
+        
+        for i in 0..<length {
+            let item = s[i]
+            if item.isNumber, let x = Int(String(item)) {
+                currVal = currVal * 10 + x
+            }
+            if !item.isDigit && !item.isWhitespace || i == length - 1 {
+                if operatorVal == "+" || operatorVal == "-" {
+                    result += lastVal
+                    lastVal = operatorVal == "+" ? currVal : -currVal
+                }
+                else if operatorVal == "*" {
+                    lastVal = currVal * lastVal
+                }
+                else if operatorVal == "/" {
+                    lastVal = lastVal / currVal
+                }
+                operatorVal = String(item)
+                currVal = 0
+            }
+        }
+        result += lastVal
+        return result
+    }
+    
+    static func maximalSquare(_ matrix: [[Character]]) -> Int {
+        if matrix.isEmpty {
+            return 0
+        }
+        
+        let m = matrix.count
+        let n = matrix[0].count
+        var dpMat = Array(repeating: Array(repeating: 0, count: n + 1), count: m + 1)
+        var length = 0
+        for i in 1..<m {
+            for j in 1..<n {
+                if matrix[i - 1][j - 1] == "1" {
+                    let x = dpMat[i - 1][j - 1]
+                    let y = dpMat[i][j - 1]
+                    let z = dpMat[i - 1][j]
+                    dpMat[i][j] = min(x, y, z) + 1
+                    length = max(length, dpMat[i][j])
+                }
+            }
+        }
+        
+        return length * length
+    }
+    
+    func computeArea(_ A: Int, _ B: Int, _ C: Int, _ D: Int, _ E: Int, _ F: Int, _ G: Int, _ H: Int) -> Int {
+        var totalArea = abs(C - A) * abs(D - B) + abs(G - E) * abs(H - F)
+        
+        if max(A, E) < min(C, G) && max(B, F) < min(D, H) {
+            totalArea -= abs((min(C, G) - max(A, E)) * (min(D, H) - max(B, F)))
+        }
+        
+        return totalArea
+    }
+    
+    func reorderList(_ head: SortedNode?) {
+        if head == nil {
+            return
+        }
+        
+        var slow: SortedNode? = head
+        var fast: SortedNode? = head
+        
+        while slow != nil && fast?.next?.next != nil {
+            slow = slow?.next
+            fast = fast?.next?.next
+        }
+        
+        var prev: SortedNode?
+        var temp: SortedNode?
+        var curr = slow
+        
+        while curr != nil {
+            temp = curr?.next
+            curr?.next = prev
+            prev = curr
+            curr = temp
+        }
+        
+        var first = head
+        var second = prev
+        while second?.next != nil {
+            temp = first?.next
+            first?.next = second
+            first = temp
+            
+            temp = second?.next
+            second?.next = first
+            second = temp
+        }
+    }
 }
 
 
@@ -1053,3 +1399,115 @@ class ValidWordAbbr {
         return "\(s[s.startIndex])" + "\(s.count - 2)" + "\(s[last])"
     }
 }
+
+
+class LRUCache {
+    var map = [Int : DQNode<Int, Int>]()
+    var dq : DQList<Int, Int>
+    init(_ capacity: Int) {
+        dq = DQList(sizeVal: capacity)
+    }
+    
+    func get(_ key: Int) -> Int {
+        if let node = map[key] {
+            return node.value
+        }
+        return -1
+    }
+    
+    func put(_ key: Int, _ value: Int) {
+        if let _ = map[key] {
+        }
+        else {
+            let node = dq.insert(key: key, val: value)
+            if let key = node.removedKey {
+                map[key] = nil
+            }
+            map[key] = node.addedNode
+        }
+    }
+}
+
+class LargestBSTSolve {
+    
+    struct CheckBST {
+        let count: Int
+        let max: Int
+        let min: Int
+    }
+    
+    var counter = 0
+    @discardableResult
+    func largestBSTSubtreeHelper(_ root: TreeNode?) -> CheckBST {
+        if root == nil {
+            return CheckBST(count: 0, max: -1, min: -1)
+        }
+        let left = largestBSTSubtreeHelper(root?.left)
+        let right = largestBSTSubtreeHelper(root?.right)
+        if let rootVal = root, ((left.count == 0 || left.max < rootVal.value) && (right.count == 0 || right.min > rootVal.value)) {
+            let count = left.count + right.count + 1
+            let min = left.count == 0 ? rootVal.value : left.min
+            let max = right.count == 0 ? rootVal.value : right.max
+            counter = count > counter ? count : counter
+            return CheckBST(count: count, max: max, min: min)
+        }
+        else {
+            return CheckBST(count: 1, max: Int.max, min: Int.min)
+        }
+    }
+    
+    func largestBSTSubtree(_ root: TreeNode?) -> Int {
+        largestBSTSubtreeHelper(root)
+        return counter
+    }
+}
+
+class NumMatrix {
+
+    private let matval: [[Int]]
+    let m: Int
+    let n: Int
+    init(_ matrix: [[Int]]) {
+        matval = matrix
+        m = matrix.count
+        n = m > 0 ? matrix[0].count : 0
+    }
+    
+    func sumRegion(_ row1: Int, _ col1: Int, _ row2: Int, _ col2: Int) -> Int {
+        var sum = 0
+        if row1 >= 0 && row1 < m && row2 >= 0 && row2 < m && col1 >= 0 && col1 < n && col2 >= 0 && col2 < n {
+            for i in row1...row2 {
+                for j in col1...col2 {
+                    sum += matval[i][j]
+                }
+            }
+        }
+        return sum
+    }
+}
+
+class NumMatrixV2 {
+
+    private var matval: [[Int]]
+    let m: Int
+    let n: Int
+    init(_ matrix: [[Int]]) {
+        m = matrix.count
+        n = m > 0 ? matrix[0].count : 0
+        matval = Array(repeating: Array(repeating: 0, count: n + 1), count: m + 1)
+        for i in 0..<m {
+            for j in 0..<n {
+                matval[i + 1][j + 1] = matval[i + 1][j] + matval[j][j + 1] + matrix[i][j] - matval[i][j]
+            }
+        }
+    }
+    
+    func sumRegion(_ row1: Int, _ col1: Int, _ row2: Int, _ col2: Int) -> Int {
+        var sum = 0
+        if row1 >= 0 && row1 < m && row2 >= 0 && row2 < m && col1 >= 0 && col1 < n && col2 >= 0 && col2 < n {
+            sum = matval[row2 + 1][col2 + 1] - matval[row2 + 1][col1] - matval[row1][col2 + 1] + matval[row1][col1]
+        }
+        return sum
+    }
+}
+
