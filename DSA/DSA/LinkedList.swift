@@ -24,6 +24,16 @@ class SortedNode {
     }
 }
 
+class NextConnectedNode {
+    var val : Int
+    var left : NextConnectedNode?
+    var right : NextConnectedNode?
+    var next : NextConnectedNode?
+    init(_ value : Int) {
+        val = value
+    }
+}
+
 class NodeRandom<Value> {
     var item : Value
     var next : NodeRandom<Value>?

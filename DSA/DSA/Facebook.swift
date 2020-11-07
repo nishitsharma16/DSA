@@ -1275,6 +1275,384 @@ extension Problems {
             second = temp
         }
     }
+    
+    func reverseBetween(_ head: SortedNode?, _ m: Int, _ n: Int) -> SortedNode? {
+        if head == nil {
+            return nil
+        }
+        
+        var headVal = head
+        var p1 = head
+        var curr = head
+        var mVal = m
+        var nVal = n
+        while m > 1 {
+            p1 = curr
+            curr = curr?.next
+            mVal -= 1
+            nVal -= 1
+        }
+        
+        var temp: SortedNode?
+        var prev: SortedNode?
+        let trail = curr
+        
+        while nVal > 0 {
+            temp = curr?.next
+            curr?.next = prev
+            prev = curr
+            curr = temp
+            nVal -= 1
+        }
+        
+        if p1 != nil {
+            p1?.next = prev
+        }
+        else {
+            headVal = prev
+        }
+        
+        trail?.next = curr
+        
+        return headVal
+    }
+    
+    static func merge(_ intervals: [[Int]]) -> [[Int]] {
+        if intervals.isEmpty {
+            return []
+        }
+        
+        var list = intervals.sorted { (first, second) -> Bool in
+            return first[0] < second[0]
+        }
+        
+        var i = 0
+        while i < list.count - 1 {
+            let curr = list[i]
+            let next = list[i + 1]
+            if (curr[1] > next[0]) || (next[0] <= curr[0] && next[1] >= curr[1]) {
+                list[i] = [min(curr[0], next[0]), max(curr[1], next[1])]
+                list.remove(at: i + 1)
+            }
+            else {
+                i += 1
+            }
+        }
+        return list
+    }
+    
+    func increasingTriplet(_ nums: [Int]) -> Bool {
+        if nums.isEmpty {
+            return false
+        }
+        
+        let length = nums.count
+        var lis = Array(repeating: 1, count: length)
+        for i in 1..<length {
+            lis[i] = 1
+            for j in 0..<i {
+                if nums[i] > nums[j] && lis[i] < lis[j] + 1 {
+                    lis[i] = lis[j] + 1
+                }
+            }
+        }
+        
+        return lis.contains(3)
+    }
+    
+    func increasingTripletV2(_ nums: [Int]) -> Bool {
+        if nums.isEmpty {
+            return false
+        }
+        
+        var first = Int.max
+        var second = Int.max
+        
+        for item in nums {
+            if item <= first {
+                first = item
+            }
+            else if item <= second {
+                second = item
+            }
+            else {
+                return true
+            }
+        }
+        return false
+    }
+    
+    func connectHelper(_ root: NextConnectedNode?, _ map: inout [Int: NextConnectedNode?], _ level: Int) {
+        if root == nil {
+            return
+        }
+        
+        if let val = map[level] {
+            val?.next = root
+            map[level] = root
+        }
+        else {
+            map[level] = root
+        }
+        
+        connectHelper(root?.left, &map, level + 1)
+        connectHelper(root?.right, &map, level + 1)
+    }
+    
+    func connect(_ root: NextConnectedNode?) -> NextConnectedNode? {
+        if root == nil {
+            return nil
+        }
+        var levelMap = [Int: NextConnectedNode?]()
+        connectHelper(root, &levelMap, 0)
+        return root
+    }
+    
+    func widthOfBinaryTreeHelper(_ root: TreeNode?, _ map: inout [Int: Int], _ level: Int) {
+        if root == nil {
+            return
+        }
+        
+        if var val = map[level] {
+            val += 1
+            map[level] = val
+        }
+        else {
+            map[level] = 1
+        }
+        
+        if root?.left == nil || root?.right == nil {
+            if var val = map[level + 1] {
+                val += 1
+                map[level + 1] = val
+            }
+            else {
+                map[level + 1] = 1
+            }
+        }
+        
+        widthOfBinaryTreeHelper(root?.left, &map, level + 1)
+        widthOfBinaryTreeHelper(root?.right, &map, level + 1)
+    }
+    
+    func widthOfBinaryTree(_ root: TreeNode?) -> Int {
+        if root == nil {
+            return 0
+        }
+        var levelMap = [Int: Int]()
+        widthOfBinaryTreeHelper(root, &levelMap, 0)
+        var mavVal = Int.min
+        for item in levelMap {
+            let x = item.value
+            if mavVal < x {
+                mavVal = x
+            }
+        }
+        return mavVal
+    }
+    
+    static func wordBreak(_ s: String, _ wordDict: [String]) -> Bool {
+        if s.isEmpty || wordDict.isEmpty {
+            return false
+        }
+        
+        let length = s.count
+        let queue = Queue<Int>()
+        var visited = Array(repeating: 0, count: length)
+        queue.enqueue(val: 0)
+        
+        while !queue.isEmpty {
+            let start = queue.dQueue()
+            if visited[start] == 0 {
+                for end in start..<length {
+                    let x = s.index(s.startIndex, offsetBy: start)
+                    let y = s.index(s.startIndex, offsetBy: end)
+                    let subStr = String(s[x...y])
+                    if wordDict.contains(subStr) {
+                        queue.enqueue(val: end + 1)
+                        if end == length - 1 {
+                            return true
+                        }
+                    }
+                }
+                visited[start] = 1
+            }
+        }
+        
+        return false
+    }
+    
+    static func findClosestElements(_ arr: [Int], _ k: Int, _ x: Int) -> [Int] {
+        if arr.isEmpty {
+            return []
+        }
+        
+        let length = arr.count
+
+        if x <= arr[0] {
+            return Array(arr[0..<k])
+        }
+        else if x >= arr[length - 1] {
+            return Array(arr[length - k..<length])
+        }
+        else {
+            var index = binarySearchGivePosition(list: arr, start: 0, end: length - 1, element: x)
+            if index < 0 {
+                index = -index - 1
+            }
+            
+            var low = max(0, index - k - 1)
+            var high = min(length - 1, index + k - 1)
+            
+            while high - low > k - 1 {
+                if low < 0 || (x - arr[low]) <= (arr[high] - x) {
+                    high -= 1
+                }
+                else if high > length - 1 || (x - arr[low]) > (arr[high] - x) {
+                    low += 1
+                }
+            }
+            
+            return Array(arr[low...high])
+        }
+    }
+    
+    func findMin(_ root: TreeNode?) -> TreeNode? {
+        if root == nil {
+            return nil
+        }
+        
+        var curr = root
+        while curr?.left != nil {
+            curr = curr?.left
+        }
+        return curr
+    }
+    
+    func inorderSuccessor(_ root: TreeNode?, _ p: TreeNode?) -> TreeNode? {
+        if root == nil {
+            return nil
+        }
+        
+        if p?.right != nil {
+            return findMin(p?.right)
+        }
+        
+        var succ: TreeNode?
+        var rootNode = root
+        while rootNode != nil {
+            if let pVal = p?.value, let rootVal = rootNode?.value {
+                if pVal < rootVal {
+                    succ = rootNode
+                    rootNode = rootNode?.left
+                }
+                else if pVal > rootVal {
+                    rootNode = rootNode?.right
+                }
+                else {
+                    break
+                }
+            }
+        }
+        
+        return succ
+    }
+    
+    static func longestSubstring(_ s: String, _ k: Int) -> Int {
+        if s.isEmpty {
+            return 0
+        }
+        
+        let length = s.count
+        if length < k {
+            return 0
+        }
+        
+        var map = [Character: Int]()
+        for item in s {
+            if let val = map[item] {
+                map[item] = val + 1
+            }
+            else {
+                map[item] = 1
+            }
+        }
+        
+        var index = 0
+        while index < length {
+            let item = s[index]
+            if let x = map[item], x >= k {
+                
+            }
+            else {
+                var j = index + 1
+                while j < length, let y = map[s[j]], y < k {
+                    j += 1
+                }
+                
+                let first = s[0, index - 1]
+                let second = s[j, length - 1]
+                return max(longestSubstring(first, k), longestSubstring(second, k))
+            }
+            index += 1
+        }
+        return length
+    }
+    
+    static func lengthOfLIS(_ nums: [Int]) -> Int {
+        if nums.isEmpty {
+            return 0
+        }
+        
+        let length = nums.count
+        var lis = Array(repeating: 1, count: length)
+        
+        for i in 1..<length {
+            lis[i] = 1
+            for j in 0..<i {
+                if nums[i] > nums[j] && lis[i] < lis[j] + 1 {
+                    lis[i] = lis[j] + 1
+                }
+            }
+        }
+        
+        var max = Int.min
+        for item in lis {
+            if max < item {
+                max = item
+            }
+        }
+        return max
+    }
+    
+    static func findMaxLength(_ nums: [Int]) -> Int {
+        if nums.count <= 1 {
+            return 0
+        }
+        
+        var maxLen = Int.min
+        var numOfZeros = 0
+        var numOfOnes = 0
+        
+        for i in 0..<nums.count {
+            let val = nums[i]
+            if val == 1 {
+                numOfOnes += 1
+            }
+            else if val == 0 {
+                numOfZeros += 1
+            }
+            if (i + 1) % 2 == 0 {
+                if numOfZeros == numOfOnes {
+                    if maxLen < (i + 1) {
+                        maxLen = i + 1
+                    }
+                }
+            }
+        }
+        
+        return maxLen
+    }
 }
 
 

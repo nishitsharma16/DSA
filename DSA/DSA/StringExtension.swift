@@ -747,9 +747,25 @@ extension String {
     }
     
     subscript(_ startIndex : Int, _ endIndex : Int) -> String {
-        let startIndex = self.index(self.startIndex, offsetBy: startIndex)
-        let endIndex = self.index(self.startIndex, offsetBy: endIndex)
-        return String(self[startIndex...endIndex])
+        
+        if self.isEmpty {
+            return ""
+        }
+        
+        let length = self.count
+        if startIndex >= 0 && startIndex < length && endIndex >= 0 && endIndex < length {
+            let startIndexVal = self.index(self.startIndex, offsetBy: startIndex)
+            let endIndexVal = self.index(self.startIndex, offsetBy: endIndex)
+            if startIndexVal >= self.startIndex && startIndexVal < self.endIndex && endIndexVal >= self.startIndex && endIndexVal < self.endIndex {
+                return String(self[startIndexVal...endIndexVal])
+            }
+            else {
+                return ""
+            }
+        }
+        else {
+            return ""
+        }
     }
     
     func removeWhiteSpaceCharFromStartAndEnd() -> String {
