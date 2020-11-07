@@ -21,6 +21,12 @@ class Heap<Element : Comparable> {
     let heapType : HeapType
     
     
+    init(type : HeapType, list : [Element]) {
+        heapType = type
+        self.list = list
+        buildheap()
+    }
+    
     init(type : HeapType) {
         heapType = type
     }
@@ -51,7 +57,7 @@ class Heap<Element : Comparable> {
         
         if largest != index {
             swap(first: largest, second: index)
-            heapify(index: largest)
+            maxHeapify(index: largest)
         }
     }
     
@@ -72,7 +78,7 @@ class Heap<Element : Comparable> {
         
         if smallest != index {
             swap(first: smallest, second: index)
-            heapify(index: smallest)
+            minHeapify(index: smallest)
         }
     }
     
@@ -92,10 +98,17 @@ class Heap<Element : Comparable> {
         }
     }
     
+    func buildheap() {
+        var count = list.count/2 - 1
+        while count >= 0 {
+            heapify(index: count)
+            count -= 1
+        }
+    }
+    
     func insert(element : Element) {
-        
         list.append(element)
-        convertToHeap()
+        buildheap()
     }
     
     func getRoot() -> Element? {
@@ -137,4 +150,9 @@ class Heap<Element : Comparable> {
         }
         return false
     }
+    
+    var isEmpty : Bool {
+        return list.isEmpty
+    }
+    
 }
