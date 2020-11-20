@@ -91,14 +91,16 @@ class ViewController: UIViewController {
 //        ])
         
 //        let x = Problems.findItinerary([["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]])
-        var val = [3,2,1]
+        var val = [[0,1,2,0],
+                   [3,4,5,2],
+                   [1,3,1,5]]
         "aaaaaaa"
         ["aaaa","aaa"]
         "ababacb"
         3
         "bbaaacbd"
         3
-        let x = Problems.findMaxLength([0,1,0])
+        let x = Problems.searchMatrix2([[1,3]], 3)
     }
     
     func test2(_ logLines : [String]) -> [String] {

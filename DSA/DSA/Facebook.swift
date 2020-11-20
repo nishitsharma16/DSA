@@ -44,34 +44,35 @@ extension Problems {
         return false
     }
     
-    static func cloneGraph(_ node: GrapthNode?) -> GrapthNode? {
-        guard let root = node else { return nil }
-        
-        var map = [GrapthNode?: GrapthNode?]()
-        let queue = Queue<GrapthNode>()
-        queue.enqueue(val: root)
-        
-        let cloneRootNode = GrapthNode(root.val)
-        map[root] = cloneRootNode
-        
-        while !queue.isEmpty {
-            let front = queue.dQueue()
-            if var list = front.neighbours {
+    func cloneGraph(_ node: GrapthNode?) -> GrapthNode? {
+            guard let root = node else { return nil }
+            
+            var map = [GrapthNode: GrapthNode]()
+            let queue = Queue<GrapthNode>()
+            queue.enqueue(val: root)
+            
+            let cloneRootNode = GrapthNode(root.val)
+            map[root] = cloneRootNode
+            
+            while !queue.isEmpty {
+                let front = queue.dQueue()
+                let list = front.neighbours
                 for item in list {
                     if let _ = map[item] {
                         
                     }
                     else {
-                        let cloneNode = GrapthNode(root.val)
+                        let cloneNode = GrapthNode(item.val)
                         map[item] = cloneNode
                         queue.enqueue(val: item)
                     }
-                    list.append(item)
+                    if let frontMapClone = map[front], let newCloneNode = map[item] {
+                        frontMapClone.neighbours.append(newCloneNode)
+                    }
                 }
             }
+            return cloneRootNode
         }
-        return cloneRootNode
-    }
     
 //    static func checkAnagram(_ str: String, _ map: [Character: Int]) -> Bool {
 //        var inner = map
@@ -1626,32 +1627,283 @@ extension Problems {
     }
     
     static func findMaxLength(_ nums: [Int]) -> Int {
-        if nums.count <= 1 {
+        let length = nums.count
+        if length <= 1 {
             return 0
         }
         
         var maxLen = Int.min
-        var numOfZeros = 0
-        var numOfOnes = 0
+        var map = [Int: Int]()
+        map[0] = -1
+        var count = 0
+        for i in 0..<length {
+            count = count + (nums[i] == 1 ? 1 : -1)
+            if let x = map[count] {
+                maxLen = max(maxLen, i - x)
+            }
+            else {
+                map[count] = i
+            }
+        }
+        return max(0, maxLen)
+    }
+    
+    static func numFriendRequests(_ ages: [Int]) -> Int {
+        let length = ages.count
+        if length <= 1 {
+            return 0
+        }
         
-        for i in 0..<nums.count {
-            let val = nums[i]
-            if val == 1 {
-                numOfOnes += 1
-            }
-            else if val == 0 {
-                numOfZeros += 1
-            }
-            if (i + 1) % 2 == 0 {
-                if numOfZeros == numOfOnes {
-                    if maxLen < (i + 1) {
-                        maxLen = i + 1
+        var countList = Array(repeating: 0, count: 121)
+        for age in ages {
+            var val = countList[age]
+            val += 1
+            countList[age] = val
+        }
+        
+        var result = 0
+        for ageA in 0...120 {
+            let countA = countList[ageA]
+            for ageB in 0...120 {
+                let countB = countList[ageB]
+                if (ageB <= ageA/2 + 7) || ageB > ageA || ageB > 100 && ageA < 100 {}
+                else {
+                    result += countA * countB
+                    if ageA == ageB {
+                        result -= countA
                     }
                 }
             }
         }
+        return result
+    }
+    
+    static func findPeakElement(_ nums: [Int]) -> Int {
+        if nums.isEmpty {
+            return -1
+        }
         
-        return maxLen
+        let length = nums.count
+        
+        if length == 1 {
+            return 0
+        }
+        else if length == 2 {
+            return nums[0] > nums [1] ? 0 : 1
+        }
+        
+        for index in 1..<length - 1 {
+            if nums[index] > nums[index - 1] && nums[index] > nums[index + 1] {
+                return index
+            }
+        }
+        return nums[0] > nums[length - 1] ? 0 : length - 1
+    }
+    
+    static func eraseOverlapIntervals(_ intervals: [[Int]]) -> Int {
+        if intervals.isEmpty || intervals.count == 1 {
+            return 0
+        }
+        
+        var list = intervals.sorted { $0[0] < $1[0] }
+        var index = 1
+        var counter = 0
+        while index < list.count {
+            if list[index][1] < list[index - 1][1] {
+                counter += 1
+                list.remove(at: index - 1)
+            }
+            else if list[index][0] < list[index - 1][1] {
+                counter += 1
+                list.remove(at: index)
+            }
+            else {
+                index += 1
+            }
+        }
+        return counter
+    }
+    
+    static func setZeroes(_ matrix: inout [[Int]]) {
+        if matrix.isEmpty {
+            return
+        }
+        
+        let m = matrix.count
+        let n = matrix[0].count
+        var isCol = false
+        for i in 0..<m {
+            if matrix[i][0] == 0 {
+                isCol = true
+            }
+            for j in 1..<n {
+                if matrix[i][j] == 0 {
+                    matrix[i][0] = 0
+                    matrix[0][j] = 0
+                }
+            }
+        }
+        
+        for i in 1..<m {
+            for j in 1..<n {
+                if matrix[i][0] == 0 || matrix[0][j] == 0 {
+                    matrix[i][j] = 0
+                }
+            }
+        }
+        
+        if matrix[0][0] == 0 {
+            for j in 0..<n {
+                matrix[0][j] = 0
+            }
+        }
+        
+        if isCol {
+            for i in 0..<m {
+                matrix[i][0] = 0
+            }
+        }
+    }
+    
+    // sum[i] - sum[j] = k i.e. sum[i] - k = sum[j] i.e. sum till ith index and sum till jth index
+    static func subarraySum(_ nums: [Int], _ k: Int) -> Int {
+        if nums.isEmpty {
+            return 0
+        }
+        
+        var sum = 0
+        var map = [Int: Int]()
+        map[0] = 1
+        var count = 0
+        
+        for item in nums {
+            sum += item
+            if let x = map[sum - k] {
+                count += x
+            }
+            if let y = map[sum] {
+                map[sum] = y + 1
+            }
+            else {
+                map[sum] = 1
+            }
+        }
+        
+        return count
+    }
+    
+    func distanceFromTarget(_ root: TreeNode?, _ k: Int) -> (Int, TreeNode?) {
+        if root == nil {
+            return (-1, nil)
+        }
+        
+        if let rootVal = root, rootVal.value == k {
+            return (0, root)
+        }
+        let left = distanceFromTarget(root?.left, k)
+        let right = distanceFromTarget(root?.right, k)
+        if left.0 != -1 {
+            return (left.0 + 1, left.1)
+        }
+        else if right.0 != -1 {
+            return (right.0 + 1, right.1)
+        }
+        return (-1, nil)
+    }
+    
+    func findClosestLeaf(_ root: TreeNode?, _ k: Int) -> Int {
+        if root == nil {
+            return 0
+        }
+        
+        let distToTarget = distanceFromTarget(root, k)
+        if distToTarget.0 != -1 {
+            
+        }
+        
+        
+        return 0
+    }
+    
+    static func binarySearch(_ matrix: [[Int]], _ row: Int, _ left: Int, _ right: Int, _ target: Int) -> Bool {
+        if left > right {
+            return false
+        }
+        
+        let mid = (left + right) / 2
+        if matrix[row][mid] == target {
+            return true
+        }
+        else if matrix[row][mid] < target {
+            return binarySearch(matrix, row, mid + 1, right, target)
+        }
+        return binarySearch(matrix, row, left, mid - 1, target)
+    }
+    
+    static func searchMatrix2(_ matrix: [[Int]], _ target: Int) -> Bool {
+        
+        let m = matrix.count
+        guard let first = matrix.first else { return false }
+        
+        let n = first.count
+        
+        if matrix.isEmpty || n == 0 {
+            return false
+        }
+        
+        if target < matrix[0][0] || target > matrix[m - 1][n - 1] {
+            return false
+        }
+        
+        for i in 0..<m {
+            if target >= matrix[i][0] && target <= matrix[i][n - 1] {
+                return binarySearch(matrix, i, i, n - 1, target)
+            }
+        }
+        return false
+    }
+    
+    func copyRandomList(_ head: RandomNode?) -> RandomNode? {
+        guard let root = head else {
+            return nil
+        }
+        
+        var map = [RandomNode: RandomNode]()
+        
+        var curr = head
+        while let currVal = curr {
+            map[currVal] = RandomNode(currVal.val)
+            curr = curr?.next
+        }
+        
+        curr = head
+        while let currVal = curr {
+            if let x = currVal.next, let y = currVal.random, let clone = map[currVal] {
+                clone.next = map[x]
+                clone.random = map[y]
+            }
+            curr = curr?.next
+        }
+        
+        return map[root]
+    }
+    
+    func rotateMatrix90(_ matrix: inout [[Int]]) {
+        if matrix.isEmpty {
+            return
+        }
+        
+        let n = matrix.count
+        
+        for x in 0..<n/2 {
+            for y in x..<n-x-1 {
+                let temp = matrix[x][y]
+                matrix[x][y] = matrix[y][n-1-x]
+                matrix[y][n-1-x] = matrix[n-1-x][n-1-y]
+                matrix[n-1-x][n-1-y] = matrix[n-1-y][x]
+                matrix[n-1-y][x] = temp
+            }
+        }
     }
 }
 
@@ -1722,7 +1974,7 @@ class TrieSet2 {
 
 class GrapthNode {
     let val: Int
-    var neighbours: [GrapthNode]?
+    var neighbours = [GrapthNode]()
     init(_ val: Int) {
         self.val = val
     }

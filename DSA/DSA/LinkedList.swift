@@ -24,6 +24,25 @@ class SortedNode {
     }
 }
 
+class RandomNode {
+    var val : Int
+    var next : RandomNode?
+    var random : RandomNode?
+    init(_ value : Int) {
+        val = value
+    }
+}
+
+extension RandomNode: Hashable {
+    static func == (lhs: RandomNode, rhs: RandomNode) -> Bool {
+        return lhs.val == rhs.val
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(val)
+    }
+}
+
 class NextConnectedNode {
     var val : Int
     var left : NextConnectedNode?
