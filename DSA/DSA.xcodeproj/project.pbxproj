@@ -20,6 +20,7 @@
 		1835A5C52467559700B2B0AF /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1835A5C42467559700B2B0AF /* Stack.swift */; };
 		1835A5C72469C2C300B2B0AF /* BST.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1835A5C62469C2C300B2B0AF /* BST.swift */; };
 		183669B32479A4EB00AB9608 /* Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183669B22479A4EB00AB9608 /* Trie.swift */; };
+		1863B7FB2569831A00FAF529 /* Dictionay+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1863B7FA2569831A00FAF529 /* Dictionay+Additions.swift */; };
 		1895B41D25108F220028F504 /* Facebook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1895B41C25108F220028F504 /* Facebook.swift */; };
 		1895B41F25108F3F0028F504 /* Linkedin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1895B41E25108F3F0028F504 /* Linkedin.swift */; };
 		1897D1BB243CEE9D00B23934 /* StringDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1897D1BA243CEE9D00B23934 /* StringDS.swift */; };
@@ -70,6 +71,7 @@
 		1835A5C42467559700B2B0AF /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		1835A5C62469C2C300B2B0AF /* BST.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BST.swift; sourceTree = "<group>"; };
 		183669B22479A4EB00AB9608 /* Trie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trie.swift; sourceTree = "<group>"; };
+		1863B7FA2569831A00FAF529 /* Dictionay+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionay+Additions.swift"; sourceTree = "<group>"; };
 		1895B41C25108F220028F504 /* Facebook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Facebook.swift; sourceTree = "<group>"; };
 		1895B41E25108F3F0028F504 /* Linkedin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Linkedin.swift; sourceTree = "<group>"; };
 		1897D1BA243CEE9D00B23934 /* StringDS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringDS.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				1895B41E25108F3F0028F504 /* Linkedin.swift */,
 				1810CB51251390BE00BDDA87 /* Intuit.swift */,
 				1808E425252B937E008B2619 /* Goldman.swift */,
+				1863B7FA2569831A00FAF529 /* Dictionay+Additions.swift */,
 			);
 			path = DSA;
 			sourceTree = "<group>";
@@ -331,6 +334,7 @@
 				18CC594D243A6A8000185D52 /* ViewController.swift in Sources */,
 				1895B41F25108F3F0028F504 /* Linkedin.swift in Sources */,
 				1897D1BD2440FAA100B23934 /* StringExtension.swift in Sources */,
+				1863B7FB2569831A00FAF529 /* Dictionay+Additions.swift in Sources */,
 				1897D1BB243CEE9D00B23934 /* StringDS.swift in Sources */,
 				18BBDC90249752A2002BE2BC /* LRUCache.swift in Sources */,
 				1816CD8A24924F3500E37BAC /* LeetCode.swift in Sources */,

@@ -24,6 +24,15 @@ class SortedNode {
     }
 }
 
+class DLLNode {
+    var val : Int
+    var next : DLLNode?
+    var prev : DLLNode?
+    init(_ value : Int) {
+        val = value
+    }
+}
+
 class RandomNode {
     var val : Int
     var next : RandomNode?

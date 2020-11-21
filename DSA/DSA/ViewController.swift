@@ -100,7 +100,14 @@ class ViewController: UIViewController {
         3
         "bbaaacbd"
         3
-        let x = Problems.searchMatrix2([[1,3]], 3)
+        "abcdef"
+        ["ab","bc","cd","de","ef","fg","gh"]
+        "ab"
+        "eidboaoo"
+        "ab"
+        "eidbaooo"
+        var list = ["t","h","e"," ","s","k","y"," ","i","s"," ","b","l","u","e"]
+        let x = Problems.reverseWords(&list)
     }
     
     func test2(_ logLines : [String]) -> [String] {

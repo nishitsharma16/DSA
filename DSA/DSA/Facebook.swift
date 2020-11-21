@@ -1888,6 +1888,73 @@ extension Problems {
         return map[root]
     }
     
+    func fixLeftPointer(_ root: TreeNode?, _ prev: inout TreeNode?) {
+        if let _ = root {
+            fixLeftPointer(root?.left, &prev)
+            root?.left = prev
+            prev = root
+            fixLeftPointer(root?.right, &prev)
+        }
+    }
+    
+    func fixRightPointer(_ root: inout TreeNode?) -> TreeNode? {
+        while root != nil && root?.right != nil {
+            root = root?.right
+        }
+        
+        var temp: TreeNode?
+        while root != nil && root?.left != nil {
+            temp = root
+            root = root?.left
+            root?.right = temp
+        }
+        return root
+    }
+    
+    func binaryTreeToDLL(_ root: TreeNode?) -> TreeNode? {
+        if root == nil {
+            return nil
+        }
+        var rootVal = root
+        var prev: TreeNode?
+        fixLeftPointer(rootVal, &prev)
+        let head = fixRightPointer(&rootVal)
+        return head
+    }
+    
+    func lengthOfList(_ head: DLLNode?) -> Int {
+        var counter = 0
+        var headVal = head
+        while headVal != nil {
+            headVal = headVal?.next
+            counter += 1
+        }
+        return counter
+    }
+    
+    func dLLToBinaryTreeHelper(_ head: inout DLLNode?, _ n: Int) -> DLLNode? {
+        if n <= 0 {
+            return nil
+        }
+        
+        let left = dLLToBinaryTreeHelper(&head, n/2)
+        let rootVal = head
+        rootVal?.prev = left
+        head = head?.next
+        rootVal?.next = dLLToBinaryTreeHelper(&head, n - n / 2 - 1)
+        return rootVal
+    }
+    
+    func dLLToBinaryTree(_ root: DLLNode?) -> DLLNode? {
+        if root == nil {
+            return nil
+        }
+        let length = lengthOfList(root)
+        var rootVal = root
+        let result = dLLToBinaryTreeHelper(&rootVal, length)
+        return result
+    }
+    
     func rotateMatrix90(_ matrix: inout [[Int]]) {
         if matrix.isEmpty {
             return
@@ -1904,6 +1971,197 @@ extension Problems {
                 matrix[n-1-y][x] = temp
             }
         }
+    }
+    
+    static func addBoldTag(_ s: String, _ dict: [String]) -> String {
+        if s.isEmpty {
+            return ""
+        }
+        else if dict.isEmpty {
+            return s
+        }
+        
+        let strt = s.startIndex
+        let n = s.count
+        var list = [(x: Int, y: Int)]()
+        
+        for i in 0..<n {
+            var l = 0
+            for item in dict {
+                let status = s.startWith(item, i)
+                if status {
+                    l = max(l, item.count)
+                }
+            }
+            if l > 0 {
+                list.append((i, i + l - 1))
+            }
+        }
+        
+        if list.isEmpty {
+            return s
+        }
+        
+        var listVal = list.sorted { (first, second) -> Bool in
+            return first.x < second.x
+        }
+        
+        var i = 0
+        while i < listVal.count - 1 {
+            let curr = listVal[i]
+            let next = listVal[i + 1]
+            if (curr.y >= next.x) || (next.x <= curr.x && next.y >= curr.y) || next.x == curr.y + 1 {
+                listVal[i] = (min(curr.x, next.x), max(curr.y, next.y))
+                listVal.remove(at: i + 1)
+            }
+            else {
+                i += 1
+            }
+        }
+        
+        var last = 0
+        var result = ""
+        for item in listVal {
+            let start = item.x
+            let end = item.y
+            if last == start {
+                result += ""
+            }
+            else {
+                result += String(s[s.index(strt, offsetBy: last + 1)...s.index(strt, offsetBy: start - 1)])
+            }
+            
+            result += "<b>" + String(s[s.index(strt, offsetBy: start)...s.index(strt, offsetBy: end)]) + "</b>"
+            last = end
+        }
+        
+        result += last == s.count - 1 ? "" : String(s.suffix(from: s.index(strt, offsetBy: last + 1)))
+        
+        return result
+    }
+    
+    static func canPartition(_ nums: [Int]) -> Bool {
+        if nums.isEmpty || nums.count == 1 {
+            return false
+        }
+        
+        
+        // If we have to divide the array in two sets then it has to have sum even and we just need to find sum/2 in the list
+
+        let length = nums.count
+        let sum = nums.reduce(0, +)
+        if sum % 2 != 0 {
+            return false
+        }
+        
+        let subSetSum = sum / 2
+        var dpMap = Array(repeating: Array(repeating: false, count: subSetSum + 1), count: length + 1)
+        
+        dpMap[0][0] = true
+        
+        for i in 1...length {
+            let curr = nums[i - 1]
+            for j in 0...subSetSum {
+                if j < curr {
+                    dpMap[i][j] = dpMap[i - 1][j]
+                }
+                else {
+                    dpMap[i][j] = dpMap[i - 1][j] || dpMap[i - 1][j - curr]
+                }
+            }
+        }
+        
+        return dpMap[length][subSetSum]
+    }
+    
+    static func checkMapForPermutation(_ s1Map: [Int], _ s2Map: [Int]) -> Bool {
+        for i in 0..<26 {
+            if s1Map[i] != s2Map[i] {
+                return false
+            }
+        }
+        return true
+    }
+    
+    static func checkInclusion(_ s1: String, _ s2: String) -> Bool {
+        if s2.isEmpty {
+            return false
+        }
+        else if s1.isEmpty {
+            return true
+        }
+        
+        let s1Len = s1.count
+        let s2Len = s2.count
+        if s1Len > s2Len {
+            return false
+        }
+        var s1Map = Array(repeating: 0, count: 26)
+        var s2Map = Array(repeating: 0, count: 26)
+        let aCharacter: Character = "a"
+        let firstAscii = aCharacter.asciiValue
+        for i in 0..<s1Len {
+            if let x = s1[i].asciiValue, let y = firstAscii {
+                let val = Int(x - y)
+                s1Map[val] += 1
+            }
+            
+            if let x = s2[i].asciiValue, let y = firstAscii {
+                let val = Int(x - y)
+                s2Map[val] += 1
+            }
+        }
+        
+        for i in 0..<s2Len - s1Len {
+            if checkMapForPermutation(s1Map, s2Map) {
+                return true
+            }
+            if let x = s2[i + s1Len].asciiValue, let y = firstAscii {
+                let val = Int(x - y)
+                s2Map[val] += 1
+            }
+            if let x = s2[i].asciiValue, let y = firstAscii {
+                let val = Int(x - y)
+                s2Map[val] -= 1
+            }
+        }
+        
+        return checkMapForPermutation(s1Map, s2Map)
+    }
+    
+    static func reverseWord(_ s: inout [Character], _ start: Int, _ end: Int) {
+        let length = s.count
+        if start >= 0 && start < end && end < length {
+            var l = start
+            var r = end
+            while l < r {
+                s.swapAt(l, r)
+                l += 1
+                r -= 1
+            }
+        }
+    }
+    
+    static func reverseWords(_ s: inout [Character]) {
+        if s.isEmpty {
+            return
+        }
+        
+        var start = 0
+        let length = s.count
+        for i in 0..<length {
+            let item = s[i]
+            if item == " " {
+                reverseWord(&s, start, i - 1)
+                start = i + 1
+            }
+        }
+        
+        if start < length {
+            reverseWord(&s, start, length - 1)
+        }
+        
+        reverseWord(&s, 0, length - 1)
     }
 }
 

@@ -768,6 +768,28 @@ extension String {
         }
     }
     
+    func startWith(_ s: String, _ index: Int) -> Bool {
+        if s.isEmpty {
+            return false
+        }
+        
+        var indexVal = index
+        let length = self.count
+        
+        if index + s.count > length {
+            return false
+        }
+        
+        for item in s {
+            if indexVal < length && self[indexVal] != item {
+                return false
+            }
+            indexVal += 1
+        }
+        
+        return true
+    }
+    
     func removeWhiteSpaceCharFromStartAndEnd() -> String {
         if self.isEmpty {
             return .empty
@@ -849,4 +871,8 @@ extension Character {
         return Int(val)
     }
     
+}
+
+extension StringProtocol {
+    var asciiValues: [UInt8] { compactMap(\.asciiValue) }
 }
