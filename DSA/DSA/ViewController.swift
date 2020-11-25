@@ -106,8 +106,10 @@ class ViewController: UIViewController {
         "eidboaoo"
         "ab"
         "eidbaooo"
-        var list = ["t","h","e"," ","s","k","y"," ","i","s"," ","b","l","u","e"]
-        let x = Problems.reverseWords(&list)
+        [1,2,3,4]
+        3
+        var list: [Character] = ["t","h","e"," ","s","k","y"," ","i","s"," ","b","l","u","e"]
+        let x = Problems.findAllSubSetsWithDuplicates(list: [4,3,2,3,5,2,1], numberOfSets: 4)
     }
     
     func test2(_ logLines : [String]) -> [String] {

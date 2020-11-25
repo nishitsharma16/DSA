@@ -315,8 +315,33 @@ extension Problems {
         return numbreOfSets == count
     }
     
+    static func checkDuplicateSumCount(_ list: [Int], _ setCount: Int) -> Bool {
+        if list.isEmpty {
+            return false
+        }
+        
+        var map = [Int: Int]()
+        for item in list {
+            if let val = map[item] {
+                map[item] = val + 1
+            }
+            else {
+                map[item] = 1
+            }
+        }
+        
+        for item in map {
+            if item.value >= setCount {
+                return true
+            }
+        }
+        return false
+    }
+    
     static func findSubSets(list: [Int], subset: inout Set<Int>, index: Int, result: inout Set<Set<Int>>) {
-        result.insert(subset)
+        if !subset.isEmpty {
+            result.insert(subset)
+        }
         for i in index..<list.count {
             subset.insert(list[i])
             findSubSets(list: list, subset: &subset, index: index + 1, result: &result)
@@ -324,7 +349,7 @@ extension Problems {
         }
     }
     
-    static func findAllSubSets(list: [Int], numbreOfSets: Int) -> (Set<Set<Int>>, hasSetsOfEqualSum: Bool)? {
+    static func findAllSubSets(list: [Int], numberOfSets: Int) -> (Set<Set<Int>>, hasSetsOfEqualSum: Bool)? {
         if list.isEmpty {
             return nil
         }
@@ -343,9 +368,9 @@ extension Problems {
             temp.append(sum)
         }
         
-        let count = getDuplicateCount(list: &temp)
+        let status = checkDuplicateSumCount(temp, numberOfSets)
         
-        return (result, numbreOfSets >= count)
+        return (result, status)
     }
     
     static func detectCycleInUndirectedGraph(currentNode: Int, adjencyList: [Int: [Int]], visited: inout [Bool], parent: Int) -> Bool {

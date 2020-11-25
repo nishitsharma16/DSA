@@ -908,7 +908,6 @@ class Problems {
         }
         
         var counter = 0
-        list.sort()
         var index = 0
         while index < list.count - 1 {
             if list[index] == list[index + 1] {

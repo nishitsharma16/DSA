@@ -2142,7 +2142,7 @@ extension Problems {
         }
     }
     
-    static func reverseWords(_ s: inout [Character]) {
+    static func reverseWordsFromCharArray(_ s: inout [Character]) {
         if s.isEmpty {
             return
         }
@@ -2162,6 +2162,253 @@ extension Problems {
         }
         
         reverseWord(&s, 0, length - 1)
+    }
+    
+    func getSwappingIndex(_ s: String, _ item: (i: Int, val: String), _ start: Int, _ len: Int) -> Int {
+        if start >= len {
+            return -1
+        }
+        let firstItem = String(s[start])
+        if firstItem == item.val {
+            return getSwappingIndex(s, item, start + 1, len)
+        }
+        else {
+            return start
+        }
+    }
+    
+    func maximumSwap(_ num: Int) -> Int {
+        let x = num.toString()
+        let len = x.count
+        
+        var positionList = Array(repeating: 0, count: 10)
+        let zero: Character = "0"
+        let zeroAscii = zero.asciiValue
+        for i in 0..<len {
+            if let x = x[i].asciiValue, let y = zeroAscii {
+                positionList[Int(x - y)] = i
+            }
+        }
+        
+        var list = x.map { String($0) }
+        
+        for i in 0..<len {
+            var digit = 9
+            while let x = x[i].asciiValue, let y = zeroAscii, digit > Int(x - y) {
+                if positionList[digit] > i {
+                    list.swapAt(positionList[digit], i)
+                    return list.reduce(0) { (prev, curr) -> Int in
+                        return prev*10 + (Int(curr) ?? 0)
+                    }
+                }
+                digit -= 1
+            }
+        }
+        
+        return num
+    }
+    
+    func checkCycle(_ graph: [Int: [Int]], visited: inout [Bool], recStack: inout [Bool], _ root: Int) -> Bool {
+        if !visited[root] {
+            visited[root] = true
+            recStack[root] = true
+            
+            if let list = graph[root] {
+                for item in list {
+                    if !visited[item] && checkCycle(graph, visited: &visited, recStack: &recStack, item) {
+                        return true
+                    }
+                    else if recStack[item] {
+                        return true
+                    }
+                }
+            }
+            recStack[root] = false
+        }
+        return false
+    }
+    
+    func canFinish(_ numCourses: Int, _ prerequisites: [[Int]]) -> Bool {
+        if numCourses == 0 || prerequisites.isEmpty {
+            return false
+        }
+        
+        var adjMap = [Int: [Int]]()
+        var set = Set<Int>()
+        
+        for item in prerequisites {
+            let source = item[1]
+            let dest = item[0]
+            set.insert(source)
+            set.insert(dest)
+            if var val = adjMap[source] {
+                val.append(dest)
+                adjMap[source] = val
+            }
+            else {
+                adjMap[source] = [dest]
+            }
+        }
+        
+        if set.count != numCourses {
+            return false
+        }
+        
+        var visited = Array(repeating: false, count: numCourses)
+        var recStack = Array(repeating: false, count: numCourses)
+
+        for i in 0..<numCourses {
+            if checkCycle(adjMap, visited: &visited, recStack: &recStack, i) {
+                return false
+            }
+        }
+        
+        return true
+    }
+    
+    static func findDiagonalOrder(_ nums: [[Int]]) -> [Int] {
+        if nums.isEmpty {
+            return []
+        }
+        
+        var result = [Int]()
+        let m = nums.count
+        var numsVal = nums
+        
+        let queue = Queue<(x: Int, y: Int)>()
+        queue.enqueue(val: (0,0))
+        
+        while !queue.isEmpty {
+            let item = queue.dQueue()
+            let val = nums[item.x][item.y]
+            result.append(val)
+            let list = nums[item.x]
+            let listCount = list.count
+            if item.x + 1 < m && item.y < listCount {
+                let nextList = nums[item.x + 1]
+                if item.y < nextList.count && numsVal[item.x + 1][item.y] > 0 {
+                    numsVal[item.x + 1][item.y] = -numsVal[item.x + 1][item.y]
+                    queue.enqueue(val: (item.x + 1, item.y))
+                }
+            }
+            if item.x < m && item.y + 1 < list.count && numsVal[item.x][item.y + 1] > 0 {
+                numsVal[item.x][item.y + 1] = -numsVal[item.x][item.y + 1]
+                queue.enqueue(val: (item.x, item.y + 1))
+            }
+            
+        }
+        return result
+    }
+    
+    static func bulbSwitch(_ n: Int) -> Int {
+        if n <= 0 {
+            return 0
+        }
+        
+        var result = 0
+        var index = 1
+        
+        while index * index <= n {
+            index += 1
+            result += 1
+        }
+        
+        return result
+    }
+    
+    
+    func sortList(_ head: SortedNode?) -> SortedNode? {
+        if head == nil {
+            return nil
+        }
+        
+        var result: SortedNode?
+        var curr = head
+        var temp: SortedNode?
+        
+        while curr != nil {
+            if result == nil {
+                result = curr
+                curr = curr?.next
+                result?.next = nil
+            }
+            else {
+                if let currVal = curr?.val, let resultval = result?.val, currVal < resultval {
+                    temp = curr
+                    curr = curr?.next
+                    temp?.next = result
+                    result = temp
+                }
+                else {
+                    var val = result
+                    var prev: SortedNode?
+                    while let currVal = val?.val, let targetVal = curr?.val, currVal < targetVal  {
+                        prev = val
+                        val = val?.next
+                    }
+                    if prev != nil {
+                        temp = curr
+                        curr = curr?.next
+                        temp?.next = val
+                        prev?.next = temp
+                    }
+                }
+            }
+        }
+        
+        return result
+    }
+    
+    func findMiddleOfList(_ head: inout SortedNode?) -> SortedNode? {
+        if head == nil || head?.next == nil {
+            return head
+        }
+        
+        var slow = head
+        
+        while head != nil && head?.next != nil {
+            slow = slow?.next
+            head = head?.next?.next
+        }
+        
+        let result = slow?.next
+        slow?.next = nil
+        return result
+    }
+    
+    func mergeLists(_ list1: SortedNode?, _ list2: SortedNode?) -> SortedNode? {
+        let dummy = SortedNode(-1)
+        var curr1 = list1
+        var curr2 = list2
+        var temp: SortedNode? = dummy
+        
+        while curr1 != nil && curr2 != nil {
+            if let val1 = curr1?.val, let val2 = curr2?.val, val1 < val2 {
+                temp?.next = curr1
+                curr1 = curr1?.next
+                temp = temp?.next
+            }
+            else {
+                temp?.next = curr2
+                curr2 = curr2?.next
+                temp = temp?.next
+            }
+        }
+        
+        temp?.next = curr1 != nil ? curr1 : curr2
+        return dummy.next
+    }
+    
+    func mergeSortList(_ head: SortedNode?) -> SortedNode? {
+        var headVal = head
+        if headVal == nil || headVal?.next == nil {
+            return headVal
+        }
+        
+        let mid = findMiddleOfList(&headVal)
+        let left = sortList(headVal)
+        let right = sortList(mid)
+        return mergeLists(left, right)
     }
 }
 
@@ -2396,6 +2643,32 @@ class NumMatrixV2 {
             sum = matval[row2 + 1][col2 + 1] - matval[row2 + 1][col1] - matval[row1][col2 + 1] + matval[row1][col1]
         }
         return sum
+    }
+}
+
+class RandomPickWeightSolution {
+
+    private var prefixSum: Array<Int>
+    private var sum = 0
+    init(_ w: [Int]) {
+        let length = w.count
+        prefixSum = Array(repeating: 0, count: length)
+        for i in 0..<length {
+            sum += w[i]
+            prefixSum[i] = sum
+        }
+    }
+    
+    func pickIndex() -> Int {
+        let randomSum = Int.random(in: 0...sum)
+        var i = 0
+        while i < prefixSum.count {
+            if randomSum < prefixSum[i] {
+                return i
+            }
+            i += 1
+        }
+        return i - 1
     }
 }
 
