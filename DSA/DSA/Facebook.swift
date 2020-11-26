@@ -815,17 +815,17 @@ extension Problems {
             return -1
         }
         let mid = (l + r) / 2
-        if l == r {
+        if mid - 1 >= 0 && mid + 1 < length && nums[mid] < nums[mid - 1] && nums[mid] <= nums[mid + 1] {
             return mid
         }
-        else if mid - 1 >= 0 && mid + 1 < length && nums[mid] < nums[mid - 1] && nums[mid] >= nums[mid + 1] {
-            return mid
+        else if mid - 1 >= 0 && mid + 1 < length && nums[mid] >= nums[mid - 1] && nums[mid] > nums[mid + 1] {
+            return mid + 1
         }
-        else if mid - 1 >= 0 && nums[mid] <= nums[mid - 1] {
-            return getPivotPosition(nums, l, mid - 1, length)
+        else if mid - 1 >= 0 && mid + 1 < length && nums[mid] > nums[mid - 1] && nums[mid] <= nums[mid + 1] {
+            return getPivotPosition(nums, mid + 1, r, length)
         }
         else {
-            return getPivotPosition(nums, mid + 1, r, length)
+            return getPivotPosition(nums, l, mid - 1, length)
         }
     }
     
@@ -2410,6 +2410,77 @@ extension Problems {
         let right = sortList(mid)
         return mergeLists(left, right)
     }
+    
+    static func searchForMinIndexHelper(_ nums: [Int], _ l: Int, _ r: Int, _ length: Int) -> Int {
+        if l > r {
+            return -1
+        }
+        
+        let mid = (l + r) / 2
+        if mid - 1 >= 0 && mid + 1 < length && nums[mid] < nums[mid - 1] && nums[mid] <= nums[mid + 1] {
+            return mid
+        }
+        else if mid - 1 >= 0 && mid + 1 < length && nums[mid] >= nums[mid - 1] && nums[mid] > nums[mid + 1] {
+            return mid + 1
+        }
+        
+        let leftSorted = nums[l] <= nums[mid]
+        let righSorted = nums[mid] <= nums[r]
+        
+        if righSorted {
+            return searchForMinIndexHelper(nums, l, mid - 1, length)
+        }
+        else if leftSorted {
+            return searchForMinIndexHelper(nums, mid + 1, r, length)
+        }
+        return -1
+    }
+    
+    static func findMin(_ nums: [Int]) -> Int {
+        if nums.isEmpty {
+            return -1
+        }
+        
+        let length = nums.count
+        let index = searchForMinIndexHelper(nums, 0, length - 1, length)
+        if index == -1 {
+            return min(nums[0], nums[length - 1])
+        }
+        return nums[index]
+    }
+    
+    func calculateSumHelper(_ nums: [Int], map: inout [[Int]], index: Int, sum: Int, target: Int) -> Int {
+        if index == nums.count {
+            if sum == target {
+                return 1
+            }
+            else {
+                return 0
+            }
+        }
+        else {
+            if map[index][sum + 1000] != Int.min {
+                return map[index][sum + 1000]
+            }
+            else {
+                let add = calculateSumHelper(nums, map: &map, index: index + 1, sum: sum + nums[index], target: target)
+                let substract = calculateSumHelper(nums, map: &map, index: index + 1, sum: sum - nums[index], target: target)
+                map[index][sum + 1000] = add + substract
+                return map[index][sum + 1000]
+            }
+        }
+    }
+    
+    func findTargetSumWays(_ nums: [Int], _ S: Int) -> Int {
+        if nums.isEmpty {
+            return 0
+        }
+                
+        let len = nums.count
+        var dpMemo = Array(repeating: Array(repeating: Int.min, count: 2001), count: len)
+        let counter = calculateSumHelper(nums, map: &dpMemo, index: 0, sum: 0, target: S)
+        return counter
+    }
 }
 
 
@@ -2669,6 +2740,21 @@ class RandomPickWeightSolution {
             i += 1
         }
         return i - 1
+    }
+}
+
+class Vector2D {
+
+    init(_ v: [[Int]]) {
+        
+    }
+    
+    func next() -> Int {
+        
+    }
+    
+    func hasNext() -> Bool {
+        
     }
 }
 
