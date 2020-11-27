@@ -2481,6 +2481,54 @@ extension Problems {
         let counter = calculateSumHelper(nums, map: &dpMemo, index: 0, sum: 0, target: S)
         return counter
     }
+    
+    // Variation of coin channge (https://leetcode.com/problems/coin-change/solution/)
+    static func combinationSum4(_ nums: [Int], _ target: Int) -> Int {
+        if nums.isEmpty {
+            return 0
+        }
+        var amountList = Array(repeating: 0, count: target + 1)
+        amountList[0] = 1
+        for i in 1...target {
+            for item in nums {
+                if i >= item {
+                    amountList[i] += amountList[i - item]
+                }
+            }
+        }
+        return amountList[target]
+    }
+    
+    static func threeSumClosest(_ nums: [Int], _ target: Int) -> Int {
+        
+        if nums.isEmpty {
+            return 0
+        }
+        
+        let list = nums.sorted()
+        let length = list.count
+        var result = list[length - 1] + list[length - 2] + list[length - 3]
+        
+        for i in 0..<length - 2 {
+            var l = i + 1
+            var r = length - 1
+            while l < r {
+                let sum = list[i] + list[l] + list[r]
+                result = abs(result - target) > abs(sum - target) ? sum : result
+                if target > sum {
+                    l += 1
+                }
+                else if sum > target {
+                    r -= 1
+                }
+                else {
+                    return sum
+                }
+            }
+        }
+        
+        return result
+    }
 }
 
 
@@ -2745,16 +2793,28 @@ class RandomPickWeightSolution {
 
 class Vector2D {
 
+    private var start = 0
+    private var stateList = [Int]()
     init(_ v: [[Int]]) {
-        
+        for i in 0..<v.count {
+            let list = v[i]
+            for j in 0..<list.count {
+                stateList.append(list[j])
+            }
+        }
     }
     
     func next() -> Int {
-        
+        if start < stateList.count {
+            let item = stateList[start]
+            start += 1
+            return item
+        }
+        return -1
     }
     
     func hasNext() -> Bool {
-        
+        return start < stateList.count
     }
 }
 

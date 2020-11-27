@@ -109,7 +109,7 @@ class ViewController: UIViewController {
         [1,2,3,4]
         3
         var list: [Character] = ["t","h","e"," ","s","k","y"," ","i","s"," ","b","l","u","e"]
-        let x = Problems.findMin([1,2,3,4,5])
+        let x = Problems.threeSumClosest([-1,2,1,-4], 1)
     }
     
     func test2(_ logLines : [String]) -> [String] {
