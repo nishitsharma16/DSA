@@ -109,7 +109,11 @@ class ViewController: UIViewController {
         [1,2,3,4]
         3
         var list: [Character] = ["t","h","e"," ","s","k","y"," ","i","s"," ","b","l","u","e"]
-        let x = Problems.threeSumClosest([-1,2,1,-4], 1)
+        
+        4
+        [[0,1,3],[1,2,1],[1,3,4],[2,3,1]]
+        4
+        let x = Problems.findTheCity(4, [[0,1,3],[1,2,1],[1,3,4],[2,3,1]], 4)
     }
     
     func test2(_ logLines : [String]) -> [String] {
