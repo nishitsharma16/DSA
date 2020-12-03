@@ -2529,6 +2529,35 @@ extension Problems {
         
         return result
     }
+    
+    func maxSumLengthSubArrayToTarget(list : [Int], _ target: Int) -> Int {
+        
+        var maxLen = Int.min
+        var maxSum = Int.min
+        var currentSum = 0
+        
+        for i in 0..<list.count {
+            let item = list[i]
+            currentSum += item
+            
+        }
+        for item in list {
+            
+//            if <#condition#> {
+//                <#code#>
+//            }
+            currentSum += item
+            if maxSum < currentSum {
+                maxSum = currentSum
+            }
+            
+            if currentSum < 0 {
+                currentSum = 0
+            }
+        }
+        
+        return maxSum
+    }
 }
 
 

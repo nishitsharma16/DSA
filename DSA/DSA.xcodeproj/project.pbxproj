@@ -40,6 +40,8 @@
 		18CC596B243A6A8300185D52 /* DSAUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CC596A243A6A8300185D52 /* DSAUITests.swift */; };
 		18CC5979243A6AA600185D52 /* Heap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CC5978243A6AA600185D52 /* Heap.swift */; };
 		18CC597B243BB22E00185D52 /* PriorityQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CC597A243BB22D00185D52 /* PriorityQueue.swift */; };
+		18D9AC5325792F27002020D5 /* CustomTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D9AC5225792F27002020D5 /* CustomTableView.swift */; };
+		18D9AC5B25793B51002020D5 /* TableViewCellQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D9AC5A25793B51002020D5 /* TableViewCellQueue.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,6 +102,8 @@
 		18CC596C243A6A8300185D52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		18CC5978243A6AA600185D52 /* Heap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Heap.swift; sourceTree = "<group>"; };
 		18CC597A243BB22D00185D52 /* PriorityQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityQueue.swift; sourceTree = "<group>"; };
+		18D9AC5225792F27002020D5 /* CustomTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableView.swift; sourceTree = "<group>"; };
+		18D9AC5A25793B51002020D5 /* TableViewCellQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellQueue.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +187,8 @@
 				1863B7FA2569831A00FAF529 /* Dictionay+Additions.swift */,
 				1863B7FF256AE3A800FAF529 /* Extensions.swift */,
 				188236E52570EC0100192FEC /* Citrix.swift */,
+				18D9AC5225792F27002020D5 /* CustomTableView.swift */,
+				18D9AC5A25793B51002020D5 /* TableViewCellQueue.swift */,
 			);
 			path = DSA;
 			sourceTree = "<group>";
@@ -351,6 +357,8 @@
 				1835A5C32467558B00B2B0AF /* Queue.swift in Sources */,
 				1895B41D25108F220028F504 /* Facebook.swift in Sources */,
 				1835A5C52467559700B2B0AF /* Stack.swift in Sources */,
+				18D9AC5B25793B51002020D5 /* TableViewCellQueue.swift in Sources */,
+				18D9AC5325792F27002020D5 /* CustomTableView.swift in Sources */,
 				1835A5C72469C2C300B2B0AF /* BST.swift in Sources */,
 				1816CD882490C8CF00E37BAC /* DP.swift in Sources */,
 				181D1C4E2448DD01004E0E08 /* ArrayExtension.swift in Sources */,

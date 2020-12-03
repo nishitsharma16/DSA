@@ -39,7 +39,7 @@ class TreeNode {
 
 class BinaryTree {
     
-    func minMaxHorizontalDistance(root : BTNode<Item<Int>>?, min : inout Int, max : inout Int, hd : inout Int) {
+    func minMaxHorizontalDistance(root : BTNode<Int>?, min : inout Int, max : inout Int, hd : Int) {
         if let rootVal = root {
             
             if hd < min {
@@ -49,38 +49,34 @@ class BinaryTree {
                 max = hd
             }
             
-            hd = hd - 1
-            minMaxHorizontalDistance(root: rootVal.left, min: &min, max: &max, hd: &hd)
-            hd = hd + 1
-            minMaxHorizontalDistance(root: rootVal.right, min: &min, max: &max, hd: &hd)
+            minMaxHorizontalDistance(root: rootVal.left, min: &min, max: &max, hd: hd - 1)
+            minMaxHorizontalDistance(root: rootVal.right, min: &min, max: &max, hd: hd + 1)
         }
     }
     
-    func printVerticatNodes(root : BTNode<Item<Int>>?, line : inout Int, hd : inout Int) {
+    func printVerticatNodes(root : BTNode<Int>?, line : inout Int, hd: Int) {
         
         if let rootVal = root {
             if line == hd {
                 print("val : \(rootVal.value)")
             }
             
-            hd = hd - 1
-            printVerticatNodes(root: rootVal.left, line: &line, hd: &hd)
-            hd = hd + 1
-            printVerticatNodes(root: rootVal.right, line: &line, hd: &hd)
+            printVerticatNodes(root: rootVal.left, line: &line, hd: hd - 1)
+            printVerticatNodes(root: rootVal.right, line: &line, hd: hd + 1)
         }
     }
     
-    func printVerticalOrder(root : BTNode<Item<Int>>?) {
+    func printVerticalOrder(root : BTNode<Int>?) {
         
         var min = 0
         var max = 0
         var hd = 0
         
-        minMaxHorizontalDistance(root: root, min: &min, max: &max, hd: &hd)
+        minMaxHorizontalDistance(root: root, min: &min, max: &max, hd: hd)
         
         while min <= max {
             hd = 0
-            printVerticatNodes(root: root, line: &min, hd: &hd)
+            printVerticatNodes(root: root, line: &min, hd: hd)
             min += 1
         }
     }
