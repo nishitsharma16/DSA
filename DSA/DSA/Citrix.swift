@@ -50,25 +50,46 @@ extension Problems {
         if events.isEmpty {
             return 0
         }
-        let list = events.sorted { (first, second) -> Bool in
-            first[0] < second[0]
+        
+        var maxDay = Int.min
+        var map = [Int: [Int]]()
+        for item in events {
+            let statTime = item[0]
+            let endTime = item[1]
+            if var val = map[statTime] {
+                val.append(endTime)
+                map[statTime] = val
+            }
+            else {
+                map[statTime] = [endTime]
+            }
+            maxDay = max(maxDay, endTime)
         }
         
         let queue = Heap<Int>(type: .minHeap)
-        queue.insert(element: list[0][1])
-        var counter = 1
-        for i in 1..<list.count {
-            let item = list[i]
-            if let top = queue.getRoot() {
-                if item[0] >= top {
-                    let _ = queue.extract()
-                }
-                else {
-                    counter += 1
+        var counter = 0
+        
+        var currDay = 1
+        while currDay <= maxDay {
+            
+            if let val = map[currDay] {
+                for item in val {
+                    queue.insert(element: item)
                 }
             }
-            queue.insert(element: item[1])
+            
+            while !queue.isEmpty, let top = queue.getRoot(), top < currDay {
+                let _ = queue.extract()
+            }
+            
+            if !queue.isEmpty {
+                let _ = queue.extract()
+                counter += 1
+            }
+            
+            currDay += 1
         }
+        
         return counter
     }
     
@@ -189,6 +210,281 @@ extension Problems {
             queue.insert(element: item[1])
         }
         return counter
+    }
+    
+    func dfsNumIslands(_ grid: inout [[Character]], m: Int, n: Int, x: Int, y: Int) {
+        if x < 0 || y < 0 || x >= m || y >= n || grid[x][y] == "0" {
+            return
+        }
+        
+        grid[x][y] = "0"
+        let dir = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        for item in dir {
+            let xPos = x + item.0
+            let yPos = x + item.1
+            dfsNumIslands(&grid, m: m, n: n, x: xPos, y: yPos)
+        }
+    }
+    
+    func numIslands(_ grid: [[Character]]) -> Int {
+        
+        if grid.isEmpty {
+            return 0
+        }
+        
+        var myGrid = grid
+        var result = 0
+        let m = myGrid.count
+        let n = myGrid[0].count
+        
+        for i in 0..<m {
+            for j in 0..<n {
+                if myGrid[i][j] == "1" {
+                    result += 1
+                    dfsNumIslands(&myGrid, m: m, n: n, x: i, y: j)
+                }
+            }
+        }
+        
+        return result
+        
+    }
+    
+    static func countPalindromeDP(_ s: String) -> Int {
+        if s.isEmpty {
+            return 0
+        }
+        
+        let length = s.count
+        
+        var statusList = Array(repeating: Array(repeating: false, count: length), count: length)
+        var count = 0
+        
+        for index in 0..<length {
+            statusList[index][index] = true
+            count += 1
+        }
+        
+        for index in 0..<length-1 {
+            if s[index] == s[index+1] {
+                statusList[index][index+1] = true
+                count += 1
+            }
+        }
+        
+        if length <= 2 {
+            return count
+        }
+        
+        var j = 0
+        
+        for l in 3...length {
+            for i in 0..<length - l + 1 {
+                j = i + l - 1
+                if statusList[i+1][j-1] && s[i] == s[j] {
+                    statusList[i][j] = true
+                    count += 1
+                }
+            }
+        }
+        
+        return count
+    }
+    
+    func minFlipsToConvertSwitchOffBulbStateToTarget(_ target: String) -> Int {
+        if target.isEmpty {
+            return 0
+        }
+        var result = 0
+        var char: Character = "0"
+        for item in target {
+            if char != item {
+                char = item
+                result += 1
+            }
+        }
+        return result
+    }
+    
+    func minSteps(_ s: String, _ t: String) -> Int {
+        
+        if t.isEmpty {
+            return s.count
+        }
+        else if s.isEmpty {
+            return t.count
+        }
+        
+        
+        var sMap = [Character: Int]()
+        for item in s {
+            if let val = sMap[item] {
+                sMap[item] = val + 1
+            }
+            else {
+                sMap[item] = 1
+            }
+        }
+        
+        var counter = 0
+        
+        for item in t {
+            if let x = sMap[item] {
+                if x > 0 {
+                    sMap[item] = x - 1
+                }
+                else {
+                    counter += 1
+                }
+            }
+            else {
+                counter += 1
+            }
+        }
+        
+        return counter
+    }
+    
+    static func numPairsDivisibleBy60(_ time: [Int]) -> Int {
+        let len = time.count
+        if len <= 1 {
+            return 0
+        }
+        
+        
+        var counter = 0
+        var remainder = Array(repeating: 0, count: 60)
+        
+        for item in time {
+            let x = item % 60
+            if x == 0 {
+                counter += remainder[x]
+            }
+            else {
+                counter += remainder[60 - x]
+            }
+            remainder[x] += 1
+        }
+    
+        return counter
+    }
+    
+    func maxProfitV1(_ prices: [Int]) -> Int {
+        if prices.isEmpty {
+            return 0
+        }
+        var minPrice = Int.max
+        var maxProfit = 0
+        
+        for item in prices {
+            if item < minPrice {
+                minPrice = item
+            }
+            else if item - minPrice > maxProfit {
+                maxProfit = item - minPrice
+            }
+        }
+        
+        return maxProfit
+    }
+    
+    func maxProfitV2(_ prices: [Int]) -> Int {
+        if prices.isEmpty {
+            return 0
+        }
+        
+        var profit = 0
+
+        for i in 0..<prices.count - 1 {
+            if prices[i] < prices[i + 1] {
+                profit += prices[i + 1] - prices[i]
+            }
+        }
+        
+        return profit
+    }
+    
+    func maxProfitV3CoolDown(_ prices: [Int]) -> Int {
+        if prices.isEmpty {
+            return 0
+        }
+        
+        var profit = 0
+        var count = 0
+        var coolDown = false
+        while count < prices.count - 1 {
+            if prices[count] < prices[count + 1] {
+                profit += prices[count + 1] - prices[count]
+                coolDown = true
+                count += 1
+            }
+            if coolDown {
+                count += 2
+                coolDown = false
+            }
+        }
+        
+        return profit
+    }
+    
+    func reverseList(_ head: SortedNode?) -> SortedNode? {
+        if head == nil {
+            return nil
+        }
+        
+        var curr = head
+        var temp: SortedNode?
+        var prev: SortedNode?
+        
+        while curr != nil {
+            temp = curr
+            curr = curr?.next
+            temp?.next = prev
+            prev = temp
+        }
+        
+        return prev
+    }
+    
+    func getMapForValues(_ s: String, _ count: String) -> [String: String] {
+        
+        if let firstIndex = s.firstIndex(of: ".") {
+            let x = String(s[s.index(after: firstIndex)..<s.endIndex])
+            var val = getMapForValues(x, count)
+            val[x] = count
+            return val
+        }
+        
+        return [:]
+    }
+    
+    func merge(_ first: [String: String], _ second: [String: String]) -> [String: String] {
+        var result = [String: String]()
+        for item in first {
+            if let val = second[item.key] {
+                
+            }
+        }
+        return [:]
+    }
+    
+    func subdomainVisits(_ cpdomains: [String]) -> [String] {
+        if cpdomains.isEmpty {
+            return []
+        }
+        
+        var prev = [String: String]()
+        var result = [String]()
+        
+        for item in cpdomains {
+            let val = item.split(separator: " ")
+            let y = getMapForValues(String(val[1]), String(val[0]))
+            if !prev.isEmpty {
+//                <#code#>
+            }
+        }
+        
+        return []
     }
 }
 

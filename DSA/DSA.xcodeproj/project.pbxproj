@@ -73,6 +73,7 @@
 		1835A5C42467559700B2B0AF /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		1835A5C62469C2C300B2B0AF /* BST.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BST.swift; sourceTree = "<group>"; };
 		183669B22479A4EB00AB9608 /* Trie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trie.swift; sourceTree = "<group>"; };
+		1850BFBF25758BD80026108C /* DSA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DSA.entitlements; sourceTree = "<group>"; };
 		1863B7FA2569831A00FAF529 /* Dictionay+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionay+Additions.swift"; sourceTree = "<group>"; };
 		1863B7FF256AE3A800FAF529 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		188236E52570EC0100192FEC /* Citrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Citrix.swift; sourceTree = "<group>"; };
@@ -149,6 +150,7 @@
 		18CC5947243A6A7F00185D52 /* DSA */ = {
 			isa = PBXGroup;
 			children = (
+				1850BFBF25758BD80026108C /* DSA.entitlements */,
 				18CC5948243A6A8000185D52 /* AppDelegate.swift */,
 				18CC594A243A6A8000185D52 /* SceneDelegate.swift */,
 				18CC594C243A6A8000185D52 /* ViewController.swift */,
@@ -534,6 +536,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DSA/DSA.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = DSA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -551,6 +554,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DSA/DSA.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = DSA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
