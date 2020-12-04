@@ -42,6 +42,8 @@
 		18CC597B243BB22E00185D52 /* PriorityQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CC597A243BB22D00185D52 /* PriorityQueue.swift */; };
 		18D9AC5325792F27002020D5 /* CustomTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D9AC5225792F27002020D5 /* CustomTableView.swift */; };
 		18D9AC5B25793B51002020D5 /* TableViewCellQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D9AC5A25793B51002020D5 /* TableViewCellQueue.swift */; };
+		18D9AC6025796DE9002020D5 /* View+Addition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D9AC5F25796DE9002020D5 /* View+Addition.swift */; };
+		18D9AC6525798077002020D5 /* MultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D9AC6425798077002020D5 /* MultiSet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +106,8 @@
 		18CC597A243BB22D00185D52 /* PriorityQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityQueue.swift; sourceTree = "<group>"; };
 		18D9AC5225792F27002020D5 /* CustomTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableView.swift; sourceTree = "<group>"; };
 		18D9AC5A25793B51002020D5 /* TableViewCellQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellQueue.swift; sourceTree = "<group>"; };
+		18D9AC5F25796DE9002020D5 /* View+Addition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Addition.swift"; sourceTree = "<group>"; };
+		18D9AC6425798077002020D5 /* MultiSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +193,8 @@
 				188236E52570EC0100192FEC /* Citrix.swift */,
 				18D9AC5225792F27002020D5 /* CustomTableView.swift */,
 				18D9AC5A25793B51002020D5 /* TableViewCellQueue.swift */,
+				18D9AC5F25796DE9002020D5 /* View+Addition.swift */,
+				18D9AC6425798077002020D5 /* MultiSet.swift */,
 			);
 			path = DSA;
 			sourceTree = "<group>";
@@ -342,6 +348,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18D9AC6525798077002020D5 /* MultiSet.swift in Sources */,
 				1816CD8C24924FFB00E37BAC /* LinkedList.swift in Sources */,
 				1863B800256AE3A800FAF529 /* Extensions.swift in Sources */,
 				183669B32479A4EB00AB9608 /* Trie.swift in Sources */,
@@ -371,6 +378,7 @@
 				1810CB52251390BE00BDDA87 /* Intuit.swift in Sources */,
 				18CC597B243BB22E00185D52 /* PriorityQueue.swift in Sources */,
 				18CC594B243A6A8000185D52 /* SceneDelegate.swift in Sources */,
+				18D9AC6025796DE9002020D5 /* View+Addition.swift in Sources */,
 				18CC5979243A6AA600185D52 /* Heap.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

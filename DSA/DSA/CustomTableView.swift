@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-enum ScrollDirection {
+private enum ScrollDirection {
     case none
     case top
     case down
