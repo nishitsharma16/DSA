@@ -2530,33 +2530,108 @@ extension Problems {
         return result
     }
     
+    // DP solution
     func maxSumLengthSubArrayToTarget(list : [Int], _ target: Int) -> Int {
         
-        var maxLen = Int.min
-        var maxSum = Int.min
-        var currentSum = 0
+        if list.isEmpty {
+            return 0
+        }
         
-        for i in 0..<list.count {
+        let len = list.count
+        var maxLen = 0
+        
+        var map = Array(repeating: Array(repeating: 0, count: len), count: len)
+        for i in 0..<len {
             let item = list[i]
-            currentSum += item
-            
-        }
-        for item in list {
-            
-//            if <#condition#> {
-//                <#code#>
-//            }
-            currentSum += item
-            if maxSum < currentSum {
-                maxSum = currentSum
+            if item == target {
+                maxLen = 1
             }
-            
-            if currentSum < 0 {
-                currentSum = 0
+            map[i][i] = item
+        }
+        
+        if len == 1 {
+            return maxLen
+        }
+        
+        for i in 0..<len - 1 {
+            let curr = list[i]
+            let next = list[i + 1]
+            if curr + next == target {
+                maxLen = 2
+            }
+            map[i][i + 1] = curr + next
+        }
+        
+        if len == 2 {
+            return maxLen
+        }
+        
+        for l in 3...len {
+            for i in 0..<len - l + 1 {
+                let j = i + l - 1
+                if map[i][j - 1] + list[j] == target {
+                    maxLen = l
+                }
+                map[i][j] = map[i][j - 1] + list[j]
             }
         }
         
-        return maxSum
+        return maxLen
+    }
+    
+    func maxSubArrayLen(_ nums: [Int], _ k: Int) -> Int {
+        if nums.isEmpty {
+            return 0
+        }
+        
+        var map = [Int: Int]()
+        map[0] = -1
+        var maxLen = 0
+        var sum = 0
+        
+        for i in 0..<nums.count {
+            sum += nums[i]
+            if map.keys.contains(sum - k) {
+                if let x = map[sum - k], i - x > maxLen {
+                    maxLen = i - x
+                }
+            }
+            if let _ = map[sum] {
+                
+            }
+            else {
+                map[sum] = i
+            }
+        }
+        
+        return maxLen
+    }
+    
+    func longestConsecutiveHelper(_ root: TreeNode?, last: inout Int, length: inout Int) {
+        if root == nil {
+            return
+        }
+        
+        longestConsecutiveHelper(root?.left, last: &last, length: &length)
+        if last == -1 {
+            length = 1
+        }
+        else {
+            if let val = root?.value, val - last == 1 {
+                length += 1
+            }
+        }
+        last = root?.value ?? -1
+        longestConsecutiveHelper(root?.right, last: &last, length: &length)
+    }
+    func longestConsecutive(_ root: TreeNode?) -> Int {
+        if root == nil {
+            return 0
+        }
+        var result = 0
+        var last = -1
+        longestConsecutiveHelper(root, last: &last, length: &result)
+        return result
     }
 }
 
@@ -2847,3 +2922,55 @@ class Vector2D {
     }
 }
 
+
+class MyCircularQueue {
+
+    /** Initialize your data structure here. Set the size of the queue to be k. */
+    private var list : Array<Int>
+    private let capacity: Int
+    init(_ k: Int) {
+        capacity = k
+        list = Array()
+    }
+    
+    /** Insert an element into the circular queue. Return true if the operation is successful. */
+    func enQueue(_ value: Int) -> Bool {
+        if isFull() {
+            return false
+        }
+        list.append(value)
+        return true
+    }
+    
+    /** Delete an element from the circular queue. Return true if the operation is successful. */
+    func deQueue() -> Bool {
+        if list.isEmpty {
+            return false
+        }
+        list.removeFirst()
+        return true
+    }
+    
+    /** Get the front item from the queue. */
+    func Front() -> Int {
+        if list.isEmpty {
+            return -1
+        }
+        return list[0]
+    }
+    
+    /** Get the last item from the queue. */
+    func Rear() -> Int {
+        return list.last ?? -1
+    }
+    
+    /** Checks whether the circular queue is empty or not. */
+    func isEmpty() -> Bool {
+        return list.isEmpty
+    }
+    
+    /** Checks whether the circular queue is full or not. */
+    func isFull() -> Bool {
+        return capacity == list.count
+    }
+}
