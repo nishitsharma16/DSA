@@ -33,6 +33,7 @@ class RandomizedSet {
         if list.contains(val) {
             if let index = info[val] {
                 list.remove(at: index)
+                info.removeValue(forKey: val)
                 return true
             }
         }
@@ -41,7 +42,8 @@ class RandomizedSet {
     
     /** Get a random element from the set. */
     func getRandom() -> Int {
-        let randomElement = list.randomElement()
-        return randomElement ?? -1
+        let x = Int.random(in: 0..<list.count)
+        let randomElement = list[x]
+        return randomElement
     }
 }

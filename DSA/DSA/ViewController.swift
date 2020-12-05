@@ -113,7 +113,8 @@ class ViewController: UIViewController {
         4
         [[0,1,3],[1,2,1],[1,3,4],[2,3,1]]
         4
-        let x = Problems.numPairsDivisibleBy60([60,60,60])
+        var nums = [2,0,2,1,1,0]
+        let x = Problems.sortColors(&nums)
     }
     
     func test2(_ logLines : [String]) -> [String] {

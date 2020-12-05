@@ -2607,31 +2607,196 @@ extension Problems {
         return maxLen
     }
     
-    func longestConsecutiveHelper(_ root: TreeNode?, last: inout Int, length: inout Int) {
-        if root == nil {
-            return
-        }
-        
-        longestConsecutiveHelper(root?.left, last: &last, length: &length)
-        if last == -1 {
-            length = 1
-        }
-        else {
-            if let val = root?.value, val - last == 1 {
-                length += 1
+    func longestConsecutiveHelper(_ root: TreeNode?, _ parent: TreeNode?, _ length: inout Int, _ maxLength: inout Int) {
+        if let r = root {
+            if let p = parent {
+                length = p.value + 1 == r.value ? length + 1 : 1
             }
+            else {
+                length = 1
+            }
+            maxLength = max(maxLength, length)
+            longestConsecutiveHelper(root?.left, root, &length, &maxLength)
+            longestConsecutiveHelper(root?.right, root, &length, &maxLength)
         }
-        last = root?.value ?? -1
-        longestConsecutiveHelper(root?.right, last: &last, length: &length)
     }
+    
     func longestConsecutive(_ root: TreeNode?) -> Int {
         if root == nil {
             return 0
         }
         var result = 0
-        var last = -1
-        longestConsecutiveHelper(root, last: &last, length: &result)
+        var len = 0
+        longestConsecutiveHelper(root, nil, &len, &result)
         return result
+    }
+    
+    func isBipartite(_ graph: [[Int]]) -> Bool {
+        if graph.isEmpty {
+            return false
+        }
+        var color = Array(repeating: -1, count: graph.count)
+        for i in 0..<graph.count {
+            if color[i] == -1 {
+                color[i] = 1
+                let queue = Queue<Int>()
+                queue.enqueue(val: i)
+                while !queue.isEmpty {
+                    let u = queue.dQueue()
+                    let list = graph[u]
+                    for v in list {
+                        if v == u {
+                            return false
+                        }
+                        else if color[v] == -1 {
+                            color[v] = 1 - color[u]
+                            queue.enqueue(val: v)
+                        }
+                        else if color[u] == color[v] {
+                            return false
+                        }
+                    }
+                }
+            }
+        }
+        return true
+    }
+    
+    static func findStrobogrammatic(_ n: Int) -> [String] {
+        if n <= 0 {
+            return []
+        }
+        var result = [String]()
+        var set = Set<String>()
+        
+        if n == 1 {
+            set.insert("1")
+            set.insert("8")
+        }
+        else if n >= 2 {
+            set.insert("11")
+            set.insert("88")
+            set.insert("69")
+            set.insert("96")
+        }
+        if n > 2 {
+            for i in 3...n {
+                var tempSet = Set<String>()
+                if i % 2 == 0 {
+                    for item in set {
+                        tempSet.insert(insertAtMiddle(item, "00"))
+                        tempSet.insert(insertAtMiddle(item, "11"))
+                        tempSet.insert(insertAtMiddle(item, "88"))
+                        tempSet.insert(insertAtMiddle(item, "69"))
+                        tempSet.insert(insertAtMiddle(item, "96"))
+                    }
+                }
+                else {
+                    for item in set {
+                        tempSet.insert(insertAtMiddle(item, "0"))
+                        tempSet.insert(insertAtMiddle(item, "1"))
+                        tempSet.insert(insertAtMiddle(item, "8"))
+                    }
+                }
+                set = tempSet
+            }
+        }
+        result.append(contentsOf: set)
+        return result
+    }
+    
+    static func insertAtMiddle(_ s: String, _ val: String) -> String {
+        var x = s
+        let length = s.count
+        let mid = length / 2
+        if length % 2 == 0 {
+            let index = s.index(s.startIndex, offsetBy: mid)
+            x.insert(contentsOf: val, at: index)
+        }
+        else {
+            let index = s.index(s.startIndex, offsetBy: mid)
+            x.replaceSubrange(index...index, with: val)
+        }
+        return x
+    }
+    
+    func leftMostColumnWithOne(_ binaryMatrix: BinaryMatrix) -> Int {
+        let dimension = binaryMatrix.dimensions()
+        let m = dimension[0]
+        let n = dimension[1]
+        
+        if m == 0 {
+            return -1
+        }
+        
+        var row = 0
+        var col = n - 1
+        
+        while row < m && col >= 0 {
+            let x = binaryMatrix.get(row, col)
+            if x == 0 {
+                row += 1
+            }
+            else {
+                col -= 1
+            }
+        }
+        
+        return col == n - 1 ? -1 : col + 1
+    }
+    
+    // Dutch flag problem
+    static func sortColors(_ nums: inout [Int]) {
+        if nums.count < 2 {
+            return
+        }
+        
+        var low = 0
+        var mid = 0
+        var high = nums.count - 1
+        while mid <= high {
+            switch nums[mid] {
+            case 0:
+                nums.swapAt(low, mid)
+                low += 1
+                mid += 1
+            case 1:
+                mid += 1
+            default:
+                nums.swapAt(mid, high)
+                high -= 1
+            }
+        }
+    }
+    
+    func letterCombinations(_ digits: String) -> [String] {
+        if digits.isEmpty {
+            return []
+        }
+        
+        let diglen = digits.count
+        var prev = [String]()
+        var curr = [String]()
+        let map: [Character: String] = ["2" : "abc", "3" : "def", "4" : "ghi", "5" : "jkl", "6" : "mno", "7" : "pqrs", "8" : "tuv", "9" : "wxyz"]
+        if let val = map[digits[0]] {
+            for item in val {
+                prev.append(String(item))
+            }
+        }
+        
+        for i in 1..<diglen {
+            if let val = map[digits[i]] {
+                for item in val {
+                    for inner in prev {
+                        curr.append(inner + String(item))
+                    }
+                }
+                prev = curr
+                curr = []
+            }
+        }
+        
+        return prev
     }
 }
 
@@ -2972,5 +3137,14 @@ class MyCircularQueue {
     /** Checks whether the circular queue is full or not. */
     func isFull() -> Bool {
         return capacity == list.count
+    }
+}
+
+class BinaryMatrix {
+    func get(_ row: Int, _ col: Int) -> Int {
+        return 0
+    }
+    func dimensions() -> [Int] {
+        return []
     }
 }

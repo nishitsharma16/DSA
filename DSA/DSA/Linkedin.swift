@@ -732,7 +732,7 @@ extension Problems {
         return []
     }
     
-    static func isPerfectSqaure(_ n: Int) -> Bool {
+    static func isPerfectSquare(_ n: Int) -> Bool {
         if n < 1 {
             return false
         }
