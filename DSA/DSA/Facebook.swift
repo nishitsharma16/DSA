@@ -330,74 +330,33 @@ extension Problems {
     }
     
     static func missingRanges(_ nums: [Int], _ lower: Int, _ upper: Int) -> [String] {
-        var result = [String]()
-        var val = ""
         if nums.isEmpty {
-            if lower == upper {
-                val = "\(lower)"
-            }
-            else {
-                val = "\(lower)->\(upper)"
-            }
-            if !val.isEmpty {
-                result.append(val)
+            return [formatString(lower, upper)]
+        }
+        var result = [String]()
+        let len = nums.count
+        if lower < nums[0] {
+            result.append(formatString(lower, nums[0] - 1))
+        }
+        
+        for i in 1..<len {
+            if nums[i] - nums[i - 1] > 1 {
+                result.append(formatString(nums[i - 1] + 1, nums[i] - 1))
             }
         }
-        else {
-            if nums.count == 1 {
-                if let y = nums.first, lower == upper, lower == y {
-                    return []
-                }
-                else if let y = nums.first, lower < upper, upper == y {
-                    return ["\(lower)"]
-                }
-                else if let y = nums.first, lower < upper, lower == y {
-                    return ["\(upper)"]
-                }
-                else {
-                    return ["\(lower)->\(upper)"]
-                }
-            }
-            else {
-                if let y = nums.first, lower < y {
-                    if y == lower + 2 {
-                        val = "\(lower)->\(y - 1)"
-                    }
-                    else if lower + 2 < y {
-                        val = "\(lower)->\(y - 1)"
-                    }
-                    if !val.isEmpty {
-                        result.append(val)
-                    }
-                }
-                for index in 0..<nums.count - 1 {
-                    let curr = nums[index]
-                    let next = nums[index + 1]
-                    if curr == next - 2 {
-                        val = "\(curr + 1)"
-                    }
-                    else if curr + 2 < next {
-                        val = "\(curr + 1)->\(next - 1)"
-                    }
-                    if !val.isEmpty {
-                        result.append(val)
-                    }
-                }
-                if let y = nums.last, y < upper {
-                    if y == upper - 2 {
-                        val = "\(y + 1)"
-                    }
-                    else if y + 2 < upper {
-                        val = "\(y + 1)->\(upper)"
-                    }
-                    if !val.isEmpty {
-                        result.append(val)
-                    }
-                }
-                return result
-            }
+        
+        if upper > nums[len - 1] {
+            result.append(formatString(nums[len - 1] + 1, upper))
         }
+        
         return result
+    }
+    
+    static func formatString(_ lower: Int, _ upper: Int) -> String {
+        if lower == upper {
+            return "\(lower)"
+        }
+        return "\(lower)->\(upper)"
     }
     
     func validateBST(_ root: TreeNode?, min: Int, max: Int) -> Bool {

@@ -171,8 +171,10 @@ class Problems {
                 j = i + l - 1
                 if statusList[i+1][j-1] && s[i] == s[j] {
                     statusList[i][j] = true
-                    maxLength = l
-                    start = i
+                    if l > maxLength {
+                        maxLength = l
+                        start = i
+                    }
                 }
             }
         }
