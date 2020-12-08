@@ -2757,6 +2757,238 @@ extension Problems {
         
         return prev
     }
+    
+    func addTwoNumbers(_ l1: SortedNode?, _ l2: SortedNode?) -> SortedNode? {
+        if let _ = l1, let _ = l2 {
+            let dummy: SortedNode? = SortedNode(-1)
+            var temp = dummy
+            var val1 = l1
+            var val2 = l2
+            var remainder = 0
+            while val1 != nil && val2 != nil {
+                if let item1 = val1?.val, let item2 = val2?.val {
+                    let sum = item1 + item2 + remainder
+                    temp?.next = SortedNode(sum % 10)
+                    remainder = sum / 10
+                }
+                val1 = val1?.next
+                val2 = val2?.next
+                temp = temp?.next
+            }
+            
+            if let _ = val1 {
+                while val1 != nil {
+                    if let item1 = val1?.val {
+                        let sum = item1 + remainder
+                        temp?.next = SortedNode(sum % 10)
+                        remainder = sum / 10
+                    }
+                    val1 = val1?.next
+                    temp = temp?.next
+                }
+            }
+            
+            if let _ = val2 {
+                while val2 != nil {
+                    if let item2 = val2?.val {
+                        let sum = item2 + remainder
+                        temp?.next = SortedNode(sum % 10)
+                        remainder = sum / 10
+                    }
+                    val2 = val2?.next
+                    temp = temp?.next
+                }
+            }
+            if remainder != 0 {
+                temp?.next = SortedNode(remainder)
+                temp = temp?.next
+            }
+            return dummy?.next
+        }
+        else if let root1 = l1 {
+            return root1
+        }
+        else if let root2 = l2 {
+            return root2
+        }
+        return nil
+    }
+    
+    func oddEvenList(_ head: SortedNode?) -> SortedNode? {
+        if head == nil {
+            return nil
+        }
+        
+        var odd = head
+        var even = odd?.next
+        let evenHead = even
+        
+        while even != nil && even?.next != nil {
+            odd?.next = even?.next
+            odd = odd?.next
+            even?.next = odd?.next
+            even = even?.next
+        }
+        odd?.next = evenHead
+        return head
+    }
+    
+    func getIntersectionNode(_ headA: SortedNode?, _ headB: SortedNode?) -> SortedNode? {
+        if headA == nil || headB == nil {
+            return nil
+        }
+        
+        var set = Set<SortedNode>()
+        var curr1 = headA
+        var curr2 = headB
+        
+        while curr1 != nil && curr2 != nil {
+            if let x = curr1, let y = curr2 {
+                if set.contains(x) {
+                    return x
+                }
+                if set.contains(y) {
+                    return y
+                }
+                
+                set.insert(x)
+                set.insert(y)
+            }
+            curr1 = curr1?.next
+            curr2 = curr2?.next
+        }
+        
+        return nil
+    }
+    
+    func inorderTraversalHelper(_ root: TreeNode?, _ result: inout [Int]) {
+        if let r = root {
+            inorderTraversalHelper(r.left, &result)
+            result.append(r.value)
+            inorderTraversalHelper(r.right, &result)
+        }
+    }
+    
+    func inorderTraversal(_ root: TreeNode?) -> [Int] {
+        if root == nil {
+            return []
+        }
+        var result = [Int]()
+        inorderTraversalHelper(root, &result)
+        return result
+    }
+    
+    func zigzagLevelOrderHelper(_ root: TreeNode?, _ level: Int, _ map: inout [Int: [Int]]) {
+        if let r = root {
+            if var val = map[level] {
+                if level % 2 == 0 {
+                    val.append(r.value)
+                }
+                else {
+                    val.insert(r.value, at: 0)
+                }
+                map[level] = val
+            }
+            else {
+                map[level] = [r.value]
+            }
+            zigzagLevelOrderHelper(root?.left, level + 1, &map)
+            zigzagLevelOrderHelper(root?.right, level + 1, &map)
+        }
+    }
+    
+    func zigzagLevelOrder(_ root: TreeNode?) -> [[Int]] {
+        if root == nil {
+            return []
+        }
+        
+        var map = [Int: [Int]]()
+        zigzagLevelOrderHelper(root, 0, &map)
+        if let maxLeval = map.keys.max() {
+            var result = [[Int]]()
+            for i in 0...maxLeval {
+                if let val = map[i] {
+                    result.append(val)
+                }
+            }
+            return result
+        }
+        return []
+    }
+    
+    static func findZigZagDiagonalOrderHelper(_ matrix: inout [[Int]], _ level: Int, _ map: inout [Int: [Int]], _ visited: inout [[Bool]], _ x: Int, _ y: Int) {
+        let m = matrix.count
+        let n = matrix[0].count
+        if x >= 0 && x < m && y >= 0 && y < n && !visited[x][y] {
+            if var val = map[level] {
+                if level % 2 == 0 {
+                    val.append(matrix[x][y])
+                }
+                else {
+                    val.insert(matrix[x][y], at: 0)
+                }
+                map[level] = val
+            }
+            else {
+                map[level] = [matrix[x][y]]
+            }
+            visited[x][y] = true
+            findZigZagDiagonalOrderHelper(&matrix, level + 1, &map, &visited, x + 1, y)
+            findZigZagDiagonalOrderHelper(&matrix, level + 1, &map, &visited, x, y + 1)
+        }
+    }
+    
+    static func findZigZagDiagonalOrder(_ matrix: [[Int]]) -> [Int] {
+        if matrix.isEmpty {
+            return []
+        }
+        var matVal = matrix
+        var map = [Int: [Int]]()
+        var visited = Array(repeating: Array(repeating: false, count: matrix[0].count), count: matrix.count)
+        
+        findZigZagDiagonalOrderHelper(&matVal, 0, &map, &visited, 0, 0)
+        if let maxLeval = map.keys.max() {
+            var result = [Int]()
+            for i in 0...maxLeval {
+                if let val = map[i] {
+                    result.append(contentsOf: val)
+                }
+            }
+            return result
+        }
+        return []
+    }
+    
+    static func buildTreeHelper(_ preOrder: [Int], _ inLeft: Int, _ inRight: Int, _ preIndex: inout Int, _ map: [Int: Int]) -> TreeNode? {
+        if inLeft >= inRight {
+            return nil
+        }
+        
+        let rootVal = preOrder[preIndex]
+        let root = TreeNode(val: rootVal)
+        if let inIndexVal = map[rootVal] {
+            preIndex = preIndex + 1
+            root.left = buildTreeHelper(preOrder, inLeft, inIndexVal, &preIndex, map)
+            root.right = buildTreeHelper(preOrder, inIndexVal + 1, inRight, &preIndex, map)
+        }
+        return root
+    }
+    
+    static func buildTree(_ preorder: [Int], _ inorder: [Int]) -> TreeNode? {
+        
+        if preorder.isEmpty || inorder.isEmpty {
+            return nil
+        }
+        
+        var inorderMap = [Int: Int]()
+        for i in 0..<inorder.count {
+            inorderMap[inorder[i]] = i
+        }
+        
+        var start = 0
+        let result = buildTreeHelper(preorder, 0, inorder.count - 1, &start, inorderMap)
+        return result
+    }
 }
 
 
@@ -3105,5 +3337,92 @@ class BinaryMatrix {
     }
     func dimensions() -> [Int] {
         return []
+    }
+}
+
+
+class WordDistance {
+
+    let words: [String]
+    private var map = [String: [Int]]()
+    init(_ words: [String]) {
+        self.words = words
+        for i in 0..<words.count {
+            let item = words[i]
+            if var val = map[item] {
+                val.append(i)
+                map[item] = val
+            }
+            else {
+                map[item] = [i]
+            }
+        }
+    }
+    
+    func shortest(_ word1: String, _ word2: String) -> Int {
+        if words.isEmpty {
+            return 0
+        }
+        
+        if let x = map[word1], let y = map[word2] {
+            var l1 = 0
+            var l2 = 0
+            var ans = Int.max
+            
+            while l1 < x.count && l2 < y.count {
+                ans = min(ans, abs(x[l1] - y[l2]))
+                if x[l1] < y[l2] {
+                    l1 += 1
+                }
+                else if x[l1] > y[l2] {
+                    l2 += 1
+                }
+            }
+            return ans
+        }
+        return 0
+    }
+}
+
+
+class Codec {
+    
+    func serializeHelper(_ root: TreeNode?, str: inout String) {
+        if root == nil {
+            str += "null,"
+        }
+        
+        if let val = root?.value {
+            str += "\(val),"
+            serializeHelper(root?.left, str: &str)
+            serializeHelper(root?.right, str: &str)
+        }
+    }
+    
+    func serialize(_ root: TreeNode?) -> String {
+        var str = ""
+        serializeHelper(root, str: &str)
+        return str
+    }
+    
+    func deserializeHeler(_ val: inout [String]) -> TreeNode? {
+        if val[0] == "null" {
+            val.remove(at: 0)
+            return nil
+        }
+        let x = val.remove(at: 0)
+        if let y = Int(x) {
+            let root = TreeNode(val: y)
+            root.left = deserializeHeler(&val)
+            root.right = deserializeHeler(&val)
+            return root
+        }
+        return nil
+    }
+    
+    func deserialize(_ data: String) -> TreeNode? {
+        var val = data.components(separatedBy: ",")
+        let result = deserializeHeler(&val)
+        return result
     }
 }

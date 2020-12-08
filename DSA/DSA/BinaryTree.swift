@@ -27,7 +27,7 @@ class BTLevelNode<Item> {
     }
 }
 
-class TreeNode {
+class TreeNode: Codable {
     var left : TreeNode?
     var right : TreeNode?
     var value : Int

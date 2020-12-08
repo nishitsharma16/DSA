@@ -39,7 +39,9 @@ extension Problems {
         }
         
         var items = list
-        items.insert(source, at: 0)
+        if items[0] != source {
+            items.insert(source, at: 0)
+        }
         let length = items.count
         var sourceVal = source
         var visited = Array(repeating: false, count: length)

@@ -24,6 +24,16 @@ class SortedNode {
     }
 }
 
+extension SortedNode: Hashable {
+    static func == (lhs: SortedNode, rhs: SortedNode) -> Bool {
+        return lhs.val == rhs.val
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(val)
+    }
+}
+
 class DLLNode {
     var val : Int
     var next : DLLNode?
