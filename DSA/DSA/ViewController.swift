@@ -114,7 +114,7 @@ class ViewController: UIViewController {
         [[0,1,3],[1,2,1],[1,3,4],[2,3,1]]
         4
         var nums = [2,0,2,1,1,0]
-        let x = Problems.buildTree([1,2], [1,2])
+        let x = Problems.permute([1,2,3])
     }
     
     func test2(_ logLines : [String]) -> [String] {

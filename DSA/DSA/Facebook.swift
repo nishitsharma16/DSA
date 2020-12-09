@@ -2986,8 +2986,160 @@ extension Problems {
         }
         
         var start = 0
-        let result = buildTreeHelper(preorder, 0, inorder.count - 1, &start, inorderMap)
+        let result = buildTreeHelper(preorder, 0, inorder.count, &start, inorderMap)
         return result
+    }
+    
+    func kthSmallestBSTTreeNodeValueHelper(_ root: TreeNode?, _ k: Int, _ counter: inout Int, _ result: inout Int) {
+        if let _ = root {
+            kthSmallestBSTTreeNodeValueHelper(root?.left, k, &counter, &result)
+            counter += 1
+            if counter == k {
+                result = root?.value ?? -1
+                return
+            }
+            kthSmallestBSTTreeNodeValueHelper(root?.right, k, &counter, &result)
+        }
+    }
+    
+    func kthSmallestBSTTreeNodeValue(_ root: TreeNode?, _ k: Int) -> Int {
+        if root == nil {
+            return -1
+        }
+        var counter = 0
+        var result = -1
+        kthSmallestBSTTreeNodeValueHelper(root, k, &counter, &result)
+        return result
+    }
+    
+    func connectNextPointerInTreeHelper(_ root: NextNode?, _ level: Int, _ map: inout [Int: [NextNode]]) {
+        if let r = root {
+            if var val = map[level] {
+                if let last = val.last {
+                    last.next = r
+                }
+                val.append(r)
+                map[level] = val
+            }
+            else {
+                map[level] = [r]
+            }
+            connectNextPointerInTreeHelper(root?.left, level + 1, &map)
+            connectNextPointerInTreeHelper(root?.right, level + 1, &map)
+        }
+    }
+    
+    func connectNextPointerInTree(_ root: NextNode?) -> NextNode? {
+        if root == nil {
+            return nil
+        }
+        var map = [Int: [NextNode]]()
+        connectNextPointerInTreeHelper(root, 0, &map)
+        return root
+    }
+    
+    static func permuteHelper(_ nums: inout [Int], _ l: Int, _ r: Int, result: inout [[Int]]) {
+        if l == r {
+            result.append(nums)
+            return
+        }
+        
+        for i in l...r {
+            nums.swapAt(i, l)
+            permuteHelper(&nums,  l + 1, r, result: &result)
+            nums.swapAt(i, l)
+        }
+    }
+    
+    static func permute(_ nums: [Int]) -> [[Int]] {
+        if nums.isEmpty {
+            return []
+        }
+        
+        var val = nums
+        var result = [[Int]]()
+        permuteHelper(&val, 0, nums.count - 1, result: &result)
+        return result
+    }
+    
+    static func findAllPowerSubSets(list: [Int], numberOfSets: Int) -> [[Int]] {
+        if list.isEmpty {
+            return []
+        }
+        
+        var subset = Set<Int>()
+        var result = Set<Set<Int>>()
+        
+        findSubSets(list: list, subset: &subset, index: 0, result: &result)
+        
+        var temp = [[Int]]()
+        temp.append(list)
+        for item in result {
+            let x = Array(item)
+            temp.append(x)
+        }
+
+        return temp
+    }
+    
+    // Boogle Solver
+    private func findWord(mat : [[Character]], visited : inout [[Bool]], x : Int, y : Int, str : inout String, target: String, status: inout Bool) {
+        
+        let innerList = mat[0]
+        let m = mat.count
+        let n = innerList.count
+        
+        visited[x][y] = true
+        str = str + String(mat[x][y])
+        
+        if target == str {
+            status = true
+        }
+        
+        let dir = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        
+        for item in dir {
+            let row = x + item.0
+            let col = y + item.1
+            if row >= 0 && col >= 0 && row < m && col < n && !visited[row][col] {
+                findWord(mat: mat, visited: &visited, x: row, y: col, str: &str, target: target, status: &status)
+            }
+        }
+        str.remove(at: str.index(before: str.endIndex))
+        visited[x][y] = false
+    }
+    
+    func exist(_ board: [[Character]], _ word: String) -> Bool {
+        if board.isEmpty || word.isEmpty {
+            return false
+        }
+        
+        var string = ""
+        let innerList = board[0]
+        let m = board.count
+        let n = innerList.count
+        var visited = Array(repeating: Array(repeating: false, count: n), count: m)
+        var status = false
+        
+        for i in 0..<m {
+            for j in 0..<n {
+                findWord(mat: board, visited: &visited, x: i, y: j, str: &string, target: word, status: &status)
+                if status {
+                    return status
+                }
+            }
+        }
+        return status
+    }
+    
+    func uniquePaths(_ m: Int, _ n: Int) -> Int {
+        var map = Array(repeating: Array(repeating: 1, count: n), count: m)
+        for i in 1..<m {
+            for j in 1..<n {
+                map[i][j] = map[i - 1][j] + map[i][j - 1]
+            }
+        }
+        return map[m - 1][n - 1]
     }
 }
 

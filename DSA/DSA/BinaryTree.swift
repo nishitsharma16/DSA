@@ -36,6 +36,16 @@ class TreeNode: Codable {
     }
 }
 
+class NextNode {
+    var left : NextNode?
+    var right : NextNode?
+    var next : NextNode?
+    var val : Int
+    init(val : Int) {
+        self.val = val
+    }
+}
+
 
 class BinaryTree {
     

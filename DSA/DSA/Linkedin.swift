@@ -341,9 +341,10 @@ extension Problems {
     }
     
     static func findSubSets(list: [Int], subset: inout Set<Int>, index: Int, result: inout Set<Set<Int>>) {
-        if !subset.isEmpty {
-            result.insert(subset)
+        if index == list.count {
+            return
         }
+        result.insert(subset)
         for i in index..<list.count {
             subset.insert(list[i])
             findSubSets(list: list, subset: &subset, index: index + 1, result: &result)
