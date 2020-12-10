@@ -3141,6 +3141,151 @@ extension Problems {
         }
         return map[m - 1][n - 1]
     }
+    
+    static func sortTransformedArray(_ nums: [Int], _ a: Int, _ b: Int, _ c: Int) -> [Int] {
+        if nums.isEmpty {
+            return []
+        }
+        
+        let  len = nums.count
+        var result = Array(repeating: 0, count: len)
+        var l = 0
+        var r = len - 1
+        
+        for i in 0..<len {
+            var val = nums[l]
+            let x = a*val*val + b*val + c
+            val = nums[r]
+            let y = a*val*val + b*val + c
+            
+            if a >= 0 {
+                if x > y {
+                    result[i] = x
+                    l += 1
+                }
+                else {
+                    result[i] = y
+                    r -= 1
+                }
+            }
+            else {
+                if x > y {
+                    result[i] = y
+                    r -= 1
+                }
+                else {
+                    result[i] = x
+                    l += 1
+                }
+            }
+        }
+        
+        return a < 0 ? result.reversed() : result
+    }
+    
+    
+    static func combinationSum2Helper(_ candidates: [Int], _ target: Int, _ index: Int, _ set: inout [Int], _ result: inout Array<Array<Int>>, _ s: inout Int) {
+        
+        if target < s {
+            return
+        }
+        
+        if s == target && !result.contains(set) {
+            result.append(set)
+            return
+        }
+        
+        for i in 0..<candidates.count {
+            let x = candidates[i]
+            set.append(x)
+            s += x
+            combinationSum2Helper(candidates, target, index + 1, &set, &result, &s)
+            set.removeLast()
+            s -= x
+        }
+    }
+    
+    static func combinationSum2(_ candidates: [Int], _ target: Int) -> [[Int]] {
+        if candidates.isEmpty {
+            return []
+        }
+        
+        let vals = candidates.sorted()
+        var result = Array<Array<Int>>()
+        var temp = [Int]()
+        var s = 0
+        combinationSum2Helper(vals, target, 0, &temp, &result, &s)
+        return result
+    }
+    
+    func lengthOfList(_ head: SortedNode?) -> Int {
+        if head == nil {
+            return 0
+        }
+        
+        var curr = head
+        var count = 0
+        while curr != nil {
+            count += 1
+            curr = curr?.next
+        }
+        
+        return count
+    }
+    
+    func sortedListToBSTHelper(_ head: inout SortedNode?, _ l: Int, _ r: Int) -> TreeNode? {
+        if l > r {
+            return nil
+        }
+        
+        let mid = (l + r)/2
+        let left = sortedListToBSTHelper(&head, l, mid - 1)
+        
+        if let val = head?.val {
+            let treeNode = TreeNode(val: val)
+            treeNode.left = left
+            head = head?.next
+            treeNode.right = sortedListToBSTHelper(&head, mid + 1, r)
+            return treeNode
+        }
+        
+        return nil
+    }
+    
+    func sortedListToBST(_ head: SortedNode?) -> TreeNode? {
+        if head == nil {
+            return nil
+        }
+        
+        var headVal = head
+        let len = lengthOfList(head)
+        let result = sortedListToBSTHelper(&headVal, 0, len - 1)
+        return result
+    }
+    
+    
+    func leafNodeSumNumbersHelper(_ root: TreeNode?, _ s: String, _ result: inout Int) {
+        guard let val = root?.value else { return }
+        if root?.left == nil, root?.right == nil {
+            let y = s + String(val)
+            result += (Int(y) ?? 0)
+            return
+        }
+        
+        let x = s + "\(val)"
+        leafNodeSumNumbersHelper(root?.left, x, &result)
+        leafNodeSumNumbersHelper(root?.right, x, &result)
+    }
+    
+    func leafNodeSumNumbers(_ root: TreeNode?) -> Int {
+        if root == nil {
+            return 0
+        }
+        
+        var result = 0
+        leafNodeSumNumbersHelper(root, "", &result)
+        return result
+    }
 }
 
 

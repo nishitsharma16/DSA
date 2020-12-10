@@ -44,6 +44,7 @@
 		18D9AC5B25793B51002020D5 /* TableViewCellQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D9AC5A25793B51002020D5 /* TableViewCellQueue.swift */; };
 		18D9AC6025796DE9002020D5 /* View+Addition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D9AC5F25796DE9002020D5 /* View+Addition.swift */; };
 		18D9AC6525798077002020D5 /* MultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D9AC6425798077002020D5 /* MultiSet.swift */; };
+		18F20EEF2582602B00FC543F /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F20EEE2582602A00FC543F /* Observer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,6 +109,7 @@
 		18D9AC5A25793B51002020D5 /* TableViewCellQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellQueue.swift; sourceTree = "<group>"; };
 		18D9AC5F25796DE9002020D5 /* View+Addition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Addition.swift"; sourceTree = "<group>"; };
 		18D9AC6425798077002020D5 /* MultiSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSet.swift; sourceTree = "<group>"; };
+		18F20EEE2582602A00FC543F /* Observer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +160,7 @@
 		18CC5947243A6A7F00185D52 /* DSA */ = {
 			isa = PBXGroup;
 			children = (
+				18F20EEE2582602A00FC543F /* Observer.swift */,
 				1850BFBF25758BD80026108C /* DSA.entitlements */,
 				18CC5948243A6A8000185D52 /* AppDelegate.swift */,
 				18CC594A243A6A8000185D52 /* SceneDelegate.swift */,
@@ -367,6 +370,7 @@
 				18D9AC5B25793B51002020D5 /* TableViewCellQueue.swift in Sources */,
 				18D9AC5325792F27002020D5 /* CustomTableView.swift in Sources */,
 				1835A5C72469C2C300B2B0AF /* BST.swift in Sources */,
+				18F20EEF2582602B00FC543F /* Observer.swift in Sources */,
 				1816CD882490C8CF00E37BAC /* DP.swift in Sources */,
 				181D1C4E2448DD01004E0E08 /* ArrayExtension.swift in Sources */,
 				1835A5C12467418E00B2B0AF /* Graph.swift in Sources */,
