@@ -1827,24 +1827,26 @@ extension Problems {
             return nil
         }
         
-        var map = [RandomNode: RandomNode]()
+        var map = [RandomNode?: RandomNode?]()
         
         var curr = head
-        while let currVal = curr {
-            map[currVal] = RandomNode(currVal.val)
-            curr = curr?.next
-        }
-        
-        curr = head
-        while let currVal = curr {
-            if let x = currVal.next, let y = currVal.random, let clone = map[currVal] {
-                clone.next = map[x]
-                clone.random = map[y]
+        while curr != nil {
+            if let currVal = curr {
+                map[currVal] = RandomNode(currVal.val)
             }
             curr = curr?.next
         }
         
-        return map[root]
+        curr = head
+        while curr != nil {
+            if let clone = map[curr], let cloneNext = map[curr?.next], let cloneRandom = map[curr?.random] {
+                clone?.next = cloneNext
+                clone?.random = cloneRandom
+            }
+            curr = curr?.next
+        }
+        
+        return map[root] ?? nil
     }
     
     func fixLeftPointer(_ root: TreeNode?, _ prev: inout TreeNode?) {
@@ -3286,6 +3288,176 @@ extension Problems {
         leafNodeSumNumbersHelper(root, "", &result)
         return result
     }
+    
+    func reorganizeString(_ S: String) -> String {
+        if S.isEmpty {
+            return ""
+        }
+        let len = S.count
+        var count = Array(repeating: 0, count: 26)
+        let a: Character = "a"
+        let aAscii = a.asciiValue
+        for i in 0..<len {
+            if let cVal = S[i].asciiValue, let aVal = aAscii {
+                let index = Int(cVal - aVal)
+                count[index] += 100
+            }
+        }
+        
+        for i in 0..<26 {
+            count[i] += i
+        }
+        
+        let sort = count.sorted()
+        
+        var result = Array<Character>(repeating: "a", count: len)
+        var ct = 1
+        for i in 0..<sort.count {
+            let counter = sort[i] / 100
+            let char = UInt8(sort[i] % 100)
+            if counter > (len + 1)/2 {
+                return ""
+            }
+            if let aVal = aAscii {
+                for _ in 0..<counter {
+                    if ct >= len {
+                        ct = 0
+                    }
+                    let x = Character(UnicodeScalar(aVal + char))
+                    result[ct] = x
+                    ct += 2
+                }
+            }
+        }
+        
+        let s = result.reduce("") { (prev, curr) -> String in
+            return prev + String(curr)
+        }
+        return s
+    }
+    
+    static func findMinArrowShots(_ points: [[Int]]) -> Int {
+        if points.isEmpty {
+            return 0
+        }
+        
+        let sorted = points.sorted { (firsrt, second) -> Bool in
+            firsrt[1] < second[1]
+        }
+        
+        var result = 1
+        var counter = 1
+        var firstlast = sorted[0][1]
+        
+        while counter < sorted.count {
+            let curr = sorted[counter]
+            if firstlast < curr[0] {
+                result += 1
+                firstlast = curr[1]
+            }
+            counter += 1
+        }
+        return result
+    }
+    
+    func complexNumberMultiply(_ a: String, _ b: String) -> String {
+        let x = a.split(separator: "+")
+        let x1 = x[1].split(separator: "i")
+        let y = b.split(separator: "+")
+        let y1 = y[1].split(separator: "i")
+        let aReal = x[0]
+        let aImg = x1[0]
+
+        let bReal = y[0]
+        let bImg = y1[0]
+        if let a1 = Int(aReal), let a2 = Int(aImg), let b1 = Int(bReal), let b2 = Int(bImg) {
+            return "\(a1*b1 - a2*b2)" + "+" + "\(a1*b2 + a2*b1)" + "i"
+        }
+        return ""
+    }
+    
+    static func dfsMaxAreaOfIsland(_ grid: inout [[Int]], m: Int, n: Int, x: Int, y: Int, _ val: inout Int) {
+        if x < 0 || y < 0 || x >= m || y >= n || grid[x][y] == 0 {
+            return
+        }
+        
+        grid[x][y] = 0
+        val += 1
+        let dir = [(-1, 0), (1, 0), (0, 1), (0, -1)]
+        for item in dir {
+            let xPos = x + item.0
+            let yPos = y + item.1
+            dfsMaxAreaOfIsland(&grid, m: m, n: n, x: xPos, y: yPos, &val)
+        }
+    }
+    
+    static func maxAreaOfIsland(_ grid: [[Int]]) -> Int {
+        if grid.isEmpty {
+            return 0
+        }
+        
+        var myGrid = grid
+        var result = 0
+        let m = myGrid.count
+        let n = myGrid[0].count
+        var val = 0
+        
+        for i in 0..<m {
+            for j in 0..<n {
+                if myGrid[i][j] == 1 {
+                    val = 0
+                    dfsMaxAreaOfIsland(&myGrid, m: m, n: n, x: i, y: j, &val)
+                    result = max(result, val)
+                }
+            }
+        }
+        
+        return result
+    }
+    
+    func kClosest(_ points: [[Int]], _ K: Int) -> [[Int]] {
+        if points.isEmpty || K > points.count {
+            return []
+        }
+        var dist = [Int]()
+        for item in points {
+            dist.append(distanceFromOrigin(item))
+        }
+        dist.sort()
+        let k = dist[K - 1]
+        var result = [[Int]]()
+        for item in points {
+            if distanceFromOrigin(item) <= k {
+                result.append(item)
+            }
+        }
+        return result
+    }
+    
+    func distanceFromOrigin(_ point: [Int]) -> Int {
+        return point[0]*point[0] + point[1]*point[1]
+    }
+    
+    func missingElement(_ nums: [Int], _ k: Int) -> Int {
+        if nums.isEmpty {
+            return 0
+        }
+        var kVal = k
+        var result = 0
+        
+        for i in 0..<nums.count - 1 {
+            if nums[i + 1] - nums[i] - 1 < kVal {
+                kVal -= nums[i + 1] - nums[i] - 1
+            }
+            else {
+                result = nums[i] + kVal
+            }
+        }
+        if kVal > 0 {
+            result = nums[nums.count - 1] + k
+        }
+        return result
+    }
 }
 
 
@@ -3723,3 +3895,44 @@ class Codec {
         return result
     }
 }
+
+
+
+
+
+class NestedIterator {
+
+    static func helper(_ list: [NestedInteger]) -> [Int] {
+        if list.isEmpty {
+            return []
+        }
+        var listVal = [Int]()
+        for item in list {
+            if item.isInteger() {
+                listVal.append(item.getInteger())
+            }
+            else {
+                let x = helper(item.getList())
+                listVal.append(contentsOf: x)
+            }
+        }
+        
+        return listVal
+    }
+    
+    private var list: [Int]
+    init(_ nestedList: [NestedInteger]) {
+        list = NestedIterator.helper(nestedList)
+    }
+    
+    func next() -> Int {
+        let x = list.removeFirst()
+        return x
+    }
+    
+    func hasNext() -> Bool {
+        return list.count > 0
+    }
+}
+
+

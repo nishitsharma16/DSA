@@ -13,16 +13,17 @@ struct MultiSet<Element: Hashable> {
     private var totalCount = 0
     mutating func add(_ element: Element) {
         store[element, default: 0] += 1
+        totalCount += 1
     }
     
     mutating func remove(_ element: Element) {
-        if let val = store[element], val > 0 {
+        if let val = store[element], val > 1 {
             store[element] = val - 1
         }
         else {
             store.removeValue(forKey: element)
         }
-        totalCount += 1
+        totalCount -= 1
     }
     
     func countFor(_ element: Element) -> UInt {
@@ -37,6 +38,12 @@ struct MultiSet<Element: Hashable> {
     }
     
     func isSubSet(of set: MultiSet<Element>) -> Bool {
-        return false
+        for (key, count) in self.store {
+            let superCount = set.store[key] ?? 0
+            if count > superCount {
+                return false
+            }
+        }
+        return true
     }
 }

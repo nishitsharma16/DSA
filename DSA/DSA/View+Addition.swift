@@ -39,7 +39,9 @@ extension UIView {
                 i -= 1
                 let point = view.convert(point, from: self)
                 let foundView = view.swizzledHittest(point, with: event)
-                return foundView
+                if foundView != nil {
+                    return foundView
+                }
             }
             return self
         }
