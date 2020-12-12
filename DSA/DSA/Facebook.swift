@@ -1934,6 +1934,42 @@ extension Problems {
         }
     }
     
+    func reverseList(_ list: inout [Int]) {
+        var l = 0
+        var r = list.count - 1
+        while l < r {
+            let temp = list[r]
+            list[r] = list[l]
+            list[l] = temp
+            l += 1
+            r -= 1
+        }
+    }
+    
+    func rotateMatrix90V2(_ matrix: inout [[Int]]) {
+        if matrix.isEmpty {
+            return
+        }
+        
+        let m = matrix.count
+        let n = matrix[0].count
+
+        // Transpose
+        for i in 0..<m {
+            for j in i..<n {
+                let temp = matrix[i][j]
+                matrix[i][j] = matrix[j][i]
+                matrix[j][i] = temp
+            }
+        }
+        
+        // Reverse Rows
+        for i in 0..<m {
+            var list = matrix[i]
+            reverseList(&list)
+        }
+    }
+    
     static func addBoldTag(_ s: String, _ dict: [String]) -> String {
         if s.isEmpty {
             return ""
@@ -2568,18 +2604,38 @@ extension Problems {
         return maxLen
     }
     
-    func longestConsecutiveHelper(_ root: TreeNode?, _ parent: TreeNode?, _ length: inout Int, _ maxLength: inout Int) {
-        if let r = root {
-            if let p = parent {
-                length = p.value + 1 == r.value ? length + 1 : 1
-            }
-            else {
-                length = 1
-            }
-            maxLength = max(maxLength, length)
-            longestConsecutiveHelper(root?.left, root, &length, &maxLength)
-            longestConsecutiveHelper(root?.right, root, &length, &maxLength)
+    @discardableResult
+    func longestConsecutiveHelper(_ root: TreeNode?, _ maxLength: inout Int) -> (incr: Int, dcr: Int) {
+        if root == nil {
+            return (0, 0)
         }
+        var incr = 1
+        var dcr = 1
+        
+        if root?.left != nil {
+            let val = longestConsecutiveHelper(root?.left, &maxLength)
+            if let x = root?.value, let leftVal = root?.left?.value {
+                if  x ==  leftVal + 1 {
+                    dcr = val.dcr + 1
+                }
+                else if x == leftVal - 1 {
+                    incr = val.incr + 1
+                }
+            }
+        }
+        if root?.right != nil {
+            let val = longestConsecutiveHelper(root?.right, &maxLength)
+            if let x = root?.value, let rightVal = root?.right?.value {
+                if  x ==  rightVal + 1 {
+                    dcr =  max(dcr, val.dcr + 1)
+                }
+                else if x == rightVal - 1 {
+                    incr =  max(incr, val.incr + 1)
+                }
+            }
+        }
+        maxLength = max(maxLength, incr + dcr - 1)
+        return (incr, dcr)
     }
     
     func longestConsecutive(_ root: TreeNode?) -> Int {
@@ -2587,8 +2643,7 @@ extension Problems {
             return 0
         }
         var result = 0
-        var len = 0
-        longestConsecutiveHelper(root, nil, &len, &result)
+        longestConsecutiveHelper(root, &result)
         return result
     }
     
@@ -3069,19 +3124,50 @@ extension Problems {
             return []
         }
         
-        var subset = Set<Int>()
-        var result = Set<Set<Int>>()
-        
-        findSubSets(list: list, subset: &subset, index: 0, result: &result)
-        
-        var temp = [[Int]]()
-        temp.append(list)
-        for item in result {
-            let x = Array(item)
-            temp.append(x)
+        var result = [[Int]]()
+        let len = list.count
+        let size = Int(pow(Double(2), Double(len)))
+        for i in 0..<size {
+            var list = [Int]()
+            for j in 0..<len {
+                if i & (1 << j) != 0 {
+                    list.append(list[j])
+                }
+            }
+            if !result.contains(list) {
+                result.append(list)
+            }
         }
+        return result
+    }
+    
+    static func findSubSetsWithDuplicates(list: [Int], subset: inout [Int], index: Int, result: inout [[Int]]) {
+        if index == list.count {
+            return
+        }
+        if !result.contains(subset) {
+            result.append(subset)
+        }
+        for i in index..<list.count {
+            if subset.contains(list[i]) {
+                subset.append(list[i])
+                findSubSetsWithDuplicates(list: list, subset: &subset, index: index + 1, result: &result)
+                subset.removeLast()
+            }
+        }
+    }
+    
+    static func findAllPowerSubSetsWithDuplicates(list: [Int], numberOfSets: Int) -> [[Int]] {
+        if list.isEmpty {
+            return []
+        }
+        
+        var subset = [Int]()
+        var result = [[Int]]()
+        
+        findSubSetsWithDuplicates(list: list, subset: &subset, index: 0, result: &result)
 
-        return temp
+        return result
     }
     
     // Boogle Solver
@@ -3457,6 +3543,65 @@ extension Problems {
             result = nums[nums.count - 1] + k
         }
         return result
+    }
+    
+    func topKFrequent(_ nums: [Int], _ k: Int) -> [Int] {
+        if nums.isEmpty {
+            return []
+        }
+        
+        var map = [Int: Int]()
+        for item in nums {
+            if let val = map[item] {
+                map[item] = val + 1
+            }
+            else {
+                map[item] = 1
+            }
+        }
+        
+        let list = map.sorted { (first, second) -> Bool in
+            first.value > second.value
+        }
+        
+        var result = [Int]()
+        if k <= list.count {
+            for i in 0..<k {
+                result.append(list[i].key)
+            }
+        }
+        
+        return result
+    }
+    
+    func splitArray(_ nums: [Int]) -> Bool {
+        let len = nums.count
+
+        if nums.isEmpty || len < 7 {
+            return false
+        }
+        
+        var preSum = Array(repeating: 0, count: len)
+        preSum[0] = nums[0]
+        for i in 1..<len {
+            preSum[i] = preSum[i - 1] + nums[i]
+        }
+        
+        for j in 3..<len - 3 {
+            var set = Set<Int>()
+            for i in 1..<j - 1 {
+                if preSum[i - 1] == preSum[j - 1] - preSum[i] {
+                    set.insert(preSum[i - 1])
+                }
+            }
+            
+            for k in j+2..<len - 1 {
+                if preSum[len - 1] - preSum[k] == preSum[k - 1] - preSum[j] && set.contains(preSum[k - 1] - preSum[j]) {
+                    return true
+                }
+            }
+        }
+        return false
     }
 }
 
