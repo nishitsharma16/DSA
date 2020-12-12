@@ -3179,6 +3179,35 @@ extension Problems {
         return result
     }
     
+    static func findAllPowerSubSetsBFS(_ nums: [Int]) -> [[Int]] {
+        if nums.isEmpty {
+            return []
+        }
+        
+        let listVal = nums.sorted()
+        var result = [[Int]]()
+        result.append([])
+        let len = listVal.count
+        var prevNum = -1
+        var prevSize = 0
+        for i in 0..<len {
+            let item = listVal[i]
+            let start = prevNum == item ? prevSize : 0
+            let size = result.count
+            for j in start..<size {
+                var copy = [Int]()
+                copy.append(item)
+                if !result[j].isEmpty {
+                    copy.append(contentsOf: result[j])
+                }
+                result.append(copy)
+            }
+            prevNum = item
+            prevSize = size
+        }
+        return result
+    }
+    
     static func findSubSetsWithDuplicates(list: [Int], subset: inout [Int], index: Int, result: inout [[Int]]) {
         if index == list.count {
             return
@@ -3703,6 +3732,117 @@ extension Problems {
         }
         
         return 0
+    }
+    
+    static func bstFromPreorder(_ preorder: [Int]) -> TreeNode? {
+        if preorder.isEmpty {
+            return nil
+        }
+        
+        let inorder = preorder.sorted()
+        var inorderMap = [Int: Int]()
+        for i in 0..<inorder.count {
+            inorderMap[inorder[i]] = i
+        }
+        
+        var start = 0
+        let result = buildTreeHelper(preorder, 0, inorder.count, &start, inorderMap)
+        return result
+    }
+    
+    static func bstFromPreorderV2Helper(_ preorder: [Int], _ min: Int, _ max: Int, _ preIndex: inout Int, _ count: Int) -> TreeNode? {
+        if preIndex > count - 1 {
+            return nil
+        }
+        
+        let val = preorder[preIndex]
+        if val < min || val > max {
+            return nil
+        }
+        
+        preIndex += 1
+        let node = TreeNode(val: val)
+        node.left = bstFromPreorderV2Helper(preorder, min, val, &preIndex, count)
+        node.right = bstFromPreorderV2Helper(preorder, val, max, &preIndex, count)
+        return node
+    }
+    
+    static func bstFromPreorderV2(_ preorder: [Int]) -> TreeNode? {
+        if preorder.isEmpty {
+            return nil
+        }
+        
+        var preIndex = 0
+        let result = bstFromPreorderV2Helper(preorder, Int.min, Int.max, &preIndex, preorder.count)
+        return result
+    }
+    
+    func minAddToMakeValid(_ S: String) -> Int {
+        if S.isEmpty {
+            return 0
+        }
+        
+        let len = S.count
+        let stack = Stack<Character>()
+        stack.push(val: S[0])
+        var i = 1
+        while !stack.isEmpty && i < len {
+            let curr = S[i]
+            var shouldAdd = true
+            if let top = stack.top() {
+                if curr == ")" && top == "(" {
+                    stack.pop()
+                    shouldAdd = false
+                }
+            }
+            if shouldAdd {
+                stack.push(val: curr)
+            }
+            i += 1
+        }
+        return stack.size
+    }
+    
+    func minAddToMakeValidV2(_ S: String) -> Int {
+        if S.isEmpty {
+            return 0
+        }
+        
+        var x = 0
+        var y = 0
+        
+        for item in S {
+            x += item == "(" ? 1 : -1
+            // x can't be greater than -1
+            if x == -1 {
+                x += 1
+                y += 1
+            }
+        }
+        
+        return x + y
+    }
+    
+    func countBattleships(_ board: [[Character]]) -> Int {
+        if board.isEmpty {
+            return 0
+        }
+        
+        let m = board.count
+        let n = board[0].count
+        var result = 0
+        for i in 0..<m {
+            var prev = false
+            for j in 0..<n {
+                let curr = board[i][j] == "X"
+                let top = i > 0 && board[i - 1][j] == "X"
+                if curr && !prev && !top {
+                    result += 1
+                }
+                prev = curr
+            }
+        }
+        return result
     }
 }
 
