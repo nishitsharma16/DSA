@@ -1320,6 +1320,44 @@ extension Problems {
         return lis.contains(3)
     }
     
+    func longestincreasingSubSequenceToOne(_ nums: [Int]) -> Int {
+        if nums.isEmpty {
+            return 0
+        }
+        
+        let length = nums.count
+        var lis = Array(repeating: 1, count: length)
+        for i in 1..<length {
+            lis[i] = 1
+            for j in 0..<i {
+                if nums[i] == nums[j] + 1 && lis[i] < lis[j] + 1 {
+                    lis[i] = lis[j] + 1
+                }
+            }
+        }
+        
+        return lis.max()!
+    }
+    
+    func longestincreasingSubSequence(_ nums: [Int]) -> Int {
+        if nums.isEmpty {
+            return 0
+        }
+        
+        let length = nums.count
+        var lis = Array(repeating: 1, count: length)
+        for i in 1..<length {
+            lis[i] = 1
+            for j in 0..<i {
+                if nums[i] > nums[j] && lis[i] < lis[j] + 1 {
+                    lis[i] = lis[j] + 1
+                }
+            }
+        }
+        
+        return lis.max()!
+    }
+    
     func increasingTripletV2(_ nums: [Int]) -> Bool {
         if nums.isEmpty {
             return false
@@ -3524,25 +3562,26 @@ extension Problems {
         return point[0]*point[0] + point[1]*point[1]
     }
     
+    func missing(_ index: Int, _ nums: [Int]) -> Int {
+        return nums[index] - nums[0] - index
+    }
+    
     func missingElement(_ nums: [Int], _ k: Int) -> Int {
         if nums.isEmpty {
             return 0
         }
-        var kVal = k
-        var result = 0
         
-        for i in 0..<nums.count - 1 {
-            if nums[i + 1] - nums[i] - 1 < kVal {
-                kVal -= nums[i + 1] - nums[i] - 1
-            }
-            else {
-                result = nums[i] + kVal
-            }
+        let n = nums.count
+        if k > missing(n - 1, nums) {
+            return nums[n - 1] + k - missing(n - 1, nums)
         }
-        if kVal > 0 {
-            result = nums[nums.count - 1] + k
+        
+        var i = 1
+        while k > missing(i, nums) {
+            i += 1
         }
-        return result
+        
+        return nums[i - 1] + k - missing(i - 1, nums)
     }
     
     func topKFrequent(_ nums: [Int], _ k: Int) -> [Int] {
@@ -3603,8 +3642,84 @@ extension Problems {
         }
         return false
     }
+    
+    func rightSideViewHelper(_ root: TreeNode?, _ level: Int, _ map: inout [Int: Int]) {
+        if root == nil {
+            return
+        }
+        
+        if let rootX = root?.value {
+            map[level] = rootX
+        }
+        rightSideViewHelper(root?.left, level + 1, &map)
+        rightSideViewHelper(root?.right, level + 1, &map)
+    }
+    
+    func rightSideView(_ root: TreeNode?) -> [Int] {
+        if root == nil {
+            return []
+        }
+        var map = [Int: Int]()
+        rightSideViewHelper(root, 0, &map)
+        let list = map.sorted { (first, second) -> Bool in
+            first.key < second.key
+        }.map { $0.value }
+        return list
+    }
+    
+    func kthSmallestInSortedMatrix(_ matrix: [[Int]], _ k: Int) -> Int {
+        if matrix.isEmpty {
+            return 0
+        }
+        
+        let m = matrix.count
+        let n = matrix[0].count
+        
+        var list = [MatrixNode]()
+        for i in 0..<n {
+            let node = MatrixNode(point: (0, i), val: matrix[0][i])
+            list.append(node)
+        }
+        
+        if k <= n {
+            return list[k - 1].val
+        }
+        
+        var counter = 0
+        let queue = Heap(type: .minHeap, list: list)
+        while !queue.isEmpty && counter >= 0 {
+            if let item = queue.extract() {
+                counter += 1
+                if counter == k {
+                    return item.val
+                }
+                let nextX = item.point.x + 1
+                let nextY = item.point.y
+                if nextX < m {
+                    let node = MatrixNode(point: (nextX, nextY), val: matrix[nextX][nextY])
+                    queue.insert(element: node)
+                }
+            }
+        }
+        
+        return 0
+    }
 }
 
+struct MatrixNode {
+    let point: (x: Int, y: Int)
+    let val: Int
+}
+
+extension MatrixNode: Comparable {
+    static func < (lhs: MatrixNode, rhs: MatrixNode) -> Bool {
+        return lhs.val < rhs.val
+    }
+    
+    static func == (lhs: MatrixNode, rhs: MatrixNode) -> Bool {
+        return lhs.val == rhs.val
+    }
+}
 
 class TrieNodeV2 {
     var list = Array<TrieNodeV2?>(repeating: nil, count:26)

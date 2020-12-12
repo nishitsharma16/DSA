@@ -45,6 +45,7 @@
 		18D9AC6025796DE9002020D5 /* View+Addition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D9AC5F25796DE9002020D5 /* View+Addition.swift */; };
 		18D9AC6525798077002020D5 /* MultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D9AC6425798077002020D5 /* MultiSet.swift */; };
 		18F20EEF2582602B00FC543F /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F20EEE2582602A00FC543F /* Observer.swift */; };
+		18F20EF425850C8600FC543F /* MockSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F20EF325850C8600FC543F /* MockSession.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +111,7 @@
 		18D9AC5F25796DE9002020D5 /* View+Addition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Addition.swift"; sourceTree = "<group>"; };
 		18D9AC6425798077002020D5 /* MultiSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSet.swift; sourceTree = "<group>"; };
 		18F20EEE2582602A00FC543F /* Observer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
+		18F20EF325850C8600FC543F /* MockSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSession.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +200,7 @@
 				18D9AC5A25793B51002020D5 /* TableViewCellQueue.swift */,
 				18D9AC5F25796DE9002020D5 /* View+Addition.swift */,
 				18D9AC6425798077002020D5 /* MultiSet.swift */,
+				18F20EF325850C8600FC543F /* MockSession.swift */,
 			);
 			path = DSA;
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 				1835A5C32467558B00B2B0AF /* Queue.swift in Sources */,
 				1895B41D25108F220028F504 /* Facebook.swift in Sources */,
 				1835A5C52467559700B2B0AF /* Stack.swift in Sources */,
+				18F20EF425850C8600FC543F /* MockSession.swift in Sources */,
 				18D9AC5B25793B51002020D5 /* TableViewCellQueue.swift in Sources */,
 				18D9AC5325792F27002020D5 /* CustomTableView.swift in Sources */,
 				1835A5C72469C2C300B2B0AF /* BST.swift in Sources */,
