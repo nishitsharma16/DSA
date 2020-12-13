@@ -3876,8 +3876,6 @@ extension Problems {
         return result
     }
     
-    
-    
     func maxAncestorDiffBinaryTreeHelper(_ root: TreeNode?, _ min: inout Int, _ max: inout Int, result: inout Int) {
         if root == nil {
             return
@@ -3928,6 +3926,89 @@ extension Problems {
     
     func flattenTreeToSingleList(_ root: TreeNode?) {
         flattenTreeToSingleListHelper(root)
+    }
+    
+    func rangeIntersection(_ range1: Range<Int>, _ range2: Range<Int>) -> Range<Int>? {
+        if range1.upperBound < range2.lowerBound || range2.upperBound < range1.lowerBound {
+            return nil
+        }
+        let minVal = min(range1.lowerBound, range2.lowerBound)
+        let maxVal = max(range1.upperBound, range2.upperBound)
+        return Range(minVal...maxVal)
+    }
+    
+    static func fbEnumarator() {
+        let x: [Any] = [1,[2,3],4,5,[1,[2,3,5,6,[10,11]]]]
+        let iterator = FacebookIterator(x)
+        let y = iterator.allObjects()
+    }
+    
+    
+    func addBinary(_ a: String, _ b: String) -> String {
+        if a.isEmpty && b.isEmpty {
+            return ""
+        }
+        else if a.isEmpty {
+            return b
+        }
+        else if b.isEmpty {
+            return a
+        }
+        
+        var result = ""
+        
+        let len1 = a.count
+        let len2 = b.count
+        if len1 > len2  {
+            return addBinary(b, a)
+        }
+        else {
+            var counter = len1 - 1
+            var carry = 0
+            var j = len2 - 1
+            while counter >= 0 {
+                let item1 = String(a[counter])
+                let item2 = String(b[j])
+                if let x = Int(item1), let y = Int(item2) {
+                    result = String((x + y + carry) % 2) + result
+                    carry = (x + y + carry) / 2
+                }
+                counter -= 1
+                j -= 1
+            }
+            if j >= 0 {
+                while j >= 0 {
+                    let item2 = String(b[j])
+                    if let y = Int(item2) {
+                        result = String((y + carry) % 2) + result
+                        carry = (y + carry) / 2
+                    }
+                    j -= 1
+                }
+            }
+            if carry > 0 {
+                result = String((carry) % 2) + result
+            }
+        }
+        
+        return result
+    }
+    
+    func isMonotonic(_ A: [Int]) -> Bool {
+        if A.isEmpty {
+            return false
+        }
+        var inc = true
+        var dec = true
+        for i in 0..<A.count - 1 {
+            if A[i] > A[i + 1] {
+                inc = false
+            }
+            else if A[i] < A[i + 1] {
+                dec = false
+            }
+        }
+        return dec || inc
     }
 }
 
@@ -4382,11 +4463,51 @@ class Codec {
 }
 
 
+class FacebookIterator {
+
+    //@[@1, @[@2, @[@3, @4]], @[ ], @5],
+    static func helper(_ list: [Any]) -> [Int] {
+        if list.isEmpty {
+            return []
+        }
+        var listVal = [Int]()
+        for item in list {
+            if let val = item as? Int {
+                listVal.append(val)
+            }
+            else if let val = item as? [Any] {
+                let x = helper(val)
+                listVal.append(contentsOf: x)
+            }
+        }
+        
+        return listVal
+    }
+    
+    private var list: [Int]
+    init(_ nestedList: [Any]) {
+        list = FacebookIterator.helper(nestedList)
+    }
+    
+    func next() -> Int {
+        let x = list.removeFirst()
+        return x
+    }
+    
+    func hasNext() -> Bool {
+        return list.count > 0
+    }
+    
+    func allObjects() -> [Int] {
+        return list
+    }
+}
 
 
 
 class NestedIterator {
 
+    //@[@1, @[@2, @[@3, @4]], @[ ], @5],
     static func helper(_ list: [NestedInteger]) -> [Int] {
         if list.isEmpty {
             return []
@@ -4471,6 +4592,65 @@ class RandomPickIndex {
             return x[index]
         }
         return -1
+    }
+}
+
+class TimeMap {
+
+    /** Initialize your data structure here. */
+    private var map = [String: [Int: String]]()
+    init() {
+        
+    }
+    
+    func set(_ key: String, _ value: String, _ timestamp: Int) {
+        if var val = map[key] {
+            val[timestamp] = value
+            map[key] = val
+        }
+        else {
+            map[key] = [timestamp: value]
+        }
+    }
+    
+    func get(_ key: String, _ timestamp: Int) -> String {
+        if let val = map[key] {
+            let keys = val.keys.sorted()
+            let x = binarySearch(keys, timestamp)
+            if x != -1 {
+                return val[x] ?? ""
+            }
+        }
+        return ""
+    }
+    
+    func binarySearch(_ list: [Int], _ target: Int) -> Int {
+        if list.isEmpty {
+            return -1
+        }
+        var counter = list.count - 1
+        while counter >= 0 {
+            let item = list[counter]
+            if item > target {
+                
+            }
+            else {
+                return item
+            }
+            counter -= 1
+        }
+        return -1
+    }
+}
+
+struct TimeMapItem {
+    let time: Int
+    let val: String
+}
+
+extension TimeMapItem: Comparable {
+    static func < (lhs: TimeMapItem, rhs: TimeMapItem) -> Bool {
+        lhs.time <= rhs.time
     }
 }
 
