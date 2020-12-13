@@ -3085,6 +3085,37 @@ extension Problems {
         return result
     }
     
+    static func buildTreeInPostHelper(_ postorder: [Int], _ inLeft: Int, _ inRight: Int, _ postIndex: inout Int, _ map: [Int: Int]) -> TreeNode? {
+        if inLeft >= inRight || postIndex < 0 {
+            return nil
+        }
+        
+        let rootVal = postorder[postIndex]
+        let root = TreeNode(val: rootVal)
+        if let postIndexVal = map[rootVal] {
+            postIndex = postIndex - 1
+            root.right = buildTreeInPostHelper(postorder, postIndexVal + 1, inRight, &postIndex, map)
+            root.left = buildTreeInPostHelper(postorder, inLeft, postIndexVal, &postIndex, map)
+        }
+        return root
+    }
+    
+    static func buildTreeInPost(_ postorder: [Int], _ inorder: [Int]) -> TreeNode? {
+        
+        if postorder.isEmpty || inorder.isEmpty {
+            return nil
+        }
+        
+        var inorderMap = [Int: Int]()
+        for i in 0..<inorder.count {
+            inorderMap[inorder[i]] = i
+        }
+        
+        var start = postorder.count - 1
+        let result = buildTreeInPostHelper(postorder, 0, inorder.count, &start, inorderMap)
+        return result
+    }
+    
     func kthSmallestBSTTreeNodeValueHelper(_ root: TreeNode?, _ k: Int, _ counter: inout Int, _ result: inout Int) {
         if let _ = root {
             kthSmallestBSTTreeNodeValueHelper(root?.left, k, &counter, &result)
@@ -3844,6 +3875,60 @@ extension Problems {
         }
         return result
     }
+    
+    
+    
+    func maxAncestorDiffBinaryTreeHelper(_ root: TreeNode?, _ min: inout Int, _ max: inout Int, result: inout Int) {
+        if root == nil {
+            return
+        }
+        
+        if let val = root?.value {
+            let maxAbs = Int(abs(val - min)) > Int(abs(val - max)) ? Int(abs(val - min)) : Int(abs(val - max))
+            result = result > maxAbs ? result : maxAbs
+            min = min < val ? min : val
+            max = max < val ? val : max
+            maxAncestorDiffBinaryTreeHelper(root?.left, &min, &max, result: &result)
+            maxAncestorDiffBinaryTreeHelper(root?.right, &min, &max, result: &result)
+        }
+    }
+    
+    func maxAncestorDiffBinaryTree(_ root: TreeNode?) -> Int {
+        if root == nil {
+            return 0
+        }
+        var result = Int.min
+        var min = root?.value ?? 0
+        var max = root?.value ?? 0
+        maxAncestorDiffBinaryTreeHelper(root, &min, &max, result: &result)
+        return result
+    }
+    
+    @discardableResult
+    func flattenTreeToSingleListHelper(_ root: TreeNode?) -> TreeNode? {
+        if root == nil {
+            return nil
+        }
+        
+        if root?.left == nil && root?.right == nil {
+            return root
+        }
+        
+        let leftTail = flattenTreeToSingleListHelper(root?.left)
+        let rightTail = flattenTreeToSingleListHelper(root?.right)
+        
+        if leftTail != nil {
+            leftTail?.right = root?.right
+            root?.right = root?.left
+            root?.left = nil
+        }
+        
+        return rightTail == nil ? leftTail : rightTail
+    }
+    
+    func flattenTreeToSingleList(_ root: TreeNode?) {
+        flattenTreeToSingleListHelper(root)
+    }
 }
 
 struct MatrixNode {
@@ -4334,5 +4419,61 @@ class NestedIterator {
         return list.count > 0
     }
 }
+
+
+class BSTIterator {
+
+    private func inorder(_ root: TreeNode?) {
+        if let r = root {
+            inorder(r.left)
+            list.append(r.value)
+            inorder(r.right)
+        }
+    }
+    
+    private var list = [Int]()
+    init(_ root: TreeNode?) {
+        inorder(root)
+    }
+    
+    func next() -> Int {
+        return list.removeFirst()
+    }
+    
+    func hasNext() -> Bool {
+        return list.count > 0
+    }
+}
+
+class RandomPickIndex {
+
+    private let map: [Int: [Int]]
+    
+    init(_ nums: [Int]) {
+        var map = [Int: [Int]]()
+        
+        for i in 0..<nums.count {
+            if var x = map[nums[i]] {
+                x.append(i)
+                map[nums[i]] = x
+            }
+            else {
+                map[nums[i]] = [i]
+            }
+        }
+        
+        self.map = map
+    }
+    
+    func pick(_ target: Int) -> Int {
+        if let x = map[target] {
+            let index = Int.random(in: 0..<x.count)
+            return x[index]
+        }
+        return -1
+    }
+}
+
+
 
 
