@@ -816,9 +816,12 @@ class Problems {
         if list[end] == item {
             return (firstPosition, end)
         }
-        let lastPosition = findLastPosition(list: list, item: item, start: firstPosition, end: end)
+        if firstPosition != -1 {
+            let lastPosition = findLastPosition(list: list, item: item, start: firstPosition, end: end)
+            return (firstPosition, lastPosition)
+        }
         
-        return (firstPosition, lastPosition)
+        return (-1, -1)
     }
     
     static func findCombinationSum(list: [Int], target: Int) -> [[Int]] {
@@ -1246,6 +1249,31 @@ class Problems {
         else {
             return result
         }
+    }
+    
+    func myPowV2Helper(_ x: Double, _ n: Int) -> Double {
+        if n <= 0 {
+            return 1.0
+        }
+        
+        var half = myPowV2Helper(x, n/2)
+        if n % 2 == 0 {
+            half = half * half
+        }
+        else {
+            half = half * half * x
+        }
+        return half
+    }
+    
+    func myPowV2(_ x: Double, _ n: Int) -> Double {
+        var nVal = n
+        var xVal = x
+        if nVal < 0 {
+            nVal = -nVal
+            xVal = 1 / xVal
+        }
+        return myPowV2Helper(xVal, nVal)
     }
     
     // Pending

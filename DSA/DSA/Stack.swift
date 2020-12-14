@@ -32,6 +32,10 @@ class Stack<Item> {
     var size : Int {
        return list.count
     }
+    
+    var items: [Item] {
+        return list
+    }
 }
 
 class MaxStack {

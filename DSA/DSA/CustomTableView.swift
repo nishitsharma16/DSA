@@ -27,6 +27,15 @@ private class CellItem {
     }
 }
 
+private class CellIndexItem {
+    let index: IndexPath
+    let cell: UITableViewCell
+    init(_ cell: UITableViewCell, _ index: IndexPath) {
+        self.cell = cell
+        self.index = index
+    }
+}
+
 protocol DataSource: AnyObject {
     func numberOfSection() -> Int
     func numberOfRows(in section: Int) -> Int
@@ -124,5 +133,130 @@ extension MyTableView: UIScrollViewDelegate {
             scrollDirection = .top
         }
         lastContentOffset = scrollView.contentOffset.y
+    }
+}
+
+
+
+class MyTableView2: UITableView {
+    private var map = [String: CellInfo]()
+    private var cellsMap = [String: [UITableViewCell]]()
+    private var scrollDirection: ScrollDirection = .none
+    private let queue = TableViewCellQueue<UITableViewCell>()
+    private let indexQueue = TableViewCellQueue<CellIndexItem>()
+    private var cellsIndexMap = [IndexPath: CellIndexItem]()
+
+    override func register(_ cellClass: AnyClass?, forCellReuseIdentifier identifier: String) {
+        if let _ = map[identifier] {
+            
+        }
+        else {
+            map[identifier] = CellInfo(type: cellClass, identifier: identifier)
+        }
+    }
+    
+    func numberOfVisibleCells() -> Int {
+        return 0
+    }
+    
+    override func dequeueReusableCell(withIdentifier identifier: String) -> UITableViewCell? {
+        if queue.size > numberOfVisibleCells() {
+            if scrollDirection == .down {
+                let item = queue.dQueueFromLast()
+                if item.reuseIdentifier == identifier {
+                    queue.enqueueFromFront(val: item)
+                    return item
+                }
+                else {
+                    if let id = item.reuseIdentifier, let val = cellsMap[id] {
+                        let list = val.filter { $0 != item }
+                        cellsMap[id] = list
+                    }
+                    if let val = cellsMap[identifier] {
+                        let cell = UITableViewCell(style: .default, reuseIdentifier: identifier)
+                        cellsMap[identifier] = val + [cell]
+                        queue.enqueueFromFront(val: cell)
+                        return cell
+                    }
+                    else {
+                        let cell = UITableViewCell(style: .default, reuseIdentifier: identifier)
+                        cellsMap[identifier] = [cell]
+                        queue.enqueueFromFront(val: cell)
+                        return cell
+                    }
+                }
+            }
+            else {
+                let item = queue.dQueueFromFront()
+                if item.reuseIdentifier == identifier {
+                    queue.enqueueFromEnd(val: item)
+                    return item
+                }
+                else {
+                    if let id = item.reuseIdentifier, let val = cellsMap[id] {
+                        let list = val.filter { $0 != item }
+                        cellsMap[id] = list
+                    }
+                    if let val = cellsMap[identifier] {
+                        let cell = UITableViewCell(style: .default, reuseIdentifier: identifier)
+                        cellsMap[identifier] = val + [cell]
+                        queue.enqueueFromEnd(val: cell)
+                        return cell
+                    }
+                    else {
+                        let cell = UITableViewCell(style: .default, reuseIdentifier: identifier)
+                        cellsMap[identifier] = [cell]
+                        queue.enqueueFromEnd(val: cell)
+                        return cell
+                    }
+                }
+            }
+        }
+        else {
+            let cell = UITableViewCell(style: .default, reuseIdentifier: identifier)
+            cellsMap[identifier, default: [cell]] += [cell]
+            queue.enqueueFromEnd(val: cell)
+            return cell
+        }
+    }
+    
+    override func dequeueReusableCell(withIdentifier identifier: String, for indexPath: IndexPath) -> UITableViewCell {
+        if queue.size > numberOfVisibleCells() {
+            if scrollDirection == .down {
+                let item = indexQueue.dQueueFromLast()
+                if item.cell.reuseIdentifier == identifier {
+                    indexQueue.enqueueFromFront(val: item)
+                    return item.cell
+                }
+                else {
+                    cellsIndexMap.removeValue(forKey: item.index)
+                    let cell = UITableViewCell(style: .default, reuseIdentifier: identifier)
+                    let cellIndexItem = CellIndexItem(cell, indexPath)
+                    cellsIndexMap[indexPath] = cellIndexItem
+                    return cell
+                }
+            }
+            else {
+                let item = indexQueue.dQueueFromFront()
+                if item.cell.reuseIdentifier == identifier {
+                    indexQueue.enqueueFromEnd(val: item)
+                    return item.cell
+                }
+                else {
+                    cellsIndexMap.removeValue(forKey: item.index)
+                    let cell = UITableViewCell(style: .default, reuseIdentifier: identifier)
+                    let cellIndexItem = CellIndexItem(cell, indexPath)
+                    cellsIndexMap[indexPath] = cellIndexItem
+                    return cell
+                }
+            }
+        }
+        else {
+            let cell = UITableViewCell(style: .default, reuseIdentifier: identifier)
+            let cellIndexItem = CellIndexItem(cell, indexPath)
+            cellsIndexMap[indexPath] = cellIndexItem
+            queue.enqueueFromEnd(val: cell)
+            return cell
+        }
     }
 }

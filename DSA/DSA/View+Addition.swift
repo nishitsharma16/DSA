@@ -75,6 +75,27 @@ extension UIView {
         }
         return nil
     }
+    
+    func subViewString(_ sep: String) -> String {
+        var res = ""
+        res += sep + self.description
+        for view in self.subviews {
+            if view.subviews.count > 0 {
+                let y = sep + "|"
+                let x = view.subViewString(y)
+                res += x
+            }
+            else {
+                res += sep + "|" + view.description
+            }
+        }
+        return res
+    }
+    
+    func getSubViews() {
+        let x = subViewString("")
+        print(x)
+    }
 }
 
 struct View {

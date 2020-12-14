@@ -173,11 +173,11 @@ extension Problems {
             return "0"
         }
         
-        if numerator == 0 || denominator == 0 {
+        if denominator == 0 {
             return "0"
         }
-        
-        let isResultNegative = numerator < 0 || denominator < 0
+    
+        let isResultNegative = numerator > 0 && denominator < 0 || numerator < 0 && denominator > 0
         let num = abs(numerator)
         let deno = abs(denominator)
         var fraction = "\(num / deno)"
@@ -190,7 +190,8 @@ extension Problems {
             fraction += "."
             while remainder != 0 {
                 if let length = map[remainder] {
-                    fraction.insert("(", at: fraction.index(fraction.startIndex, offsetBy: length))
+                    let index = fraction.index(fraction.startIndex, offsetBy: length)
+                    fraction.insert("(", at: index)
                     fraction += ")"
                     break
                 }
@@ -385,34 +386,32 @@ extension Problems {
             return num
         }
         
-        var str = num
-        var counter = 0
-        var start = str.index(after: str.startIndex)
-        while start < str.endIndex && counter < k {
-            let prevIndex = str.index(before: start)
-            if str[prevIndex] >= str[start] {
-                str.remove(at: prevIndex)
-                counter += 1
+        var kVal = k
+        let stack = Stack<Character>()
+        for item in num {
+            while !stack.isEmpty, kVal > 0, let x = stack.top(), x > item {
+                stack.pop()
+                kVal -= 1
+            }
+            stack.push(val: item)
+        }
+        
+        for _ in 0..<k {
+            stack.pop()
+        }
+        
+        var str = ""
+        var leadingZero = true
+        for val in stack.items {
+            if leadingZero && val == "0" {
+                
             }
             else {
-                start = str.index(after: start)
+                leadingZero = false
+                str.append(val)
             }
         }
         
-        while counter < k {
-            str.removeLast()
-            counter += 1
-        }
-        
-        start = str.startIndex
-        while start < str.endIndex {
-            if str[start] == "0" {
-                str.remove(at: start)
-            }
-            else {
-                break
-            }
-        }
         return str.isEmpty ? "0" : str
     }
 
@@ -4009,6 +4008,115 @@ extension Problems {
             }
         }
         return dec || inc
+    }
+    
+    func convertZigZagInString(_ s: String, _ numRows: Int) -> String {
+        if s.isEmpty {
+            return ""
+        }
+        else if numRows == 1 {
+            return s
+        }
+        let len = s.count
+        var goesDown = false
+        let rows = min(len, numRows)
+        var list = Array(repeating: "", count: rows)
+        var rowVal = 0
+        for item in s {
+            var x = list[rowVal]
+            x.append(item)
+            list[rowVal] = x
+            if rowVal == 0 || rowVal == numRows - 1 {
+                goesDown = !goesDown
+            }
+            rowVal += goesDown ? 1 : -1
+        }
+        
+        let result = list.reduce("") { (prev, curr) -> String in
+            prev + curr
+        }
+        return result
+    }
+    
+    func rob(_ nums: [Int]) -> Int {
+        if nums.isEmpty {
+            return 0
+        }
+        
+        var prevMax = 0
+        var currMax = 0
+        for i in 0..<nums.count {
+            let x = currMax
+            currMax = max(prevMax + nums[i], currMax)
+            prevMax = x
+        }
+        return currMax
+    }
+    
+    func climbStairs(_ n: Int) -> Int {
+        if n <= 1 {
+            return 1
+        }
+        var list = Array(repeating: 0, count: n + 1)
+        list[0] = 1
+        list[1] = 2
+        for i in 3...n {
+            list[i] = list[i - 1] + list[i - 2]
+        }
+        return list[n]
+    }
+    
+    func canAttendMeetings(_ intervals: [[Int]]) -> Bool {
+        if intervals.isEmpty {
+            return false
+        }
+        
+        let list = intervals.sorted { (first, second) -> Bool in
+            first[0] < second[0]
+        }
+        
+        for i in 0..<list.count - 1 {
+            let curr = list[i]
+            let next = list[i + 1]
+            if curr[1] > next[0] {
+                return false
+            }
+        }
+        return true
+    }
+    
+    func insert(_ intervals: [[Int]], _ newInterval: [Int]) -> [[Int]] {
+        if intervals.isEmpty && newInterval.isEmpty {
+            return []
+        }
+        else if intervals.isEmpty {
+            return [newInterval]
+        }
+        else if newInterval.isEmpty {
+            return intervals
+        }
+        
+        var list = intervals
+        list.append(newInterval)
+        list.sort { (first, second) -> Bool in
+            first[0] < second[0]
+        }
+        
+        var i = 0
+        while i  < list.count - 1 {
+            let curr = list[i]
+            let next = list[i + 1]
+            if curr[1] >= next[0] || curr[0] >= next[0] && curr[1] <= next[0]  {
+                let item = [min(curr[0], next[0]), max(curr[1], next[1])]
+                list[i] = item
+                list.remove(at: i + 1)
+            }
+            else {
+                i += 1
+            }
+        }
+        
+        return list
     }
 }
 

@@ -91,30 +91,32 @@ class ViewController: UIViewController {
 //        ])
         
 //        let x = Problems.findItinerary([["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]])
-        var val = [[0,1,2,0],
-                   [3,4,5,2],
-                   [1,3,1,5]]
-        "aaaaaaa"
-        ["aaaa","aaa"]
-        "ababacb"
-        3
-        "bbaaacbd"
-        3
-        "abcdef"
-        ["ab","bc","cd","de","ef","fg","gh"]
-        "ab"
-        "eidboaoo"
-        "ab"
-        "eidbaooo"
-        [1,2,3,4]
-        3
-        var list: [Character] = ["t","h","e"," ","s","k","y"," ","i","s"," ","b","l","u","e"]
-        
-        4
-        [[0,1,3],[1,2,1],[1,3,4],[2,3,1]]
-        4
-        var nums = [2,0,2,1,1,0]
-        let x = Problems.fbEnumarator()
+//        var val = [[0,1,2,0],
+//                   [3,4,5,2],
+//                   [1,3,1,5]]
+//        "aaaaaaa"
+//        ["aaaa","aaa"]
+//        "ababacb"
+//        3
+//        "bbaaacbd"
+//        3
+//        "abcdef"
+//        ["ab","bc","cd","de","ef","fg","gh"]
+//        "ab"
+//        "eidboaoo"
+//        "ab"
+//        "eidbaooo"
+//        [1,2,3,4]
+//        3
+//        var list: [Character] = ["t","h","e"," ","s","k","y"," ","i","s"," ","b","l","u","e"]
+//
+//        4
+//        [[0,1,3],[1,2,1],[1,3,4],[2,3,1]]
+//        4
+//        var nums = [2,0,2,1,1,0]
+//        let x = Problems.fbEnumarator()
+//        let tableview = UITableView()
+//        tableview.dequeueReusableCell(withIdentifier: String)
     }
     
     func test2(_ logLines : [String]) -> [String] {
