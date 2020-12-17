@@ -790,6 +790,15 @@ extension String {
         return true
     }
     
+    func isHexaDecimal() -> Bool {
+        for item in self {
+            if !item.isNumber && !(item >= "a" && item <= "z" || item >= "A" && item <= "Z") {
+                return false
+            }
+        }
+        return true
+    }
+    
     func removeWhiteSpaceCharFromStartAndEnd() -> String {
         if self.isEmpty {
             return .empty

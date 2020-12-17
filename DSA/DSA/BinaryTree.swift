@@ -36,6 +36,21 @@ class TreeNode: Codable {
     }
 }
 
+class TreeParentNode: Equatable {
+    
+    static func == (lhs: TreeParentNode, rhs: TreeParentNode) -> Bool {
+        lhs.value == rhs.value
+    }
+    
+    var left : TreeParentNode?
+    var right : TreeParentNode?
+    var parent : TreeParentNode?
+    var value : Int
+    init(val : Int) {
+        value = val
+    }
+}
+
 class NextNode {
     var left : NextNode?
     var right : NextNode?

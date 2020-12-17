@@ -30,6 +30,293 @@ extension Problems {
         return result
     }
     
+    func inorderSuccessorV2(_ node: TreeParentNode?) -> TreeParentNode? {
+        if node == nil {
+            return nil
+        }
+        var curr: TreeParentNode?
+        if node?.right != nil {
+            curr = node?.right
+            while curr?.left != nil {
+                curr = curr?.left
+            }
+            return curr
+        }
+        else {
+            curr = node
+            var parent = curr?.parent
+            while parent != nil && parent?.left != curr {
+                curr = curr?.parent
+                parent = curr?.parent
+            }
+            return parent
+        }
+    }
+    
+    func reverseString(_ s: inout [Character]) {
+        var l = 0
+        var r = s.count - 1
+        while l < r {
+            s.swapAt(l, r)
+            l += 1
+            r -= 1
+        }
+    }
+    
+    func myAtoi(_ str: String) -> Int {
+        var val = str.trimmingCharacters(in: .whitespacesAndNewlines)
+        if val.isEmpty {
+            return 0
+        }
+        let isPositive = val[0] != "-"
+        if val[0] == "-" || val[0] == "+" {
+            val.remove(at: val.startIndex)
+        }
+        if val.isEmpty {
+            return 0
+        }
+        if !val[0].isNumber {
+            return 0
+        }
+        
+        var result = 0
+        for item in val {
+            if item.isNumber {
+                let x = String(item)
+                result = 10*result + (Int(x) ?? 0)
+            }
+            else {
+                break
+            }
+        }
+        if result > Int32.max {
+            return isPositive ? Int(Int32.max) : Int(Int32.min)
+        }
+        return isPositive ? result : -result
+    }
+    
+    enum IPType: String {
+        case Neither
+        case IPv4
+        case IPv6
+    }
+    
+    func validateIPComponent(_ val: String, _ ipType: IPType) -> Bool {
+        let len = val.count
+        if ipType == .IPv4 {
+            if len >= 1 && len <= 3 && val[0] != "0" {
+                if let x = Int(val), x >= 0 && x <= 255 {
+                    return true
+                }
+            }
+        }
+        else if ipType == .IPv6 {
+            if len >= 1 && len <= 4 {
+                return val.isHexaDecimal()
+            }
+        }
+        return false
+    }
+    
+    func validIPAddress(_ IP: String) -> String {
+        if IP.isEmpty {
+            return IPType.Neither.rawValue
+        }
+        var components = [String]()
+        var ipType: IPType = .Neither
+        if let _ = IP.firstIndex(of: ".") {
+            components = IP.components(separatedBy: ".")
+            ipType = components.count == 4 ? .IPv4 : .Neither
+        }
+        else if let _ = IP.firstIndex(of: ":") {
+            components = IP.components(separatedBy: ":")
+            ipType = components.count == 8 ? .IPv6 : .Neither
+        }
+        
+        for item in components {
+            if !validateIPComponent(item, ipType) {
+                return IPType.Neither.rawValue
+            }
+        }
+        
+        return ipType.rawValue
+    }
+    
+    func reverseWord(_ s: inout [Character], _ start: Int, _ end: Int) {
+        var l = start
+        var r = end
+        
+        while l < r {
+            s.swapAt(l, r)
+            l += 1
+            r -= 1
+        }
+    }
+    
+    func reverseWords(_ s: String) -> String {
+        if s.isEmpty {
+            return ""
+        }
+        
+        var list = s.map { $0 }
+        var start = 0
+        let len = s.count
+        for i in 0..<len {
+            if list[i] == " " {
+                reverseWord(&list, start, i - 1)
+                start = i + 1
+            }
+        }
+        reverseWord(&list, start, len - 1)
+        let result = list.reduce("", { (prev, curr) -> String in
+            prev + String(curr)
+        })
+        return result
+    }
+    
+    func reverseWordsV2(_ s: String) -> String {
+        if s.isEmpty {
+            return ""
+        }
+        
+        var result = ""
+        let list = s.split(separator: " ")
+        for item in list {
+            result += String(item.reversed()) + " "
+        }
+        
+        result.remove(at: result.index(before: result.endIndex))
+        return result
+    }
+    
+    func invertTree(_ root: TreeNode?) -> TreeNode? {
+        if root == nil {
+            return nil
+        }
+        let left = invertTree(root?.left)
+        let rigt = invertTree(root?.right)
+        root?.left = rigt
+        root?.right = left
+        return root
+    }
+    
+    func singleNumber(_ nums: [Int]) -> Int {
+        if nums.isEmpty {
+            return 0
+        }
+        
+        let sum = nums.reduce(0, +)
+        let set = Set<Int>(nums)
+        let setSum = set.reduce(0, +)
+        return 2*setSum - sum
+    }
+    
+    func deleteNode(_ node: SortedNode?) {
+        if node == nil {
+            return
+        }
+        
+        var curr = node
+        if curr?.next != nil, let nextVal = curr?.next?.val {
+            curr?.val = nextVal
+            var temp = curr?.next
+            curr?.next = temp?.next
+            temp = nil
+        }
+        else {
+            curr = nil
+        }
+    }
+    
+    func fizzBuzz(_ n: Int) -> [String] {
+        if n < 1 {
+            return []
+        }
+        
+        var result = [String]()
+        for i in 1...n {
+            if i % 3 == 0 {
+                result.append("Fizz")
+            }
+            else if i % 5 == 0 {
+                result.append("Buzz")
+            }
+            else if i % 15 == 0 {
+                result.append("FizzBuzz")
+            }
+            else {
+                result.append("\(i)")
+            }
+        }
+        return result
+    }
+    
+    func inOrder(_ root: TreeNode?, _ list: inout [Int]) {
+        if let r = root {
+            inOrder(r.left, &list)
+            list.append(r.value)
+            inOrder(r.right, &list)
+        }
+    }
+    
+    func makeTree(_ list: [Int], _ low: Int, _ high: Int) -> TreeNode? {
+        if low > high {
+            return nil
+        }
+        
+        let mid = (low + high)/2
+        let root = TreeNode(val: list[mid])
+        let left = makeTree(list, low, mid - 1)
+        root.left = left
+        root.right = makeTree(list, mid + 1, high)
+        return root
+    }
+    
+    func trimBST(_ root: TreeNode?, _ low: Int, _ high: Int) -> TreeNode? {
+        if root == nil {
+            return nil
+        }
+        
+        if let val = root?.value {
+            if val > high {
+                return trimBST(root?.left, low, high)
+            }
+            else if val < low {
+                return trimBST(root?.right, low, high)
+            }
+        }
+        root?.left = trimBST(root?.left, low, high)
+        root?.right = trimBST(root?.right, low, high)
+        return root
+    }
+    
+    static func canPermutePalindrome(_ s: String) -> Bool {
+        var map = [Character: Int]()
+        for item in s {
+            if let val = map[item] {
+                map[item] = val + 1
+            }
+            else {
+                map[item] = 1
+            }
+        }
+        var x = 0
+        for item in map {
+            x += item.value % 2
+        }
+        return x <= 1
+    }
+    
+    func reverseInt(_ x: Int) -> Int {
+        var result = 0
+        let isNegative = x < 0
+        var n = x >= 0 ? x : -x
+        while n > 0 {
+            result = result * 10 + (n % 10)
+            n /= 10
+        }
+        return isNegative ? -result : result
+    }
 }
 
 class ArrayReader {
@@ -84,4 +371,61 @@ class ArrayReaderItemSearch {
         return -1
     }
 }
+
+class ShuffleSolution {
+
+    private func shuffleList() -> [Int] {
+        let length = list.count
+        for i in 0..<length {
+            let randIndex = Int.random(in: i..<length)
+            list.swapAt(i, randIndex)
+        }
+        return list
+    }
+    
+    private var original: [Int]
+    private var list: [Int]
+    init(_ nums: [Int]) {
+        list = nums
+        original = nums
+    }
+    
+    /** Resets the array to its original configuration and return it. */
+    func reset() -> [Int] {
+        list = original
+        return list
+    }
+    
+    /** Returns a random shuffling of the array. */
+    func shuffle() -> [Int] {
+        return shuffleList()
+    }
+}
+
+class MovingAverage {
+
+    /** Initialize your data structure here. */
+    private var list = [Int]()
+    private var size: Int
+    private var sum: Int = 0
+    init(_ size: Int) {
+        self.size = size
+    }
+    
+    func next(_ val: Int) -> Double {
+        if list.count < size {
+            list.append(val)
+            sum += val
+        }
+        else {
+            let item = list.removeFirst()
+            sum -= item
+            list.append(val)
+            sum += val
+        }
+        return Double(sum) / Double(list.count)
+    }
+}
+
+
 
