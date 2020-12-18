@@ -307,7 +307,7 @@ extension Problems {
         return x <= 1
     }
     
-    func reverseInt(_ x: Int) -> Int {
+    static func reverseInt(_ x: Int) -> Int {
         var result = 0
         let isNegative = x < 0
         var n = x >= 0 ? x : -x
@@ -315,7 +315,26 @@ extension Problems {
             result = result * 10 + (n % 10)
             n /= 10
         }
+        if result > Int32.max {
+            return 0
+        }
         return isNegative ? -result : result
+    }
+    
+    func countPrimes(_ n: Int) -> Int {
+        if n <= 2 {
+            return 0
+        }
+        let x = n - 1
+        var counter = 0
+        var i = 2
+        while i <= x {
+            if i.isPrimeNumber {
+                counter += 1
+            }
+            i += 1
+        }
+        return counter
     }
 }
 

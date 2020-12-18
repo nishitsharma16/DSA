@@ -1900,6 +1900,4 @@ extension Int {
         }
         return true
     }
-    
 }
-
