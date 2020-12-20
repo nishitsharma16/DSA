@@ -655,17 +655,18 @@ extension Problems {
     }
     
     
-    static func lps(pat : String) -> [Int] {
-        if pat.isEmpty {
+    static func lps(pat : ArraySlice<Character>) -> [Int] {
+        let str = pat
+        if str.isEmpty {
             return []
         }
-        let strLen = pat.count
+        let strLen = str.count
         var lps = Array<Int>(repeating: 0, count: strLen)
         var length = 0
         lps[0] = 0
         var index = 1
         while index < strLen {
-            if pat[index] == pat[length] {
+            if str[index] == str[length] {
                 length += 1
                 lps[index] = length
                 index += 1
@@ -685,25 +686,28 @@ extension Problems {
         return lps
     }
     
-    static func kmpAlgorithmForFirstIndex(str : String, pat : String) -> Int {
-        if str.isEmpty || pat.isEmpty {
+    static func kmpAlgorithmForFirstIndex(str : ArraySlice<Character>, pat : ArraySlice<Character>) -> Int {
+        let strVal = str
+        let patVal = pat
+
+        if strVal.isEmpty || patVal.isEmpty {
             return -1
         }
         
-        let strLength = str.count
-        let patLength = pat.count
+        let strLength = strVal.count
+        let patLength = patVal.count
         
         if patLength > strLength {
             return -1
         }
         
-        let lpsVal = lps(pat: pat)
+        let lpsVal = lps(pat: patVal)
         
         var i = 0
         var j = 0
         
         while i < strLength {
-            if str[i] == pat[j] {
+            if strVal[i] == patVal[j] {
                 i += 1
                 j += 1
             }
@@ -711,7 +715,7 @@ extension Problems {
             if j == patLength {
                 return i - j
             }
-            else if i < strLength && pat[j] != str[i] {
+            else if i < strLength && patVal[j] != strVal[i] {
                 if j > 0 {
                     j = lpsVal[j - 1]
                 }
@@ -724,18 +728,19 @@ extension Problems {
     }
     
     static func repeatedStringMatch(_ a: String, _ b: String) -> Int {
-        var str = a
+        var strA = Array(a)[0...]
+        let strB = Array(b)[0...]
         var counter = 1
-        while str.count < b.count {
-            str += a
+        while strA.count < strB.count {
+            strA += strA
             counter += 1
         }
         
-        if kmpAlgorithmForFirstIndex(str: str, pat: b) != -1 {
+        if kmpAlgorithmForFirstIndex(str: strA, pat: strB) != -1 {
             return counter
         }
-        str += a
-        if kmpAlgorithmForFirstIndex(str: str, pat: b) != -1 {
+        strA += strA
+        if kmpAlgorithmForFirstIndex(str: strA, pat: strB) != -1 {
             return counter + 1
         }
         
@@ -3268,53 +3273,55 @@ extension Problems {
     }
     
     // Boogle Solver
-    private func findWord(mat : [[Character]], visited : inout [[Bool]], x : Int, y : Int, str : inout String, target: String, status: inout Bool) {
+    private static func findWord(mat : inout [[Character]], x : Int, y : Int, target: ArraySlice<Character>, _ m: Int, _ n: Int, _ index: Int) -> Bool {
         
-        let innerList = mat[0]
-        let m = mat.count
-        let n = innerList.count
-        
-        visited[x][y] = true
-        str = str + String(mat[x][y])
-        
-        if target == str {
-            status = true
+        if index >= target.count {
+            return true
         }
+        
+        if x < 0 || x >= m || y < 0 || y >= n || target[index] != mat[x][y] {
+            return false
+        }
+        
+        
+        var result = false
+        
+        mat[x][y] = "#"
         
         let dir = [(0, 1), (0, -1), (1, 0), (-1, 0)]
         
         for item in dir {
             let row = x + item.0
             let col = y + item.1
-            if row >= 0 && col >= 0 && row < m && col < n && !visited[row][col] {
-                findWord(mat: mat, visited: &visited, x: row, y: col, str: &str, target: target, status: &status)
+            result = findWord(mat: &mat, x: row, y: col, target: target, m, n, index + 1)
+            if result {
+                break
             }
         }
-        str.remove(at: str.index(before: str.endIndex))
-        visited[x][y] = false
+        mat[x][y] = target[index]
+        return result
     }
     
-    func exist(_ board: [[Character]], _ word: String) -> Bool {
+    static func exist(_ board: [[Character]], _ word: String) -> Bool {
         if board.isEmpty || word.isEmpty {
             return false
         }
         
-        var string = ""
+        var mat = board
+        let str = Array(word)[0...]
         let innerList = board[0]
         let m = board.count
         let n = innerList.count
-        var visited = Array(repeating: Array(repeating: false, count: n), count: m)
-        var status = false
         
         for i in 0..<m {
             for j in 0..<n {
-                findWord(mat: board, visited: &visited, x: i, y: j, str: &string, target: word, status: &status)
+                let status = findWord(mat: &mat, x: i, y: j, target: str, m, n, 0)
                 if status {
                     return status
                 }
             }
         }
-        return status
+        return false
     }
     
     func uniquePaths(_ m: Int, _ n: Int) -> Int {

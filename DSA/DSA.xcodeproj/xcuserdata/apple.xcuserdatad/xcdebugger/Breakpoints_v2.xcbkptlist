@@ -30,8 +30,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2719"
-            endingLineNumber = "2719"
+            startingLineNumber = "2724"
+            endingLineNumber = "2724"
             landmarkName = "findStrobogrammatic(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2737"
-            endingLineNumber = "2737"
+            startingLineNumber = "2742"
+            endingLineNumber = "2742"
             landmarkName = "findStrobogrammatic(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -62,8 +62,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2749"
-            endingLineNumber = "2749"
+            startingLineNumber = "2754"
+            endingLineNumber = "2754"
             landmarkName = "findStrobogrammatic(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -78,8 +78,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2740"
-            endingLineNumber = "2740"
+            startingLineNumber = "2745"
+            endingLineNumber = "2745"
             landmarkName = "findStrobogrammatic(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -94,8 +94,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2773"
-            endingLineNumber = "2773"
+            startingLineNumber = "2778"
+            endingLineNumber = "2778"
             landmarkName = "insertAtMiddle(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -104,38 +104,6 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "31896BB1-0965-4CCC-9490-FD2E6D99DF2A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DSA/Facebook.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3036"
-            endingLineNumber = "3036"
-            landmarkName = "findZigZagDiagonalOrder(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "5743C85A-EAB3-483D-93E5-E73162B4A8AF"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DSA/Facebook.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3014"
-            endingLineNumber = "3014"
-            landmarkName = "findZigZagDiagonalOrderHelper(_:_:_:_:_:_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "BAEA7524-F1EB-443C-BD2C-983B86E99CA6"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -151,6 +119,38 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+            uuid = "5743C85A-EAB3-483D-93E5-E73162B4A8AF"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DSA/Facebook.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "3019"
+            endingLineNumber = "3019"
+            landmarkName = "findZigZagDiagonalOrderHelper(_:_:_:_:_:_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BAEA7524-F1EB-443C-BD2C-983B86E99CA6"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DSA/Facebook.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "3046"
+            endingLineNumber = "3046"
+            landmarkName = "findZigZagDiagonalOrder(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
             uuid = "AE113C9F-3D62-4F47-A160-8DFBB9B74198"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -158,8 +158,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3073"
-            endingLineNumber = "3073"
+            startingLineNumber = "3078"
+            endingLineNumber = "3078"
             landmarkName = "buildTree(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -174,8 +174,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3082"
-            endingLineNumber = "3082"
+            startingLineNumber = "3087"
+            endingLineNumber = "3087"
             landmarkName = "buildTree(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -190,8 +190,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3057"
-            endingLineNumber = "3057"
+            startingLineNumber = "3062"
+            endingLineNumber = "3062"
             landmarkName = "buildTreeHelper(_:_:_:_:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -206,8 +206,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3180"
-            endingLineNumber = "3180"
+            startingLineNumber = "3185"
+            endingLineNumber = "3185"
             landmarkName = "permute(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -222,8 +222,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3168"
-            endingLineNumber = "3168"
+            startingLineNumber = "3173"
+            endingLineNumber = "3173"
             landmarkName = "permuteHelper(_:_:_:result:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -238,8 +238,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3172"
-            endingLineNumber = "3172"
+            startingLineNumber = "3177"
+            endingLineNumber = "3177"
             landmarkName = "permuteHelper(_:_:_:result:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -254,25 +254,9 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3187"
-            endingLineNumber = "3187"
+            startingLineNumber = "3192"
+            endingLineNumber = "3192"
             landmarkName = "permute(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "D4A78723-8116-471D-B3B5-F6B17870D104"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DSA/Facebook.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3331"
-            endingLineNumber = "3331"
-            landmarkName = "sortTransformedArray(_:_:_:_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -286,8 +270,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3368"
-            endingLineNumber = "3368"
+            startingLineNumber = "3375"
+            endingLineNumber = "3375"
             landmarkName = "sortTransformedArray(_:_:_:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -302,8 +286,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3394"
-            endingLineNumber = "3394"
+            startingLineNumber = "3401"
+            endingLineNumber = "3401"
             landmarkName = "combinationSum2(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -318,8 +302,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3403"
-            endingLineNumber = "3403"
+            startingLineNumber = "3410"
+            endingLineNumber = "3410"
             landmarkName = "combinationSum2(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -334,8 +318,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3523"
-            endingLineNumber = "3523"
+            startingLineNumber = "3530"
+            endingLineNumber = "3530"
             landmarkName = "findMinArrowShots(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -350,8 +334,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3531"
-            endingLineNumber = "3531"
+            startingLineNumber = "3538"
+            endingLineNumber = "3538"
             landmarkName = "findMinArrowShots(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -366,8 +350,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3578"
-            endingLineNumber = "3578"
+            startingLineNumber = "3585"
+            endingLineNumber = "3585"
             landmarkName = "maxAreaOfIsland(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -382,8 +366,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3588"
-            endingLineNumber = "3588"
+            startingLineNumber = "3595"
+            endingLineNumber = "3595"
             landmarkName = "maxAreaOfIsland(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -398,8 +382,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3592"
-            endingLineNumber = "3592"
+            startingLineNumber = "3599"
+            endingLineNumber = "3599"
             landmarkName = "maxAreaOfIsland(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -414,8 +398,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3563"
-            endingLineNumber = "3563"
+            startingLineNumber = "3570"
+            endingLineNumber = "3570"
             landmarkName = "dfsMaxAreaOfIsland(_:m:n:x:y:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -430,13 +414,13 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3660"
-            endingLineNumber = "3660"
+            startingLineNumber = "3667"
+            endingLineNumber = "3667"
             landmarkName = "topKFrequent(_:_:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "4752D4E6-B172-4402-B0D9-83C399815030 - 6820b97bc4ed8feb"
+                  uuid = "4752D4E6-B172-4402-B0D9-83C399815030 - 6820b97bc4ed8e8c"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -446,12 +430,12 @@
                   urlString = "file:///Users/apple/Documents/DS/DS/DSA/DSA/Facebook.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "3661"
-                  endingLineNumber = "3661"
+                  startingLineNumber = "3668"
+                  endingLineNumber = "3668"
                   offsetFromSymbolStart = "1043">
                </Location>
                <Location
-                  uuid = "4752D4E6-B172-4402-B0D9-83C399815030 - b3febdd51741eee"
+                  uuid = "4752D4E6-B172-4402-B0D9-83C399815030 - b3febdd51741fc7"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -461,8 +445,8 @@
                   urlString = "file:///Users/apple/Documents/DS/DS/DSA/DSA/Facebook.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "3662"
-                  endingLineNumber = "3662"
+                  startingLineNumber = "3669"
+                  endingLineNumber = "3669"
                   offsetFromSymbolStart = "31">
                </Location>
             </Locations>
@@ -478,8 +462,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3213"
-            endingLineNumber = "3213"
+            startingLineNumber = "3218"
+            endingLineNumber = "3218"
             landmarkName = "findAllPowerSubSetsBFS(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -494,8 +478,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3238"
-            endingLineNumber = "3238"
+            startingLineNumber = "3243"
+            endingLineNumber = "3243"
             landmarkName = "findAllPowerSubSetsBFS(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -510,8 +494,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3224"
-            endingLineNumber = "3224"
+            startingLineNumber = "3229"
+            endingLineNumber = "3229"
             landmarkName = "findAllPowerSubSetsBFS(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -526,8 +510,8 @@
             filePath = "DSA/Facebook.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3942"
-            endingLineNumber = "3942"
+            startingLineNumber = "3949"
+            endingLineNumber = "3949"
             landmarkName = "fbEnumarator()"
             landmarkType = "7">
          </BreakpointContent>
@@ -542,8 +526,8 @@
             filePath = "DSA/Microsoft.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "435"
-            endingLineNumber = "435"
+            startingLineNumber = "490"
+            endingLineNumber = "490"
             landmarkName = "next(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -641,6 +625,134 @@
             startingLineNumber = "318"
             endingLineNumber = "318"
             landmarkName = "reverseInt(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5C29D9AA-C1C5-44F2-BAFE-BD481B3B9110"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DSA/Microsoft.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "375"
+            endingLineNumber = "375"
+            landmarkName = "isPalindromeSentence(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0DC2D43E-E8C4-45F3-AB99-1855F2F24353"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DSA/Microsoft.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "392"
+            endingLineNumber = "392"
+            landmarkName = "isPalindromeSentence(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8A613C4B-F669-4DEB-BF8D-E083E7FD82FA"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DSA/Facebook.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "3324"
+            endingLineNumber = "3324"
+            landmarkName = "exist(_:_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5B85299F-0B7C-4EB7-9AA3-D208322A6FDA"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DSA/Facebook.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "3320"
+            endingLineNumber = "3320"
+            landmarkName = "exist(_:_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B7E0F4B0-5BD8-484C-A9BF-DB426A54B78D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DSA/Facebook.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "3301"
+            endingLineNumber = "3301"
+            landmarkName = "findWord(mat:x:y:target:_:_:_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8168AC31-D1BA-4739-837D-0C023D7AAAC5"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DSA/Facebook.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "3311"
+            endingLineNumber = "3311"
+            landmarkName = "exist(_:_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D43375C8-CF7E-4E0B-8EF2-479C06237709"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DSA/Facebook.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "3278"
+            endingLineNumber = "3278"
+            landmarkName = "findWord(mat:visited:x:y:target:_:_:_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AFE4B704-65B4-4DDC-AF2D-B9A7D80C196D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DSA/Facebook.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "3296"
+            endingLineNumber = "3296"
+            landmarkName = "findWord(mat:x:y:target:_:_:_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

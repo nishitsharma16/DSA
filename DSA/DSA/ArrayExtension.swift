@@ -913,3 +913,26 @@ extension SumItem : Comparable {
         return lhs.sum == rhs.sum
     }
 }
+
+
+extension ArraySlice where Element == Character {
+    func isPalindrome() -> Bool {
+        var l = 0
+        var r = self.count - 1
+        while l < r {
+            if self[l] != self[r] {
+                return false
+            }
+            l += 1
+            r -= 1
+        }
+        return true
+    }
+    
+    func toString(_ start: Int, _ length: Int) -> String {
+        let x = self[start...start+length-1]
+        return x.reduce("") { (prev, curr) -> String in
+            prev + String(curr)
+        }
+    }
+}

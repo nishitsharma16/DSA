@@ -123,7 +123,7 @@ class ViewController: UIViewController {
 //        val.next(3)
 //        val.next(5)
         
-        Problems.reverseInt(1534236469)
+        Problems.exist([["a"]], "a")
 
     }
     

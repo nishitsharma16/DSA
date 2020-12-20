@@ -139,11 +139,12 @@ class Problems {
             return ""
         }
         
-        if s.checkStringIsPalindrome() {
+        let str = Array(s)[0...]
+        if str.isPalindrome() {
             return s
         }
         
-        let length = s.count
+        let length = str.count
         var statusList = Array(repeating: Array(repeating: false, count: length), count: length)
         var maxLength = 1
         var start = 0
@@ -153,7 +154,7 @@ class Problems {
         }
         
         for index in 0..<length-1 {
-            if s[index] == s[index+1] {
+            if str[index] == str[index+1] {
                 statusList[index][index+1] = true
                 start = index
                 maxLength = 2
@@ -161,7 +162,7 @@ class Problems {
         }
         
         if length <= 2 {
-            return s[start,start+maxLength-1]
+            return str.toString(start, maxLength)
         }
         
         var j = 0
@@ -169,7 +170,7 @@ class Problems {
         for l in 3...length {
             for i in 0..<length - l + 1 {
                 j = i + l - 1
-                if statusList[i+1][j-1] && s[i] == s[j] {
+                if statusList[i+1][j-1] && str[i] == str[j] {
                     statusList[i][j] = true
                     if l > maxLength {
                         maxLength = l
@@ -179,7 +180,7 @@ class Problems {
             }
         }
         
-        return s[start,start+maxLength-1]
+        return str.toString(start, maxLength)
     }
     
     static func getColCount(rows: Int, length: Int) -> Int {

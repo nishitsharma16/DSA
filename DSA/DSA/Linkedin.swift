@@ -11,17 +11,19 @@ import Foundation
 extension Problems {
     
     static func hasOneLetterDifference(source: String, dest: String) -> Bool {
-        if source.isEmpty || dest.isEmpty {
+        let sourceVal = Array(source)[0...]
+        let destVal = Array(dest)[0...]
+        if sourceVal.isEmpty || destVal.isEmpty {
             return false
         }
-        else if source.count != dest.count {
+        else if sourceVal.count != destVal.count {
             return false
         }
         
         var counter = 0
-        for i in 0..<source.count {
-            let x = source[i]
-            let y = dest[i]
+        for i in 0..<sourceVal.count {
+            let x = sourceVal[i]
+            let y = destVal[i]
             if x != y {
                 counter += 1
             }

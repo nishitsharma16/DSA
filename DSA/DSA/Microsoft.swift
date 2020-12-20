@@ -322,19 +322,74 @@ extension Problems {
     }
     
     func countPrimes(_ n: Int) -> Int {
-        if n <= 2 {
+        if n < 2 {
             return 0
         }
-        let x = n - 1
         var counter = 0
-        var i = 2
-        while i <= x {
-            if i.isPrimeNumber {
+        var status = Array(repeating: false, count: n)
+        for i in 2..<n {
+            if !status[i] {
                 counter += 1
+                var j = 0
+                while i*j < n {
+                    status[i*j] = true
+                    j += 1
+                }
             }
-            i += 1
         }
         return counter
+    }
+    
+    func checkPalindrome(_ s: ArraySlice<Character>, _ start: Int, _ end: Int) -> Bool {
+        var l = start
+        var r = end
+        while l < r {
+            if s[l] != s[r] {
+                return false
+            }
+            l += 1
+            r -= 1
+        }
+        return true
+    }
+    
+    func validPalindrome2(_ s: String) -> Bool {
+        let str = Array(s)[0...]
+        var start = 0
+        var end = s.count - 1
+        while start < end {
+            if str[start] != str[end] {
+                return checkPalindrome(str, start + 1, end) || checkPalindrome(str, start, end - 1)
+            }
+            start += 1
+            end -= 1
+        }
+        return true
+    }
+    
+    static func isPalindromeSentence(_ s: String) -> Bool {
+        let str = Array(s)[0...]
+        if str.isEmpty {
+            return true
+        }
+        var l = 0
+        var r = str.count - 1
+        while l <= r {
+            if !str[l].isValidAlphabet {
+                l += 1
+            }
+            else if !str[r].isValidAlphabet {
+                r -= 1
+            }
+            else if str[l].lowercased() == str[r].lowercased() {
+                l += 1
+                r -= 1
+            }
+            else {
+                return false
+            }
+        }
+        return true
     }
 }
 
@@ -447,4 +502,11 @@ class MovingAverage {
 }
 
 
-
+extension Character {
+    var isValidAlphabet: Bool {
+        if let val = self.unicodeScalars.first, CharacterSet.alphanumerics.contains(val) {
+            return true
+        }
+        return false
+    }
+}
