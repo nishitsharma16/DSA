@@ -123,7 +123,9 @@ class ViewController: UIViewController {
 //        val.next(3)
 //        val.next(5)
         
-        Problems.exist([["a"]], "a")
+        "7.5.2.4"
+        "7.5.3"
+        Problems.divide(10, 3)
 
     }
     

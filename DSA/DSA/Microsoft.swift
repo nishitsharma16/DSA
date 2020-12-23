@@ -63,35 +63,37 @@ extension Problems {
         }
     }
     
-    func myAtoi(_ str: String) -> Int {
-        var val = str.trimmingCharacters(in: .whitespacesAndNewlines)
+    static func myAtoi(_ str: String) -> Int {
+        let val = str.trimmingCharacters(in: .whitespacesAndNewlines)
         if val.isEmpty {
             return 0
         }
-        let isPositive = val[0] != "-"
-        if val[0] == "-" || val[0] == "+" {
-            val.remove(at: val.startIndex)
+        var str = Array(val)
+        let isPositive = str[0] != "-"
+        if str[0] == "-" || str[0] == "+" {
+            str.removeFirst()
         }
-        if val.isEmpty {
+        if str.isEmpty {
             return 0
         }
-        if !val[0].isNumber {
+        if !str[0].isNumber {
             return 0
         }
         
         var result = 0
-        for item in val {
+        for item in str {
             if item.isNumber {
                 let x = String(item)
                 result = 10*result + (Int(x) ?? 0)
+                if result > Int32.max {
+                    return isPositive ? Int(Int32.max) : Int(Int32.min)
+                }
             }
             else {
                 break
             }
         }
-        if result > Int32.max {
-            return isPositive ? Int(Int32.max) : Int(Int32.min)
-        }
+        
         return isPositive ? result : -result
     }
     
@@ -390,6 +392,50 @@ extension Problems {
             }
         }
         return true
+    }
+    
+    static func compareVersionHelper(_ v1: [String], _ v2: [String], _ shouldToggle: Bool) -> Int {
+        
+        if v1.count > v2.count {
+            return compareVersionHelper(v2, v1, true)
+        }
+        var counter = 0
+        var i = 0
+        while i < v1.count {
+            let item1 = myAtoi(v1[i])
+            let item2 = myAtoi(v2[i])
+            if item1 > item2 {
+                return shouldToggle ?  -1 : 1
+            }
+            else if item1 < item2 {
+                return shouldToggle ?  1 : -1
+            }
+            i += 1
+            counter += 1
+        }
+        while counter < v2.count {
+            let item1 = myAtoi(v2[counter])
+            if item1 > 0 {
+                return shouldToggle ?  1 : -1
+            }
+            counter += 1
+        }
+        return 0
+    }
+    
+    static func compareVersion(_ version1: String, _ version2: String) -> Int {
+        let val1 = version1.components(separatedBy: ".")
+        let val2 = version2.components(separatedBy: ".")
+        let result = compareVersionHelper(val1, val2, false)
+        return result
+    }
+    
+    func containsNearbyAlmostDuplicate(_ nums: [Int], _ k: Int, _ t: Int) -> Bool {
+        if k < 1 {
+            return false
+        }
+        
+        return false
     }
 }
 

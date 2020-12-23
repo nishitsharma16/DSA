@@ -650,31 +650,49 @@ class Problems {
         }
     }
     
-    func divide(_ dividend: Int, _ divisor: Int) -> Int {
-        if dividend == 0 {
-            return 0
+    static func divide(_ dividend: Int, _ divisor: Int) -> Int {
+        if divisor == -1 && dividend == Int32.min {
+            return Int(Int32.max)
         }
-        else if divisor == 0 {
-            return Int.max
+        
+        var dividendVal = dividend
+        var divisorVal = divisor
+        
+        var negatives = 2
+        if divisorVal < 0 {
+            negatives -= 1
+            divisorVal = -divisorVal
         }
-        else if (dividend - divisor) == 0 {
-            return 1
+        if dividendVal < 0 {
+            negatives -= 1
+            dividendVal = -dividendVal
         }
-        else if (dividend + divisor) == 0 {
-            return -1
+        
+        var powerOfTwoList = [Int]()
+        var doubleList = [Int]()
+        
+        var powerOfTwoVal = 1
+        while dividendVal >= divisorVal {
+            powerOfTwoList.append(powerOfTwoVal)
+            doubleList.append(divisorVal)
+            powerOfTwoVal += powerOfTwoVal
+            divisorVal += divisorVal
         }
-        else if abs(divisor) == 1 {
-            if dividend < 0 && divisor < 0 {
-                return abs(dividend)
+        
+        var quiotent = 0
+        var counter = doubleList.count - 1
+        while counter >= 0 {
+            if doubleList[counter] <= dividendVal {
+                quiotent += powerOfTwoList[counter]
+                dividendVal -= doubleList[counter]
             }
-            else {
-                return dividend
-            }
+            counter -= 1
         }
-        else {
-            let val = divideNumbers(dividend: abs(dividend), divisor: abs(divisor), counter: 0)
-            return dividend < 0 || divisor < 0 ? -val : val
+        
+        if negatives == 1 {
+            quiotent = -quiotent
         }
+        return quiotent
     }
     
     static func findPivotPosition(list: [Int], start: Int, end: Int) -> Int {
