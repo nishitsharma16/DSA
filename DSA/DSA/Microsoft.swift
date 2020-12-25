@@ -103,11 +103,16 @@ extension Problems {
         case IPv6
     }
     
-    func validateIPComponent(_ val: String, _ ipType: IPType) -> Bool {
+    static func validateIPComponent(_ val: String, _ ipType: IPType) -> Bool {
         let len = val.count
         if ipType == .IPv4 {
-            if len >= 1 && len <= 3 && val[0] != "0" {
+            if len > 1 && len <= 3 && val[0] != "0" {
                 if let x = Int(val), x >= 0 && x <= 255 {
+                    return true
+                }
+            }
+            else if len == 1 {
+                if let x = Int(val), x >= 0 && x <= 9 {
                     return true
                 }
             }
@@ -120,7 +125,7 @@ extension Problems {
         return false
     }
     
-    func validIPAddress(_ IP: String) -> String {
+    static func validIPAddress(_ IP: String) -> String {
         if IP.isEmpty {
             return IPType.Neither.rawValue
         }
@@ -430,12 +435,77 @@ extension Problems {
         return result
     }
     
-    func containsNearbyAlmostDuplicate(_ nums: [Int], _ k: Int, _ t: Int) -> Bool {
+    static func containsNearbyAlmostDuplicate(_ nums: [Int], _ k: Int, _ t: Int) -> Bool {
         if k < 1 {
             return false
         }
+        let n = nums.count
+        for i in 0..<n {
+            for l in 1...k {
+                let j = i + l
+                if j < n && i != j && abs(nums[i] - nums[j]) <= t {
+                    return true
+                }
+            }
+        }
         
         return false
+    }
+    
+    static func circularArrayLoop(_ nums: [Int]) -> Bool {
+        let len = nums.count
+        if len <= 1 {
+            return false
+        }
+        var i: Int = 0
+        var status = false
+        var lastValue = nums[0]
+        var set = Set<Int>()
+        while true {
+            let val = nums[i]
+            let position = (i + val) < 0 ? len + val : (i + val) % len
+            if lastValue * val < 0 {
+                status = false
+                break
+            }
+            else if set.contains(position) {
+                status = true
+                break
+            }
+            set.insert(i)
+            i = position
+            lastValue = val
+        }
+        
+        return status
+    }
+    
+    static func numWaysToSpiltInThreeParts(_ s: String) -> Int {
+        let list = Array(s)
+        if list.count < 3 {
+            return 0
+        }
+        let numberOfOnes = list.filter { (val) -> Bool in
+            val == "1"
+        }.count
+        if numberOfOnes > 0 && numberOfOnes < 3 {
+            return 0
+        }
+        let len = list.count
+        var numberOfOnesList = Array(repeating: 0, count: len)
+        numberOfOnesList[0] = (list[0] == "1" ? 1 : 0)
+        for i in 1..<len {
+            numberOfOnesList[i] = list[i] == "1" ? numberOfOnesList[i - 1] + 1 : numberOfOnesList[i - 1]
+        }
+        var counter = 0
+        for i in 0..<len-2 {
+            for j in i+1..<len-1 {
+                if numberOfOnesList[i] == numberOfOnesList[j] - numberOfOnesList[i] && numberOfOnesList[len - 1] - numberOfOnesList[j] == numberOfOnesList[j] - numberOfOnesList[i]  {
+                    counter += 1
+                }
+            }
+        }
+        return counter
     }
 }
 

@@ -792,7 +792,8 @@ extension String {
     
     func isHexaDecimal() -> Bool {
         for item in self {
-            if !item.isNumber && !(item >= "a" && item <= "z" || item >= "A" && item <= "Z") {
+            let set = CharacterSet.init(charactersIn: "0123456789ABCDEFabcdef")
+            if let x = item.unicodeScalars.first, !set.contains(x) {
                 return false
             }
         }
