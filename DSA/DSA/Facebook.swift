@@ -569,25 +569,43 @@ extension Problems {
         return result == 0 ? -1 : result
     }
     
-    static func insert(_ head: SortedNode?, _ insertVal: Int) -> SortedNode? {
-        if let _ = head {
-            var curr: SortedNode? = head
-            var temp: SortedNode?
-            while curr != nil {
-                if let currval = curr, let next = currval.next, insertVal >= currval.val && insertVal < next.val {
-                    let insert = SortedNode(insertVal)
-                    temp = currval.next
-                    currval.next = insert
-                    insert.next = temp
-                    break
-                }
-                curr = curr?.next
+    static func check(_ node: SortedNode?, _ insertVal: Int) -> Bool {
+        if let next = node?.next, let val = node?.val, val <= insertVal && insertVal <= next.val {
+            return true
+        }
+        if let next = node?.next, let val = node?.val, val > next.val {
+            if insertVal >= val || insertVal <= next.val {
+                return true
             }
+        }
+        return false
+    }
+    
+    static func insert(_ head: SortedNode?, _ insertVal: Int) -> SortedNode? {
+        if head == nil {
+            let headval = SortedNode(insertVal)
+            headval.next = headval
+            return headval
+        }
+        if head?.next == head {
+            let insert = SortedNode(insertVal)
+            insert.next = head
+            head?.next = insert
             return head
         }
-        let headval = SortedNode(insertVal)
-        headval.next = headval
-        return headval
+        var curr: SortedNode? = head
+        let temp = SortedNode(-1)
+        temp.next = head
+        while !check(curr, insertVal) {
+            curr = curr?.next
+            if curr === head {
+                break
+            }
+        }
+        let insert = SortedNode(insertVal)
+        insert.next = curr?.next
+        curr?.next = insert
+        return temp.next
     }
     
     static func findNthDigit(_ n: Int) -> Int {

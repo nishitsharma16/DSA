@@ -507,6 +507,60 @@ extension Problems {
         }
         return counter
     }
+    
+    
+    func gcd(_ a: Int, _ b: Int) -> Int {
+        if b == 0 {
+            return a
+        }
+        else {
+            return gcd(b, a % b)
+        }
+    }
+    
+    func canMeasureWater(_ x: Int, _ y: Int, _ z: Int) -> Bool {
+        if z == 0 {
+            return true
+        }
+        else if z > x + y {
+            return false
+        }
+        else {
+            let r = gcd(x, y)
+            return z % r == 0
+        }
+    }
+    
+    func rotateRight(_ head: SortedNode?, _ k: Int) -> SortedNode? {
+        if head == nil {
+            return nil
+        }
+        
+        let len = lengthOfList(head)
+        let kVal = k >= len ? k % len : k
+        if kVal == 0 {
+            return head
+        }
+        var headValue = head
+        var curr = headValue
+        var counter = 0
+        while curr != nil && counter < kVal {
+            curr = curr?.next
+            counter += 1
+        }
+        
+        var last = headValue
+        while curr?.next != nil {
+            last = last?.next
+            curr = curr?.next
+        }
+        
+        let temp = last?.next
+        last?.next = nil
+        curr?.next = headValue
+        headValue = temp
+        return headValue
+    }
 }
 
 class ArrayReader {
