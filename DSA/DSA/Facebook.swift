@@ -4595,6 +4595,35 @@ class Codec {
     }
 }
 
+class CodecString {
+    private let delimeter = "==||=="
+    func encode(_ strs: [String]) -> String {
+        if strs.isEmpty {
+            return ""
+        }
+        if strs.count == 1 {
+            return strs[0] + delimeter
+        }
+        
+        var result = ""
+        
+        for i in 0..<strs.count - 1 {
+            result += strs[i] + delimeter
+        }
+        result += strs.last ?? ""
+        return result
+    }
+    
+    func decode(_ s: String) -> [String] {
+        if s.isEmpty {
+            return []
+        }
+        return s.components(separatedBy: delimeter)
+    }
+}
+
+
+
 
 class FacebookIterator {
 

@@ -471,40 +471,31 @@ class Problems {
             return []
         }
         
-        let length = nums.count
+        var set = Set<String>()
+        let list = nums.sorted()
+        let length = list.count
         var info = Dictionary<Int, (i: Int, j: Int)>()
         
         for i in 0..<length-1 {
             for j in i+1..<length {
-                info[nums[i] + nums[j]] = (i, j)
+                info[list[i] + list[j]] = (i, j)
             }
         }
         
         var result = [[Int]]()
-        var tempInfo = Dictionary<String, [Int]>()
-        var tempList = [[Int]]()
         
         for i in 0..<length-1 {
             for j in i+1..<length {
-                let sum = nums[i] + nums[j]
+                let sum = list[i] + list[j]
                 let value = target - sum
                 if let x = info[value] {
-                    if x.i != i && x.j != j && x.j != i && x.i != j {
-                        tempList.append([nums[x.i], nums[x.j], nums[i], nums[j]])
+                    let val = "\(list[x.i]),\(list[x.j]),\(list[i]),\(list[j])"
+                    if x.i != i && x.j != j && x.j != i && x.i != j, !set.contains(val) {
+                        result.append([list[x.i], list[x.j], list[i], list[j]])
+                        set.insert(val)
+                        break
                     }
                 }
-            }
-        }
-        
-        for item in tempList {
-            let listVal = item.sorted()
-            let key = listVal.stringVal
-            if let _ = tempInfo[key] {
-                
-            }
-            else {
-                tempInfo[key] = listVal
-                result.append(listVal)
             }
         }
         
@@ -526,20 +517,19 @@ class Problems {
         }
         
         var result = [[Int]]()
-        
+        var tempList = Array(repeating: 0, count: length)
+
         for i in 0..<length-1 {
-            var tempList = Array(repeating: 0, count: length)
             for j in i+1..<length {
                 let sum = nums[i] + nums[j]
                 let value = target - sum
                 if let x = info[value] {
-                    if x.i != i && x.j != j && x.j != i && x.i != j && tempList[i] == 0 && tempList[j] == 0 && tempList[x.i] == 0 && tempList[x.j] == 0 {
+                    if x.i != i && x.j != j && x.j != i && x.i != j && (tempList[i] == 0 || tempList[j] == 0 || tempList[x.i] == 0 || tempList[x.j] == 0) {
                         result.append([nums[x.i], nums[x.j], nums[i], nums[j]])
                         tempList[i] = 1
                         tempList[j] = 1
                         tempList[x.i] = 1
                         tempList[x.j] = 1
-                        break
                     }
                 }
             }

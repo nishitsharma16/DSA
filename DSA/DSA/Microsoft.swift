@@ -561,6 +561,139 @@ extension Problems {
         headValue = temp
         return headValue
     }
+    
+    func removeNthFromEnd(_ head: SortedNode?, _ n: Int) -> SortedNode? {
+        let len = lengthOfList(head)
+        if head == nil || n > len {
+            return nil
+        }
+        else if n == 0 {
+            return head
+        }
+        
+        var curr = head
+        var counter = 0
+        while curr != nil && counter < n {
+            curr = curr?.next
+            counter += 1
+        }
+        
+        var last = head
+        var prev: SortedNode?
+        while curr != nil {
+            prev = last
+            last = last?.next
+            curr = curr?.next
+        }
+        
+        var temp = last?.next
+        if temp != nil {
+            if let tempVal = temp?.val {
+                last?.val = tempVal
+                last?.next = temp?.next
+                temp = nil
+            }
+        }
+        else {
+            prev?.next = nil
+            last = nil
+        }
+        
+        return head
+    }
+    
+    static func reverseList(_ list: inout [Int], _ start: Int, _ end: Int) {
+        var l = start
+        var r = end
+        while l < r {
+            list.swapAt(l, r)
+            l += 1
+            r -= 1
+        }
+    }
+    
+    static func rotateArray(_ nums: inout [Int], _ k: Int) {
+        if nums.isEmpty || k == 0 {
+            return
+        }
+        let len = nums.count
+        let kVal = k >= len ? k % len : k
+        let secondStart = len - kVal
+        reverseList(&nums, 0, secondStart - 1)
+        reverseList(&nums, secondStart, len - 1)
+        reverseList(&nums, 0, len - 1)
+    }
+    
+    static func get4SumV3WithOutDuplicates(nums: [Int], target: Int) -> [[Int]] {
+        if nums.isEmpty {
+            return []
+        }
+        else if nums.count < 4 {
+            return []
+        }
+        let list = nums.sorted()
+        let length = list.count
+        var result = [[Int]]()
+        var set = Set<String>()
+        
+        for i in 0..<length - 3 {
+            for j in i + 1..<length - 2 {
+                var l = j + 1
+                var r = length - 1
+                let val = target - (list[i] + list[j])
+                while l < r {
+                    let sum = list[l] + list[r]
+                    if sum == val {
+                        let str = "\(list[i]),\(list[j]),\(list[l]),\(list[r])"
+                        if !set.contains(str) {
+                            result.append(contentsOf: [[list[i], list[j], list[l], list[r]]])
+                            set.insert(str)
+                        }
+                        while l < r && list[l] == list[l + 1] {
+                            l += 1
+                        }
+                        while l < r && list[r] == list[r - 1] {
+                            r -= 1
+                        }
+                        l += 1
+                        r -= 1
+                    }
+                    else if sum < val {
+                        l += 1
+                    }
+                    else {
+                        r -= 1
+                    }
+                }
+            }
+        }
+        return result
+    }
+
+    static func counterHelper(_ n: Int, _ map: inout [Int: Int]) -> Int {
+        if n == 1 {
+            return 0
+        }
+        else if let val = map[n], val != 0 {
+            return val
+        }
+        else if n % 2 == 0 {
+            map[n] = 1 + counterHelper(n / 2, &map)
+        }
+        else {
+            map[n] = 1 + min(counterHelper(n - 1, &map), counterHelper(n + 1, &map))
+        }
+        return map[n] ?? 0
+    }
+    
+    static func integerReplacement(_ n: Int) -> Int {
+        if n <= 1 {
+            return 0
+        }
+        var map = [Int: Int]()
+        let result = counterHelper(n, &map)
+        return result
+    }
 }
 
 class ArrayReader {
