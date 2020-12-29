@@ -452,6 +452,30 @@ extension Problems {
         return false
     }
     
+    func containsNearbyAlmostDuplicateV2(_ nums: [Int], _ k: Int, _ t: Int) -> Bool {
+        
+        if k < 1 {
+            return false
+        }
+        
+        var set = Set<Int>()
+        let n = nums.count
+        for i in 0..<n {
+            let status = set.contains { (val) -> Bool in
+                return abs(val - nums[i]) <= t
+            }
+            if status {
+                return true
+            }
+            set.insert(nums[i])
+            if set.count > k {
+                set.remove(nums[i - k])
+            }
+        }
+        
+        return false
+    }
+    
     static func circularArrayLoop(_ nums: [Int]) -> Bool {
         let len = nums.count
         if len <= 1 {
@@ -693,6 +717,124 @@ extension Problems {
         var map = [Int: Int]()
         let result = counterHelper(n, &map)
         return result
+    }
+    
+    static func lruCacheImplement() {
+        let cache = LRUCache(2)
+        cache.put(1, 1)
+        cache.put(2, 2)
+        var val = cache.get(1)
+        cache.put(3, 3)
+        val = cache.get(2)
+    }
+    
+    func read4(_ buf: inout [Character]) -> Int {
+        return 0
+    }
+    
+    func read(_ buf: inout [Character], _ n: Int) -> Int {
+        var nVal = n
+        let empty: Character = " "
+        while nVal > 0 {
+            var str = Array<Character>(repeating: empty, count: 4)
+            let x = read4(&str)
+            if x == 0 {
+                break
+            }
+            buf += str
+            nVal -= x
+        }
+        let val = buf.reduce("") { (prev, curr) -> String in
+            prev + String(curr)
+        }.trimmingCharacters(in: CharacterSet.whitespaces).prefix(n)
+        
+        buf = Array(val)
+        return buf.count
+    }
+    
+    func readV2(_ buf: inout [Character], _ n: Int) -> Int {
+        var counter = 0
+        var readFour = 4
+        let empty: Character = " "
+        while counter < n && readFour == 4 {
+            var str = Array<Character>(repeating: empty, count: 4)
+            readFour = read4(&str)
+            let end = min(n - counter, readFour)
+            buf += str.prefix(end)
+            counter += readFour
+        }
+        let val = buf.reduce("") { (prev, curr) -> String in
+            prev + String(curr)
+        }.trimmingCharacters(in: CharacterSet.whitespaces)
+        buf = Array(val)
+        return buf.count
+    }
+    
+    func wordPattern(_ pattern: String, _ s: String) -> Bool {
+        if pattern.isEmpty || s.isEmpty {
+            return false
+        }
+        let x = Array(pattern)
+        let y = s.split(separator: " ")
+        if x.count != y.count {
+            return false
+        }
+        
+        var l = 0
+        var r = x.count - 1
+        
+        while l < r {
+            if x[l] == x[r] && y[l] != y[r] || x[l] != x[r] && y[l] == y[r] {
+                return false
+            }
+            l += 1
+            r -= 1
+        }
+        
+        return true
+    }
+    
+    func containsNearbyDuplicate(_ nums: [Int], _ k: Int) -> Bool {
+        if k < 1 {
+            return false
+        }
+        
+        var set = Set<Int>()
+        let n = nums.count
+        for i in 0..<n {
+            if set.contains(nums[i]) {
+                return true
+            }
+            set.insert(nums[i])
+            if set.count > k {
+                set.remove(nums[i - k])
+            }
+        }
+        
+        return false
+    }
+    
+    func removeElements(_ head: SortedNode?, _ val: Int) -> SortedNode? {
+        if head == nil {
+            return head
+        }
+        
+        let dummy: SortedNode? = SortedNode(-1)
+        dummy?.next = head
+        var curr = head
+        var prev = dummy
+
+        while curr != nil {
+            if let x = curr?.val, x == val {
+                prev?.next = curr?.next
+            }
+            else {
+                prev = curr
+            }
+            curr = curr?.next
+        }
+        
+        return dummy?.next
     }
 }
 

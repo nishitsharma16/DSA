@@ -45,7 +45,7 @@ class DQList<Key, Val> {
         else {
             if let _ = rear {
                 var temp = rear
-                rear = temp?.prev
+                rear = rear?.prev
                 removedKey = temp?.key
                 temp = nil
                 nodeCount -= 1
@@ -64,6 +64,43 @@ class DQList<Key, Val> {
             rear = node
         }
         front = node
+        nodeCount += 1
+    }
+}
+
+class DQueue<Item> {
+    
+    private var list = Array<Item>()
+    private let size : Int
+    private var nodeCount = 0
+    init(sizeVal : Int) {
+        size = sizeVal
+    }
+    
+    func sizeOfList() -> Int {
+        return nodeCount
+    }
+    
+    func insert(val : Item) -> Item? {
+        var removedKey: Item?
+        if nodeCount < size {
+            insertFromFront(val)
+        }
+        else {
+            removedKey = list.removeLast()
+            nodeCount -= 1
+            insertFromFront(val)
+        }
+        return removedKey
+    }
+    
+    private func insertFromFront(_ val:  Item) {
+        if !list.isEmpty {
+            list.insert(val, at: 0)
+        }
+        else {
+            list.append(val)
+        }
         nodeCount += 1
     }
 }

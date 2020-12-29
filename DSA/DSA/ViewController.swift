@@ -127,7 +127,7 @@ class ViewController: UIViewController {
         "7.5.3"
         var list = [1,2,3,4,5,6,7]
         
-        Problems.integerReplacement(65535)
+        Problems.lruCacheImplement()
 
     }
     

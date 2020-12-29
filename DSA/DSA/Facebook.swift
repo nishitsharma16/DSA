@@ -4284,15 +4284,15 @@ class ValidWordAbbr {
 
 
 class LRUCache {
-    var map = [Int : DQNode<Int, Int>]()
-    var dq : DQList<Int, Int>
+    private var map = [Int : Int]()
+    private var dq : DQueue<Int>
     init(_ capacity: Int) {
-        dq = DQList(sizeVal: capacity)
+        dq = DQueue(sizeVal: capacity)
     }
     
     func get(_ key: Int) -> Int {
         if let node = map[key] {
-            return node.value
+            return node
         }
         return -1
     }
@@ -4301,11 +4301,10 @@ class LRUCache {
         if let _ = map[key] {
         }
         else {
-            let node = dq.insert(key: key, val: value)
-            if let key = node.removedKey {
-                map[key] = nil
+            if let removedVal = dq.insert(val: value) {
+                map[removedVal] = nil
             }
-            map[key] = node.addedNode
+            map[key] = value
         }
     }
 }
