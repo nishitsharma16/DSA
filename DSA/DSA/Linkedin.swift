@@ -497,28 +497,31 @@ extension Problems {
             return false
         }
         
-        let sLen = s.count
-        let tLen = t.count
+        let sVal = Array(s)
+        let tVal = Array(t)
+        
+        let sLen = sVal.count
+        let tLen = tVal.count
 
         if sLen != tLen {
             return false
         }
-        
+    
         var map = [Character: Character]()
         var set = Set<Character>()
         
         var j = 0
         var i = 0
         while i < sLen {
-            if let val = map[s[i]] {
-                if val != t[j] {
+            if let val = map[sVal[i]] {
+                if val != tVal[j] {
                     return false
                 }
             }
             else {
-                if !set.contains(t[j]) {
-                    map[s[i]] = t[j]
-                    set.insert(t[j])
+                if !set.contains(tVal[j]) {
+                    map[sVal[i]] = tVal[j]
+                    set.insert(tVal[j])
                 }
                 else {
                     return false
@@ -529,6 +532,25 @@ extension Problems {
         }
         
         return true
+    }
+    
+    func hasCycle(_ head: SortedNode?) -> Bool {
+        if head == nil {
+            return false
+        }
+        
+        var set = Set<SortedNode>()
+        var curr = head
+        while curr != nil {
+            if let currVal = curr {
+                if  set.contains(currVal) {
+                    return true
+                }
+                set.insert(currVal)
+            }
+            curr = curr?.next
+        }
+        return false
     }
     
     static private func markNeighboursNodeVisited(mat : inout [[Int]], visited : inout [[Bool]], x : Int, y : Int, m : Int, n : Int) {

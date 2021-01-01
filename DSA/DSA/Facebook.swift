@@ -2975,6 +2975,26 @@ extension Problems {
             curr2 = curr2?.next
         }
         
+        while curr1 != nil {
+            if let x = curr1 {
+                if set.contains(x) {
+                    return x
+                }
+                set.insert(x)
+            }
+            curr1 = curr1?.next
+        }
+        
+        while curr2 != nil {
+            if let x = curr2 {
+                if set.contains(x) {
+                    return x
+                }
+                set.insert(x)
+            }
+            curr2 = curr2?.next
+        }
+        
         return nil
     }
     

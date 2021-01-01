@@ -780,11 +780,67 @@ extension Problems {
             return false
         }
         
-        var l = 0
-        var r = x.count - 1
+        var mapA = [Character: [Int]]()
+        var mapB = [String: [Int]]()
+        for i in 0..<x.count {
+            if var val = mapA[x[i]] {
+                val.append(i)
+                mapA[x[i]] = val
+            }
+            else {
+                mapA[x[i]] = [i]
+            }
+            
+            let item = String(y[i])
+            if var val = mapB[item] {
+                val.append(i)
+                mapB[item] = val
+            }
+            else {
+                mapB[item] = [i]
+            }
+        }
         
+        for i in 0..<x.count {
+            let item = String(y[i])
+            if let a = mapA[x[i]], let b = mapB[item], a != b {
+                return false
+            }
+        }
+        
+        return true
+    }
+    
+    func trailingZeroes(_ n: Int) -> Int {
+        if n < 5 {
+            return 0
+        }
+        var nVal = n
+        var zeros = 0
+        while nVal > 0 {
+            nVal /= 5
+            zeros += nVal
+        }
+        return zeros
+    }
+    
+    func isPalindromeLinkedList(_ head: SortedNode?) -> Bool {
+        if head == nil {
+            return true
+        }
+        var curr = head
+        var list = [Int]()
+        while curr != nil {
+            if let val = curr?.val {
+                list.append(val)
+            }
+            curr = curr?.next
+        }
+        
+        var l = 0
+        var r = list.count - 1
         while l < r {
-            if x[l] == x[r] && y[l] != y[r] || x[l] != x[r] && y[l] == y[r] {
+            if list[l] != list[r] {
                 return false
             }
             l += 1
@@ -792,6 +848,92 @@ extension Problems {
         }
         
         return true
+    }
+    
+    func isPalindromeLinkedListV2Helper(_ head: SortedNode?, front: inout SortedNode?) -> Bool {
+        if head != nil {
+            if !isPalindromeLinkedListV2Helper(head?.next, front: &front) {
+                return false
+            }
+            if let headval = head?.val, let frontval = front?.val, frontval != headval {
+                return false
+            }
+            front = front?.next
+        }
+        return true
+    }
+    
+    func isPalindromeLinkedListV2(_ head: SortedNode?) -> Bool {
+        var front = head
+        return isPalindromeLinkedListV2Helper(head, front: &front)
+    }
+    
+    static func merge(_ nums1: inout [Int], _ m: Int, _ nums2: [Int], _ n: Int) {
+        if nums1.isEmpty {
+            nums1 = nums2
+            return
+        }
+        else if nums2.isEmpty {
+            return
+        }
+        var i = 0
+        var j = 0
+        var list = Array(repeating: 0, count: m + n)
+        var k = 0
+        while i < m && j < n {
+            if nums1[i] <= nums2[j] {
+                list[k] = nums1[i]
+                i += 1
+                k += 1
+            }
+            else {
+                list[k] = nums2[j]
+                j += 1
+                k += 1
+            }
+        }
+        
+        while j < n {
+            list[k] = nums2[j]
+            j += 1
+            k += 1
+        }
+        
+        while i < m {
+            list[k] = nums1[i]
+            i += 1
+            k += 1
+        }
+        nums1 = list
+    }
+    
+    static func mergeV2(_ nums1: inout [Int], _ m: Int, _ nums2: [Int], _ n: Int) {
+        if nums1.isEmpty {
+            nums1 = nums2
+            return
+        }
+        else if nums2.isEmpty {
+            return
+        }
+        var i = m - 1
+        var j = n - 1
+        var k = m + n - 1
+        while i >= 0 && j >= 0 {
+            if nums1[i] > nums2[j] {
+                nums1[k] = nums1[i]
+                i -= 1
+            }
+            else {
+                nums1[k] = nums2[j]
+                 j -= 1
+            }
+            k -= 1
+        }
+        while j >= 0 {
+            nums1[k] = nums2[j]
+            j -= 1
+            k -= 1
+        }
     }
     
     func containsNearbyDuplicate(_ nums: [Int], _ k: Int) -> Bool {
@@ -835,6 +977,31 @@ extension Problems {
         }
         
         return dummy?.next
+    }
+    
+    func hasPathSumHelper(_ root: TreeNode?, _ sum: Int) -> Bool {
+        if root == nil {
+            return false
+        }
+        var sumVal = sum
+        sumVal -= root?.value ?? 0
+        if root?.left == nil && root?.right == nil {
+            return sumVal == 0
+        }
+        let leftSum = hasPathSumHelper(root?.left, sumVal)
+        let rightSum = hasPathSumHelper(root?.right, sumVal)
+        return leftSum || rightSum
+    }
+    
+    func hasPathSum(_ root: TreeNode?, _ sum: Int) -> Bool {
+        if root == nil && sum == 0 {
+            return true
+        }
+        else if root == nil {
+            return false
+        }
+        
+        return hasPathSumHelper(root, sum)
     }
 }
 
