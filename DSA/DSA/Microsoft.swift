@@ -1130,13 +1130,78 @@ extension Problems {
         return abs(leftHeight - rightHeight) <= 1 && isBalanced(root?.left) && isBalanced(root?.right)
     }
     
-    func pivotIndex(_ nums: [Int]) -> Int {
+    static func sumPivotIndex(_ nums: [Int]) -> Int {
         if nums.isEmpty {
             return -1
         }
         
+        let len = nums.count
+        var sumList = Array(repeating: 0, count: len)
+        sumList[0] = nums[0]
+        for i in 1..<len {
+            sumList[i] += sumList[i - 1] + nums[i]
+        }
         
+        for i in 0..<sumList.count {
+            if sumList[i] - nums[i] == sumList[len - 1] - sumList[i] {
+                return i
+            }
+        }
         return -1
+    }
+    
+    func deleteDuplicates(_ head: SortedNode?) -> SortedNode? {
+        if head == nil {
+            return head
+        }
+        
+        let dummy: SortedNode? = SortedNode(-1)
+        dummy?.next = head
+        var curr = head
+        var next = curr?.next
+        
+        while curr != nil && next != nil {
+            if let x = curr?.val, let nextVal = next?.val, x == nextVal {
+                curr?.next = next?.next
+            }
+            else {
+                curr = curr?.next
+            }
+            next = curr?.next
+        }
+        
+        return dummy?.next
+    }
+    
+    func mostCommonWord(_ paragraph: String, _ banned: [String]) -> String {
+        if paragraph.isEmpty || banned.isEmpty {
+            return ""
+        }
+        
+        var str = paragraph.lowercased()
+        str = str.replacingOccurrences(of: ".", with: "")
+        str = str.replacingOccurrences(of: ",", with: "")
+        let list = str.split(separator: " ")
+        var map = [String: Int]()
+        for item in list {
+            let val = String(item)
+            if !banned.contains(val) {
+                if let x = map[val] {
+                    map[val] = x + 1
+                }
+                else {
+                    map[val] = 1
+                }
+            }
+        }
+        
+        var val: (key: String, val: Int) = ("", Int.min)
+        for item in map {
+            if item.value > val.val {
+                val = (item.key, item.value)
+            }
+        }
+        return val.key
     }
 }
 

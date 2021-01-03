@@ -103,3 +103,44 @@ class MaxStack {
     }
 }
 
+class MinStack {
+    private let stack1 = Stack<Int>()
+    private let stack2 = Stack<Int>()
+
+    init() {}
+    
+    func push(_ x : Int) {
+        if stack1.isEmpty {
+            stack1.push(val: x)
+            stack2.push(val: x)
+        }
+        else {
+            if let top = stack2.top() {
+                if top > x {
+                    stack2.push(val: x)
+                    stack1.push(val: x)
+                }
+                else {
+                    stack1.push(val: x)
+                    stack2.push(val: getMin())
+                }
+            }
+        }
+    }
+    
+    @discardableResult
+    func pop() -> Int {
+        stack2.pop()
+        return stack1.pop()
+    }
+    
+    func top() -> Int? {
+        return stack1.top()
+    }
+    
+    func getMin() -> Int {
+        return stack2.top() ?? -1
+    }
+}
+
+
