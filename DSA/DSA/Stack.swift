@@ -48,7 +48,7 @@ class MaxStack {
             stack2.push(val: val)
         }
         else {
-            if let top = stack1.top() {
+            if let top = stack2.top() {
                 if top < val {
                     stack2.push(val: val)
                     stack1.push(val: val)
@@ -95,7 +95,7 @@ class MaxStack {
                 result = stack2.pop()
                 
                 while !temp.isEmpty {
-                    stack1.push(val: temp.pop())
+                    push(val: temp.pop())
                 }
             }
         }

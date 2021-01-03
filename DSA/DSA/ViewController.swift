@@ -127,7 +127,7 @@ class ViewController: UIViewController {
         "7.5.3"
         var list = [1,2,3,0,0,0]
         
-        Problems.merge(&list, 3, [2,5,6], 3)
+        Problems.summaryRanges([0,1,2,4,5,7])
 
     }
     

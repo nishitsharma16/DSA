@@ -1003,6 +1003,141 @@ extension Problems {
         
         return hasPathSumHelper(root, sum)
     }
+    
+    func plusOne(_ digits: [Int]) -> [Int] {
+        if digits.isEmpty {
+            return []
+        }
+        
+        let len = digits.count
+        var result = Array(repeating: 0, count: len)
+        var carry = 1
+        var counter = len - 1
+        while counter >= 0 {
+            let sum = digits[counter] + carry
+            result[counter] = sum % 10
+            carry = sum / 10
+            counter -= 1
+        }
+        if carry > 0 {
+            if result.isEmpty {
+                result.append(carry)
+            }
+            else {
+                result.insert(carry, at: 0)
+            }
+        }
+        return result
+    }
+    
+    static func summaryRanges(_ nums: [Int]) -> [String] {
+        if nums.isEmpty {
+            return []
+        }
+        
+        var list = [String]()
+        var start = 0
+        for i in 0..<nums.count - 1 {
+            if nums[i] != nums[i + 1] - 1 {
+                if nums[start] == nums[i] {
+                    list.append("\(nums[start])")
+                }
+                else {
+                    list.append("\(nums[start])->\(nums[i])")
+                }
+                start = i + 1
+            }
+        }
+        
+        let last = nums.count - 1
+        if start <= last {
+            if nums[start] == nums[last] {
+                list.append("\(nums[start])")
+            }
+            else {
+                list.append("\(nums[start])->\(nums[last])")
+            }
+        }
+        return list
+    }
+    
+    func findSecondMinimumValueHelper(_ root: TreeNode?, _ set: inout Set<Int>) {
+        if root == nil {
+            return
+        }
+        
+        if let val = root?.value {
+            set.insert(val)
+        }
+        findSecondMinimumValueHelper(root?.left, &set)
+        findSecondMinimumValueHelper(root?.right, &set)
+    }
+    
+    func findSecondMinimumValue(_ root: TreeNode?) -> Int {
+        if root == nil {
+            return -1
+        }
+        var set = Set<Int>()
+        findSecondMinimumValueHelper(root, &set)
+        var firstMin = Int.max
+        var secondMin = Int.max
+        for item in set {
+            if firstMin > item {
+                secondMin = firstMin
+                firstMin = item
+            }
+            else if secondMin > item && firstMin != item {
+                secondMin = item
+            }
+        }
+        return secondMin == Int.max ? -1 : secondMin
+    }
+    
+    func isSubtreeHelper(_ s: TreeNode?, _ t: TreeNode?) -> Bool {
+        if (s == nil && t == nil) {
+            return true
+        }
+        else if s == nil || t == nil {
+            return false
+        }
+        
+        return s?.value == t?.value && isSubtreeHelper(s?.left, t?.left) && isSubtreeHelper(s?.right, t?.right)
+    }
+    
+    func traverse(_ s: TreeNode?, _ t: TreeNode?) -> Bool {
+        return s != nil && (isSubtreeHelper(s, t) || traverse(s?.left, t) || traverse(s?.right, t))
+    }
+    
+    func isSubtree(_ s: TreeNode?, _ t: TreeNode?) -> Bool {
+        return traverse(s, t)
+    }
+    
+    func height(_ root: TreeNode?) -> Int {
+        if root == nil {
+            return 0
+        }
+        let leftHeight = height(root?.left)
+        let rightHeight = height(root?.right)
+        return max(leftHeight, rightHeight) + 1
+    }
+    
+    func isBalanced(_ root: TreeNode?) -> Bool {
+        if root == nil {
+            return true
+        }
+        let leftHeight = height(root?.left)
+        let rightHeight = height(root?.right)
+        return abs(leftHeight - rightHeight) <= 1 && isBalanced(root?.left) && isBalanced(root?.right)
+    }
+    
+    func pivotIndex(_ nums: [Int]) -> Int {
+        if nums.isEmpty {
+            return -1
+        }
+        
+        
+        return -1
+    }
 }
 
 class ArrayReader {
