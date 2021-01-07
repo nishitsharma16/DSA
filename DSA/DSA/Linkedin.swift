@@ -818,13 +818,4 @@ extension Problems {
         
         return right
     }
-    
-    func isSymmetricTree(root: TreeNode?) -> Bool {
-        if root == nil {
-            return true
-        }
-        
-        
-        return false
-    }
 }

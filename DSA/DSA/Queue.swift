@@ -16,6 +16,7 @@ class Queue<Item> {
         list.append(val)
     }
     
+    @discardableResult
     func dQueue() -> Item {
        return list.removeFirst()
     }
